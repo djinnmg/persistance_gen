@@ -1,0 +1,10 @@
+package ${package}.hibernate.dao.impl;
+
+import com.peterphi.std.guice.hibernate.dao.HibernateDao;
+import ${package}.hibernate.dao.${entity.name}Dao;
+import matthew.agile.management.hibernate.entities.${entity.name};
+
+public class ${entity.name}DaoImpl extends HibernateDao<${entity.name}, ${entity.id.type}> implements ${entity.name}Dao ## TODO implement id.type
+{
+
+}

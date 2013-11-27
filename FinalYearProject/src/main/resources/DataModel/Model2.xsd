@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="entities" type="entitiesType"/>
+
+	<xs:complexType name="propertyType" mixed="true">
+		<xs:sequence>
+			<xs:element type="xs:boolean" name="nullable" minOccurs="0" maxOccurs="1"/>
+			<xs:element type="xs:boolean" name="serialise" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute type="xs:boolean" name="id" use="optional"/>
+		<xs:attribute type="xs:string" name="name" use="required"/>
+		<xs:attribute type="xs:string" name="type" use="required"/>
+		<xs:attribute type="xs:string" name="incoming" use="optional"/>
+		<xs:attribute type="xs:string" name="mapping" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="entitiesType">
+		<xs:sequence>
+			<xs:element type="entityType" name="entity" maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="entityType">
+		<xs:sequence>
+			<xs:element type="propertyType" name="property" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="name" use="required"/>
+	</xs:complexType>
+
+</xs:schema>

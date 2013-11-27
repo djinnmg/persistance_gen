@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities>
+	<entity name="user">
+		<property id="true" name="id" type="long"/>
+		<!--if id attribute is set, property is assumed to be not nullable-->
+		<property name="name" type="string">
+			<nullable>false</nullable>
+		</property>
+	</entity>
+	<entity name="project">
+		<property id="true" name="id" type="long">
+			<serialise>false</serialise>
+		</property>
+		<property name="title" type="string"/>
+		<property name="users" type="user" incoming="projectForUser" mapping="OneToMany">
+			<!--If a mapping is specified for a simple type an error will be thrown-->
+			<serialise>false</serialise>
+			<!--Initially serialisation of complex types won't be supported.
+				A query which returns a list of ids followed by requests to serialise the associated objects should be used instead-->
+		</property>
+		<property name="description" type="string"/>
+		<property name="created" type="date"/>
+		<!--Will use Joda DateTime for dates.
+				Cannot use Joda DateTime with jaxb types-->
+	</entity>
+</entities>

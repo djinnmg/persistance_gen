@@ -1,0 +1,13 @@
+package ${package}.jaxb.types;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class ${entity.name}Type
+{
+	#foreach ($property in $entity.properties)
+		@XmlElement(name = "${property.name}")
+		public $propertyType $property.name;;
+	#end
+}

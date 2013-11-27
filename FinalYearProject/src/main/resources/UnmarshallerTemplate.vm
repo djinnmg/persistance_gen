@@ -1,0 +1,24 @@
+package ${package}.jaxb.serialization;
+
+#foreach ($entity in entities)
+	import ${package}.hibernate.entities.${entity.name};
+	import ${package}.jaxb.types.${entity.name}Type;
+#end
+	
+public class Unmarshaller
+{
+
+	#foreach ($entity in $entities)
+		public $entity.name unmarshall(${entity.name}Type ${entity.name.toLowerCase}Type)
+		{
+			$entity.name $entity.name.toLowerCase = new ${entity.name}();
+	
+			#foreach ($property in $entity.properties)
+				${entity.name.toLowerCase}.${property.name} = ${entity.name.toLowerCase}Type.${property.name};			
+			#end
+			
+			return ${entity.name};
+		}
+	#end
+
+}

@@ -1,0 +1,16 @@
+<entities>
+  <!--Zero or more repetitions:-->
+  <entity name="string">
+    <id>
+      <type>string</type>
+      <serialise>false</serialise>
+    </id>
+    <!--Zero or more repetitions:-->
+    <column>
+      <name>string</name>
+      <serialise>true</serialise>
+      <nullable>true</nullable>
+      <type mapping="string">string</type>
+    </column>
+  </entity>
+</entities>

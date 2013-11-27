@@ -1,0 +1,15 @@
+<entities>
+  <!--Zero or more repetitions:-->
+  <entity name="string">
+    <!--Zero or more repetitions:-->
+    <property id="false" name="string" type="string" incoming="string" mapping="string">
+      gero
+      <!--Optional:-->
+      <nullable>true</nullable>
+      sonoras
+      <!--Optional:-->
+      <serialise>true</serialise>
+      quae
+    </property>
+  </entity>
+</entities>

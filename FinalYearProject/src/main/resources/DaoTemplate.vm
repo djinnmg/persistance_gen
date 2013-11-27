@@ -1,0 +1,6 @@
+package ${package}.hibernate.dao;
+
+public interface ${entity}Dao
+{
+
+}
