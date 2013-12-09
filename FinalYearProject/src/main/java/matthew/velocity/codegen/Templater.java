@@ -14,11 +14,17 @@ public class Templater
 	private final VelocityEngine engine;
 	private final VelocityContext context;
 
-	public Templater(String template, VelocityEngine engine, VelocityContext context)
+	public Templater(final String template)
 	{
 		this.template = template;
-		this.engine = engine;
-		this.context = context;
+		this.engine = new VelocityEngine();
+		this.context = new VelocityContext();
+	}
+
+
+	public void put(String key, Object value)
+	{
+		context.put(key, value);
 	}
 
 

@@ -3,13 +3,22 @@ package ${package}.hibernate.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import org.joda.time.DateTime; #* In future only add required imports *# 
 
 @Entity
 public class $entity.name
 {
 	#foreach ($property in $entity.properties)
-		@${property.annotation} #* If is a manyToOne or ManyToMany property use List<${property.type}> *#
-		public $property.type $property.name;
+		
+		#* If is a collection use List<${property.type}> *#
+		#if ($property.isCollection)
+			#set ( $returnType = "List<" + ${property.type} + ">" )
+		#else
+			#set ( $returnType = $property.type)
+		#end
+		
+		@${property.annotation}
+		public $returnType $property.name;
 	#end
 
 }

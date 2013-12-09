@@ -2,8 +2,7 @@ package ${package}.jaxb.types;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-#* if date import java.util.Date *#
+import java.util.Date; #* In future only import if needed *#
 
 @XmlRootElement
 public class ${entity.name}Type

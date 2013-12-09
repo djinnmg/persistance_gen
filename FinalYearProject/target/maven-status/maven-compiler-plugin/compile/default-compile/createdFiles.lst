@@ -5,6 +5,7 @@ matthew/jaxb/types/PropertyType.class
 matthew/velocity/types/VelocityPropertyType.class
 matthew/velocity/types/VelocityEntitiesType.class
 matthew/jaxb/types/EntityType.class
+matthew/main/TemplateProcessor.class
 matthew/jaxb/types/EntitiesType.class
 matthew/jaxb/types/ObjectFactory.class
 matthew/main/Main.class

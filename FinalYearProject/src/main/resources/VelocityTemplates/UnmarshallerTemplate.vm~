@@ -1,21 +1,19 @@
-package ${package}.jaxb.serialisation;
+package ${package}.jaxb.serialization;
 
-#foreach ($entity in $entities.entities)
+#foreach ($entity in entities)
 	import ${package}.hibernate.entities.${entity.name};
 	import ${package}.jaxb.types.${entity.name}Type;
 #end
-import org.joda.time.DateTime;
-import java.util.Date;
 	
 public class Unmarshaller
 {
 
-	#foreach ($entity in $entities.entities)
+	#foreach ($entity in $entities)
 		public $entity.name unmarshall(${entity.name}Type ${entity.name.toLowerCase}Type)
 		{
 			$entity.name $entity.name.toLowerCase = new ${entity.name}();
 	
-			#foreach ($property in $entity.properties) #* if date need to convert to DateTime *#
+			#foreach ($property in $entity.properties)
 				${entity.name.toLowerCase}.${property.name} = ${entity.name.toLowerCase}Type.${property.name};			
 			#end
 			

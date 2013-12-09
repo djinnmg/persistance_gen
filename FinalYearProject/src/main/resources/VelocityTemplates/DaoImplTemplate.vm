@@ -22,7 +22,7 @@ public class ${entity.name}DaoImpl extends HibernateDao<${entity.name}, ${entity
 			#end
 			
 			#if ($property.isCollection)
-				#set ( $returnType = List<${property.type}> )
+				#set ( $returnType = "List<" + ${property.type} + ">" )
 			#else
 				#set ( $returnType = $property.type)
 			#end	
