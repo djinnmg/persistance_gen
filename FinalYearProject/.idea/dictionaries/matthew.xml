@@ -2,6 +2,7 @@
   <dictionary name="matthew">
     <words>
       <w>nullable</w>
+      <w>templater</w>
     </words>
   </dictionary>
 </component>

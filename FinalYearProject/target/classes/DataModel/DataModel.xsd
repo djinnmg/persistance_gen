@@ -5,11 +5,9 @@
 	<xs:element name="entities" type="entitiesType"/>
 
 	<xs:complexType name="propertyType" mixed="true">
-		<xs:sequence>
-			<xs:element type="xs:boolean" name="nullable" minOccurs="0" maxOccurs="1"/>
-			<xs:element type="xs:boolean" name="serialise" minOccurs="0" maxOccurs="1"/>
-		</xs:sequence>
-		<xs:attribute type="xs:boolean" name="id" use="optional"/>
+		<xs:attribute type="xs:boolean" name="nullable" use="optional" default="true" />
+		<xs:attribute type="xs:boolean" name="serialise" use="optional" default="true" />
+		<xs:attribute type="xs:boolean" name="id" use="optional" default="false" />
 		<xs:attribute type="xs:string" name="name" use="required"/>
 		<xs:attribute type="xs:string" name="type" use="required"/>
 		<xs:attribute type="xs:string" name="incoming" use="optional"/>
@@ -18,8 +16,7 @@
 
 	<xs:complexType name="entitiesType">
 		<xs:sequence>
-			<xs:element type="entityType" name="entity" maxOccurs="unbounded" minOccurs="0">
-			</xs:element>
+			<xs:element type="entityType" name="entity" maxOccurs="unbounded" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 

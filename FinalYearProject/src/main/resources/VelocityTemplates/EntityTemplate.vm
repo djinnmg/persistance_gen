@@ -1,0 +1,15 @@
+package ${package}.hibernate.entities;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class $entity.name
+{
+	#foreach ($property in $entity.properties)
+		@${entity.annotation} ## TODO add extensions for mappings, nullable etc.
+		public $propertyType $property.name;
+	#end
+
+}

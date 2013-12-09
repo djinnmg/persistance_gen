@@ -8,5 +8,97 @@
     <artifactId>FinalYearProject</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javalang.version>1.7</javalang.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<!-- Note, 2.2.1 causes problems for incremental builds -->
+					<version>2.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-archiver</artifactId>
+					<version>2.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<excludes>
+						<exclude>**/TestUtils.java</exclude>
+						<exclude>**/TestUtils$*.java</exclude>
+						<!-- anonymous inner classes -->
+						<exclude>**/TestUtils.*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<pushChanges>false</pushChanges>
+					<localCheckout>true</localCheckout>
+					<preparationGoals>install</preparationGoals>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${javalang.version}</source>
+					<target>${javalang.version}</target>
+					<testSource>${javalang.version}</testSource>
+					<testTarget>${javalang.version}</testTarget>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

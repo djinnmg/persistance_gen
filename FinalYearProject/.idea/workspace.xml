@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" name="Default" comment="" />
+    <list default="true" id="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/VelocityTemplates/DaoImplTemplate.vm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/VelocityTemplates/DaoTemplate.vm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/VelocityTemplates/EntityTemplate.vm" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xsd.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/matthew/main/Main.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/Templater.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntitiesType.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntityType.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/VelocityMarshaller.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityPropertyType.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/DataModel/Model1.xsd" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/DataModel/Model1.xsd.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/DataModel/Model2.xsd.xml" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/matthew/velocity/model/EntitiesType.java" afterPath="$PROJECT_DIR$/src/main/java/matthew/jaxb/types/EntitiesType.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/matthew/velocity/model/EntityType.java" afterPath="$PROJECT_DIR$/src/main/java/matthew/jaxb/types/EntityType.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/matthew/velocity/model/ObjectFactory.java" afterPath="$PROJECT_DIR$/src/main/java/matthew/jaxb/types/ObjectFactory.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/matthew/velocity/model/PropertyType.java" afterPath="$PROJECT_DIR$/src/main/java/matthew/jaxb/types/PropertyType.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/resources/DataModel/Model1.xml" afterPath="$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/resources/DataModel/Model2.xml" afterPath="$PROJECT_DIR$/target/classes/DataModel/DataModel.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/resources/DataModel/Model2.xsd" afterPath="$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xsd" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/resources/JaxbTemplate.vm" afterPath="$PROJECT_DIR$/src/main/resources/VelocityTemplates/JaxbTemplate.vm" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/resources/MarshallerTemplate.vm" afterPath="$PROJECT_DIR$/src/main/resources/VelocityTemplates/MarshallerTemplate.vm" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/resources/UnmarshallerTemplate.vm" afterPath="$PROJECT_DIR$/src/main/resources/VelocityTemplates/UnmarshallerTemplate.vm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FinalYearProject.iml" afterPath="$PROJECT_DIR$/FinalYearProject.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/matthew.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/matthew.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="FinalYearProject.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1385581763421" ignored="false" />
+    <file path="/Dummy.txt" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386536571573" ignored="false" />
     <file path="/a.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1385582472380" ignored="false" />
     <file path="/sample.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1385582509101" ignored="false" />
     <file path="$PROJECT_DIR$/../../intellij-jpa-thymeleaf-scaffolder/intellijplugin/src/com/peterphi/scaf/jpathymeleaf/plugin/GenerateThymeleafEntityTemplate.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384792327959" ignored="false" />
@@ -12,15 +42,15 @@
     <file path="$PROJECT_DIR$/../../AgileManagement/src/main/java/matthew/agile/management/hibernate/entities/User.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384784756102" ignored="false" />
     <file path="/User.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384784747316" ignored="false" />
     <file path="$PROJECT_DIR$/../../AgileManagement/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384792978634" ignored="false" />
-    <file path="/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384786042913" ignored="false" />
+    <file path="/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386517128039" ignored="false" />
     <file path="/a.groovy" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384782143552" ignored="false" />
     <file path="/a.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384782126070" ignored="false" />
     <file path="/a.html" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384782140280" ignored="false" />
-    <file path="$PROJECT_DIR$/../../AgileManagement/src/main/java/matthew/agile/management/hibernate/entities/Project.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384785283494" ignored="false" />
-    <file path="/Project.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384785017926" ignored="false" />
+    <file path="$PROJECT_DIR$/../../AgileManagement/src/main/java/matthew/agile/management/hibernate/entities/Project.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386536271663" ignored="false" />
+    <file path="/Project.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386536265790" ignored="false" />
     <file path="$PROJECT_DIR$/../../AgileManagement/src/main/java/matthew/agile/management/hibernate/dao/UserDao.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384788391369" ignored="false" />
     <file path="/UserDao.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384786426120" ignored="false" />
-    <file path="$PROJECT_DIR$/../../stdlib/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384785960491" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903610" ignored="false" />
     <file path="$PROJECT_DIR$/../../AgileManagement/src/main/java/matthew/agile/management/hibernate/dao/ProjectDao.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384786433159" ignored="false" />
     <file path="$PROJECT_DIR$/../../AgileManagement/src/main/java/matthew/agile/management/hibernate/dao/impl/UserDaoImpl.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384788391369" ignored="false" />
     <file path="$PROJECT_DIR$/../../AgileManagement/src/main/java/matthew/agile/management/hibernate/dao/impl/ProjectDaoImpl.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384786488909" ignored="false" />
@@ -41,9 +71,33 @@
     <file path="$PROJECT_DIR$/../DataModel/Model2.xsd" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384986078334" ignored="false" />
     <file path="/Model2.xsd" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1384985721339" ignored="false" />
     <file path="/UserType.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1385582091546" ignored="false" />
-    <file path="/fragment.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1385587926820" ignored="false" />
+    <file path="/fragment.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386535992623" ignored="false" />
     <file path="/AgileMarshaller.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1385591325279" ignored="false" />
     <file path="/AgileUnmarshaller.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1385591408703" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/hibernate/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/restclient/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/sample-rest-service/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/stdlib/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/restclient/src/main/java/com/peterphi/std/guice/restclient/JAXRSProxyClientFactory.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/hibernate/src/main/java/com/peterphi/std/guice/database/dao/Dao.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/restclient/src/main/java/com/peterphi/std/guice/restclient/RestClientFactory.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903609" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/common/pom.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903301" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/restclient/src/main/java/com/peterphi/std/guice/restclient/EnvironmentPropertyRestClientFactory.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903610" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/restclient/src/main/java/com/peterphi/std/guice/restclient/jaxb/ExceptionInfo.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903610" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/restclient/src/main/java/com/peterphi/std/guice/restclient/jaxb/RestFailure.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903610" ignored="false" />
+    <file path="$PROJECT_DIR$/../../stdlib/guice/hibernate/src/main/java/com/peterphi/std/guice/hibernate/dao/HibernateDao.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386507903610" ignored="false" />
+    <file path="/Main.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386528699945" ignored="false" />
+    <file path="/Templater.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386517511606" ignored="false" />
+    <file path="/*.regexp" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386516774448" ignored="false" />
+    <file path="/VelocityEntityType.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386538646430" ignored="false" />
+    <file path="/VelocityEntitiesType.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386529235377" ignored="false" />
+    <file path="/VelocityPropertyType.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386528835095" ignored="false" />
+    <file path="/VelocityMarshaller.java" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386547545173" ignored="false" />
+    <file path="/DataModel.xsd" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386535354902" ignored="false" />
+    <file path="/DataModel.xml" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386535297190" ignored="false" />
+    <file path="/a.dummy" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386536541774" ignored="false" />
+    <file path="/RegExp Fragment (VelocityMarshaller.java:435).regexp" changelist="1c3ceeb5-44b1-426e-8fea-7aa4132a1eba" time="1386537220542" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,28 +158,75 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="EntitiesType.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/model/EntitiesType.java">
+      <file leaf-file-name="Templater.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/Templater.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="13" selection-start="1215" selection-end="1215" vertical-scroll-proportion="0.0">
+            <state line="22" column="14" selection-start="485" selection-end="485" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/main/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="47" column="0" selection-start="1124" selection-end="1124" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VelocityEntitiesType.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntitiesType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="29" selection-start="167" selection-end="167" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VelocityMarshaller.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/VelocityMarshaller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="217" column="102" selection-start="4884" selection-end="4884" vertical-scroll-proportion="0.68962175">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="EntityType.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/model/EntityType.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/jaxb/types/EntityType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="13" selection-start="1363" selection-end="1363" vertical-scroll-proportion="0.0">
+            <state line="44" column="25" selection-start="1398" selection-end="1398" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PropertyType.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/model/PropertyType.java">
+      <file leaf-file-name="VelocityEntityType.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntityType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="171" column="106" selection-start="4691" selection-end="4691" vertical-scroll-proportion="0.24491772">
+            <state line="6" column="13" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VelocityPropertyType.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityPropertyType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="13" selection-start="47" selection-end="47" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PropertyType.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/matthew/jaxb/types/PropertyType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="13" selection-start="1804" selection-end="1804" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -152,7 +253,25 @@
         <option value="$PROJECT_DIR$/../../intellij-jpa-thymeleaf-scaffolder/intellijplugin/intellijplugin.iml" />
         <option value="$PROJECT_DIR$/src/Test.java" />
         <option value="$PROJECT_DIR$/EntityTemplate.vm" />
+        <option value="$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/Templater.java" />
+        <option value="$PROJECT_DIR$/src/main/java/matthew/main/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntitiesType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityPropertyType.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xsd" />
+        <option value="$PROJECT_DIR$/src/main/java/matthew/jaxb/types/PropertyType.java" />
+        <option value="/RegExp Fragment (VelocityMarshaller.java:435).regexp" />
+        <option value="$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntityType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/VelocityMarshaller.java" />
       </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
     </option>
   </component>
   <component name="ProjectFrameBounds">
@@ -161,6 +280,25 @@
     <option name="width" value="1857" />
     <option name="height" value="1205" />
   </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Spelling</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>SpellCheckingInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -168,11 +306,11 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="1" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
+    <option name="STATE" value="2" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -187,6 +325,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -244,6 +384,10 @@
               <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="VelocityTemplates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -293,32 +437,142 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
+              <option name="myItemId" value="matthew" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="velocity" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="types" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FinalYearProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FinalYearProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="matthew" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="velocity" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="codegen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FinalYearProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FinalYearProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="matthew" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FinalYearProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FinalYearProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="matthew" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="types" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
+    <property name="options.lastSelected" value="preferences.sourceCode" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="last.edited.regexp" value="" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="matthew.velocity.types" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="matthew.jaxb.types" />
       <recent name="matthew.velocity.model" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/VelocityTemplates" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
@@ -445,26 +699,26 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-4" width="1857" height="1205" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32923368" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19458264" sideWeight="0.67087376" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19458264" sideWeight="0.6707663" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291262" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -546,61 +800,112 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../intellij-jpa-thymeleaf-scaffolder/intellijplugin/intellijplugin.iml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/velocity/velocity/1.7/velocity-1.7-sources.jar!/org/apache/velocity/context/AbstractContext.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="67" selection-start="804" selection-end="804" vertical-scroll-proportion="0.23952095" />
+        <state line="51" column="19" selection-start="2010" selection-end="2017" vertical-scroll-proportion="0.34723568" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/FinalYearProject.iml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/velocity/velocity/1.7/velocity-1.7-sources.jar!/org/apache/velocity/VelocityContext.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+        <state line="50" column="45" selection-start="2100" selection-end="2100" vertical-scroll-proportion="0.33268672" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="11" column="74" selection-start="507" selection-end="507" vertical-scroll-proportion="-0.45256916">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/EntityTemplate.vm">
+    <entry file="jar:///usr/lib/jvm/jdk1.7.0/src.zip!/java/io/Serializable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="225" selection-end="225" vertical-scroll-proportion="0.0">
+        <state line="168" column="17" selection-start="7581" selection-end="7581" vertical-scroll-proportion="0.88142294">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/DataModel/Model2.xsd">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="87" selection-start="1248" selection-end="1248" vertical-scroll-proportion="0.0">
+        <state line="5" column="59" selection-start="243" selection-end="243" vertical-scroll-proportion="0.072744906">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/model/ObjectFactory.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xsd.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="13" selection-start="1114" selection-end="1114" vertical-scroll-proportion="0.0">
+        <state line="6" column="78" selection-start="270" selection-end="270" vertical-scroll-proportion="0.08729389">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/model/EntitiesType.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/DataModel/DataModel.xsd">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="13" selection-start="1215" selection-end="1215" vertical-scroll-proportion="0.0">
+        <state line="29" column="47" selection-start="1224" selection-end="1224" vertical-scroll-proportion="0.42192048">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/model/EntityType.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/Templater.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="13" selection-start="1363" selection-end="1363" vertical-scroll-proportion="0.0">
+        <state line="22" column="14" selection-start="485" selection-end="485" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/model/PropertyType.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/main/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="171" column="106" selection-start="4691" selection-end="4691" vertical-scroll-proportion="0.24491772">
+        <state line="47" column="0" selection-start="1124" selection-end="1124" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/jaxb/types/EntitiesType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="13" selection-start="1211" selection-end="1211" vertical-scroll-proportion="0.41804072">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntitiesType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="29" selection-start="167" selection-end="167" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityPropertyType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="13" selection-start="47" selection-end="47" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/jaxb/types/EntityType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="25" selection-start="1398" selection-end="1398" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/jaxb/types/PropertyType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="13" selection-start="1804" selection-end="1804" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/types/VelocityEntityType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="13" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/matthew/velocity/codegen/VelocityMarshaller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="217" column="102" selection-start="4884" selection-end="4884" vertical-scroll-proportion="0.68962175">
           <folding />
         </state>
       </provider>

@@ -1,0 +1,7 @@
+<entities>
+  <!--Zero or more repetitions:-->
+  <entity name="string">
+    <!--Zero or more repetitions:-->
+    <property nullable="true" serialise="true" id="false" name="string" type="string" incoming="string" mapping="string">e gero</property>
+  </entity>
+</entities>
