@@ -12,3 +12,5 @@ target/
 *.idea
 .idea/
 .log
+
+.*~
