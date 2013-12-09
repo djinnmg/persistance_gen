@@ -5,7 +5,27 @@ import java.util.List;
 public class VelocityEntitiesType
 {
 
-    public List<VelocityEntityType> entities;
+	private List<VelocityEntityType> entities;
 
-	public String packagePath;
+	public List<VelocityEntityType> getEntities()
+	{
+		return entities;
+	}
+
+	public void setEntities(List<VelocityEntityType> entities)
+	{
+		this.entities = entities;
+	}
+
+	public String getPackagePath()
+	{
+		return packagePath;
+	}
+
+	public void setPackagePath(String packagePath)
+	{
+		this.packagePath = packagePath;
+	}
+
+	private String packagePath;
 }

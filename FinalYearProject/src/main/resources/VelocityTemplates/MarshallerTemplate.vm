@@ -11,13 +11,19 @@ public class Marshaller
 {
 
 	#foreach ($entity in $entities.entities)
-		public ${entity.name}Type marshall($entity.name ${entity.getCamelCaseName})
+		public ${entity.name}Type marshall(${entity.name} ${entity.camelCaseName})
 		{
-			
-			${entity.name}Type ${entity.getCamelCaseName}Type = new ${entity.name}Type();
+			${entity.name}Type ${entity.camelCaseName}Type = new ${entity.name}Type();
 	
-			#foreach ($property in $entity.properties) #* TODO If property.type = DateTime need to convert to Date *#
-				${entity.getCamelCaseName}Type.${property.name} = ${entity.getCamelCaseName}.${property.name};			
+			#foreach ($property in $entity.properties)
+				#if (${property.serialise} && !${property.complex})
+					#if ($property.type == "DateTime")
+						#set ($toDate = ".toDate()")
+					#else
+						#set ($toDate = "")
+					#end
+					${entity.camelCaseName}Type.${property.name} = ${entity.camelCaseName}.${property.name}${toDate};			
+				#end
 			#end
 			
 			return ${entity.name}Type;

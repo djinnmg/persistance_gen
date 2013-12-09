@@ -2,14 +2,23 @@ package ${package}.jaxb.types;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import ${package}.hibernate.entities.*;
 import java.util.Date; #* In future only import if needed *#
 
 @XmlRootElement
 public class ${entity.name}Type
 {
-	#foreach ($property in $entity.properties) #* TODO only add property if property.serialize = true *#
-		@XmlElement(name = "${property.name}")
-		public $property.type $property.name;; #* If property.type = DateTime use Date *#
+	#foreach ($property in $entity.properties) 
+		#if (${property.Serialise}  && !${property.complex})
+			#if ($property.type == "DateTime")
+				#set ($propertyType = "Date")
+			#else
+				#set ($propertyType = $property.type)
+			#end			
+			@XmlElement(name = "${property.name}")
+			public $propertyType $property.name;
+			
+		#end
 	#end
 		
 		

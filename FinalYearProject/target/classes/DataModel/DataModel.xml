@@ -8,7 +8,7 @@
 	<entity name="project">
 		<property id="true" name="id" type="long" serialise="false"/>
 		<property name="title" type="string"/>
-		<property name="users" type="user" incoming="projectForUser" mapping="OneToMany" serialise="false" />
+		<property name="users" type="user" incoming="projectForUser" mapping="ManyToOne" serialise="false" />
 			<!--If a mapping is specified for a simple type an error will be thrown-->
 			<!--Initially serialisation of complex types won't be supported.
 				A query which returns a list of ids followed by requests to serialise the associated objects should be used instead-->

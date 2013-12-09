@@ -2,40 +2,32 @@ package ${package}.hibernate.dao.impl;
 
 import com.peterphi.std.guice.hibernate.dao.HibernateDao;
 import ${package}.hibernate.dao.${entity.name}Dao;
-import matthew.agile.management.hibernate.entities.${entity.name};
+import ${package}.hibernate.entities.${entity.name};
+import ${package}.hibernate.entities.*;
+import java.util.List;
 
-public class ${entity.name}DaoImpl extends HibernateDao<${entity.name}, ${entity.idType}> implements ${entity.name}Dao
+public class ${entity.name}DaoImpl extends HibernateDao<${entity.name}, ${entity.capitalisedIdType}> implements ${entity.name}Dao
 {
-	#* If entity contains a complex type, need to add method to return type based on entity id *#
 	
+	#* If entity contains a complex type, need to add method to return type based on entity id *#	
 	#foreach ($property in $entity.properties) 
-		#if ($property.isComplex)
-			#foreach ($entityType in $entityTypeList.entites)
+		#if ($property.complex)
+			#foreach ($entityType in $entityTypeList.entities)
 				#if ($entityType.name == $property.type)
-					#foreach ($propertyType in $entityType.properties)
-						#if ($propertyType.isId)
-							#set ( $idType = $propertyType.type )
-							#break					
-						#end
-					#end
+					#set ( $idType = $entityType.idType )
+					#break
 				#end
-			#end
-			
-			#if ($property.isCollection)
+			#end			
+			#if ($property.collection)
 				#set ( $returnType = "List<" + ${property.type} + ">" )
 			#else
 				#set ( $returnType = $property.type)
 			#end	
-				
-			#* if property.isComplex *#
-			#* If property.isCollection use List<${property.type}> *#
-			public $returnType get${property.type}By${entity.name}Id($idType id)
+			public $returnType get${property.type}By${entity.name}Id(${idType} id)
 			{
 				return getById(id).${property.name};			
 			}
 		#end
-	#end
-	
-
+	#end	
 
 }

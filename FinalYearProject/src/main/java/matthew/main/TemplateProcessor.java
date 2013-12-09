@@ -2,9 +2,11 @@ package matthew.main;
 
 import com.peterphi.std.util.jaxb.JAXBSerialiser;
 import matthew.jaxb.types.EntitiesType;
-import matthew.jaxb.types.EntityType;
 import matthew.jaxb.types.ObjectFactory;
 import matthew.velocity.codegen.Templater;
+import matthew.velocity.codegen.VelocityMarshaller;
+import matthew.velocity.types.VelocityEntitiesType;
+import matthew.velocity.types.VelocityEntityType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -27,11 +29,17 @@ public class TemplateProcessor
 
 		// load xml file
 		// deserialise
-		EntitiesType entities = (
+		EntitiesType entitiesType = (
 				(JAXBElement<EntitiesType>) serialiser
 						.deserialise(getClass().getResourceAsStream("/DataModel/DataModel.xml"))).getValue();
 
-		for (EntityType entity : entities.getEntity())
+
+		VelocityMarshaller velocityMarshaller = new VelocityMarshaller(entitiesType);
+		VelocityEntitiesType entities = velocityMarshaller.marshall(packagePath);
+
+
+
+		for (VelocityEntityType entity : entities.getEntities())
 		{
 			createEntities(entity);
 
@@ -48,17 +56,18 @@ public class TemplateProcessor
 
 	}
 
-	private void createEntities(final EntityType entity)
+	private void createEntities(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/EntityTemplate.vm");
 
 		entityTemplater.put("entity", entity);
 		entityTemplater.put("package", packagePath);
+		entityTemplater.put("at", "@");
 
 		outputToFile("/hibernate/entities/" + entity.getName() + ".java", entityTemplater.process());
 	}
 
-	private void createDaos(final EntityType entity, final EntitiesType entityTypeList)
+	private void createDaos(final VelocityEntityType entity, final VelocityEntitiesType entityTypeList)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/DaoTemplate.vm");
 
@@ -69,7 +78,7 @@ public class TemplateProcessor
 		outputToFile("/hibernate/dao/" + entity.getName() + "Dao.java", entityTemplater.process());
 	}
 
-	private void createDaoImpls(final EntityType entity, final EntitiesType entityTypeList)
+	private void createDaoImpls(final VelocityEntityType entity, final VelocityEntitiesType entityTypeList)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/DaoImplTemplate.vm");
 
@@ -80,7 +89,7 @@ public class TemplateProcessor
 		outputToFile("/hibernate/dao/impl/" + entity.getName() + "DaoImpl.java", entityTemplater.process());
 	}
 
-	private void createJaxbTypes(final EntityType entity)
+	private void createJaxbTypes(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/JaxbTemplate.vm");
 
@@ -90,7 +99,7 @@ public class TemplateProcessor
 		outputToFile("/jaxb/types/" + entity.getName() + "Type.java", entityTemplater.process());
 	}
 
-	private void createMarshaller(final EntitiesType entities)
+	private void createMarshaller(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/MarshallerTemplate.vm");
 
@@ -100,7 +109,7 @@ public class TemplateProcessor
 		outputToFile("/jaxb/serialisation/Marshaller.java", entityTemplater.process());
 	}
 
-	private void createUnmarshaller(final EntitiesType entities)
+	private void createUnmarshaller(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/UnmarshallerTemplate.vm");
 
@@ -133,6 +142,8 @@ public class TemplateProcessor
 			File file = new File("src/main/java/" + packagePath.replace(".", "/") + filePath);
 
 			file.getParentFile().mkdirs();
+
+			file.delete();
 
 
 			System.out.println("Trying to output file to " + file.getAbsolutePath());

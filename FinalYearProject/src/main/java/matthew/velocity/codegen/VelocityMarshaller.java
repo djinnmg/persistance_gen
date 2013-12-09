@@ -26,11 +26,11 @@ public class VelocityMarshaller
 		velocityEntityList = new LinkedList<>();
 	}
 
-	public VelocityEntitiesType marshall()
+	public VelocityEntitiesType marshall(final String packagePath)
 	{
 		VelocityEntitiesType velocityEntities = new VelocityEntitiesType();
 
-		velocityEntities.packagePath = ""; // TODO find package path. Maybe just add to xml doc?
+		velocityEntities.setPackagePath(packagePath);
 
 
 		for (EntityType entityType : entities.getEntity())
@@ -38,7 +38,7 @@ public class VelocityMarshaller
 			marshall(entityType);
 		}
 
-		velocityEntities.entities = velocityEntityList;
+		velocityEntities.setEntities(velocityEntityList);
 
 		return velocityEntities;
 	}
@@ -61,7 +61,7 @@ public class VelocityMarshaller
 					}
 					else
 					{
-						entityIdType = property.getName();
+						entityIdType = property.getType();
 					}
 				}
 			}
@@ -80,7 +80,7 @@ public class VelocityMarshaller
 		{
 			for (VelocityEntityType velocityEntity : velocityEntityList)
 			{
-				if (StringUtils.equals(entity.getName(), entityName))
+				if (StringUtils.equals(velocityEntity.getName(), entityName))
 				{
 					marshall(velocityEntity, entity, entityIdType);
 					return;
@@ -92,8 +92,8 @@ public class VelocityMarshaller
 		{
 			VelocityEntityType velocityEntity = new VelocityEntityType();
 
-			velocityEntity.name = entityName;
-			velocityEntity.properties = new LinkedList<>();
+			velocityEntity.setName(entityName);
+			velocityEntity.setProperties(new LinkedList<VelocityPropertyType>());
 
 			marshall(velocityEntity, entity, entityIdType);
 			velocityEntityList.add(velocityEntity);
@@ -103,11 +103,11 @@ public class VelocityMarshaller
 
 	private void marshall(final VelocityEntityType velocityEntity, final EntityType entity, final String entityIdType)
 	{
-		velocityEntity.idType = entityIdType;
+		velocityEntity.setIdType(entityIdType);
 
 		for (PropertyType property : entity.getProperty())
 		{
-			velocityEntity.properties.add(marshall(property, entity));
+			velocityEntity.getProperties().add(marshall(property, entity));
 		}
 	}
 
@@ -115,17 +115,18 @@ public class VelocityMarshaller
 	{
 		final VelocityPropertyType velocityProperty = new VelocityPropertyType();
 
-		velocityProperty.name = property.getName();
-		velocityProperty.isId = property.isId();
-		velocityProperty.annotation = getPropertyAnnotation(property);
+		velocityProperty.setName(property.getName());
+		velocityProperty.setId(property.isId());
+		velocityProperty.setSerialise(property.isSerialise());
+		velocityProperty.setAnnotation(getPropertyAnnotation(property));
 
 		getValidPropertyType(velocityProperty, property, parentEntity);
 
 		// check if the property if a collection
-		if (StringUtils.equalsIgnoreCase(velocityProperty.annotation, "manyToOne") ||
-		    StringUtils.equalsIgnoreCase(velocityProperty.annotation, "manyToMany"))
+		if (StringUtils.equalsIgnoreCase(velocityProperty.getAnnotation(), "ManyToOne") ||
+		    StringUtils.equalsIgnoreCase(velocityProperty.getAnnotation(), "ManyToMany"))
 		{
-			velocityProperty.isCollection = true;
+			velocityProperty.setCollection(true);
 		}
 
 		return velocityProperty;
@@ -137,7 +138,7 @@ public class VelocityMarshaller
 
 		if (property.isId())
 		{
-			annotation = "id";
+			annotation = "Id";
 		}
 		else if (StringUtils.isEmpty(property.getMapping()))
 		{
@@ -158,9 +159,9 @@ public class VelocityMarshaller
 
 	private String getValidPropertyMapping(final String mapping)
 	{
-		final String oneToMany = "oneToMany";
-		final String manyToOne = "manyToOne";
-		final String manyToMany = "manyToMany";
+		final String oneToMany = "OneToMany";
+		final String manyToOne = "ManyToOne";
+		final String manyToMany = "ManyToMany";
 
 		if (StringUtils.equalsIgnoreCase(mapping, oneToMany))
 		{
@@ -180,7 +181,7 @@ public class VelocityMarshaller
 		}
 	}
 
-	private void getValidPropertyType(final VelocityPropertyType velocityProperty, final PropertyType property,
+	private void getValidPropertyType(VelocityPropertyType velocityProperty, final PropertyType property,
 			final EntityType parentEntity)
 	{
 		boolean isNullable = property.isNullable();
@@ -195,41 +196,41 @@ public class VelocityMarshaller
 			case "boolean":
 				if (isNullable)
 				{
-					velocityProperty.type = "Boolean";
+					velocityProperty.setType("Boolean");
 
 				}
 				else
 				{
-					velocityProperty.type = "boolean";
+					velocityProperty.setType("boolean");
 				}
 				return;
 			case "string":
-				velocityProperty.type = "String";
+				velocityProperty.setType("String");
 				return;
 			case "int":
 			case "integer":
 				if (isNullable)
 				{
-					velocityProperty.type = "Integer";
+					velocityProperty.setType("Integer");
 				}
 				else
 				{
-					velocityProperty.type = "int";
+					velocityProperty.setType("int");
 				}
 				return;
 			case "long":
 				if (isNullable)
 				{
-					velocityProperty.type = "Long";
+					velocityProperty.setType("Long");
 				}
 				else
 				{
-					velocityProperty.type = "long";
+					velocityProperty.setType("long");
 				}
 				return;
 			case "datetime":
 			case "date":
-				velocityProperty.type = "DateTime";
+				velocityProperty.setType("DateTime");
 				return;
 		}
 
@@ -239,10 +240,10 @@ public class VelocityMarshaller
 		}
 
 		// is a complex type
-		velocityProperty.isComplex = true;
+		velocityProperty.setComplex(true);
 
 		// check if property name matches another entity name
-		velocityProperty.type = checkForType(property, parentEntity);
+		velocityProperty.setType(checkForType(property, parentEntity));
 
 	}
 
@@ -259,9 +260,9 @@ public class VelocityMarshaller
 				for (VelocityEntityType velocityEntity : velocityEntityList)
 				{
 					// if does add a property with name property.incoming of type parentEntity
-					if (StringUtils.equalsIgnoreCase(velocityEntity.name, entityName))
+					if (StringUtils.equalsIgnoreCase(velocityEntity.getName(), entityName))
 					{
-						velocityEntity.properties.add(getPropertyForReversedMappedEntity(property, parentEntity));
+						velocityEntity.getProperties().add(getPropertyForReversedMappedEntity(property, parentEntity));
 
 						return entityName;
 					}
@@ -271,11 +272,11 @@ public class VelocityMarshaller
 					// if not create a new entity with name propertyTypeName
 					VelocityEntityType velocityEntity = new VelocityEntityType();
 
-					velocityEntity.name = entityName;
-					velocityEntity.properties = new LinkedList<>();
+					velocityEntity.setName(entityName);
+					velocityEntity.setProperties(new LinkedList<VelocityPropertyType>());
 
 					// then add property with name property.incoming of type parentEntity
-					velocityEntity.properties.add(getPropertyForReversedMappedEntity(property, parentEntity));
+					velocityEntity.getProperties().add(getPropertyForReversedMappedEntity(property, parentEntity));
 
 					return entityName;
 				}
@@ -292,9 +293,11 @@ public class VelocityMarshaller
 	{
 		VelocityPropertyType velocityProperty = new VelocityPropertyType();
 
-		velocityProperty.type = parentEntity.getName().replaceAll("[^A-Za-z0-9]", "");
-		velocityProperty.name = property.getIncoming();
-		velocityProperty.annotation = getReversedPropertyMapping(property.getMapping());
+		velocityProperty.setType(parentEntity.getName().replaceAll("[^A-Za-z0-9]", ""));
+		velocityProperty.setComplex(true);
+		velocityProperty.setName(property.getIncoming());
+		velocityProperty.setSerialise(property.isSerialise());
+		velocityProperty.setAnnotation(getReversedPropertyMapping(property.getMapping()));
 
 		return velocityProperty;
 	}
@@ -302,9 +305,9 @@ public class VelocityMarshaller
 	// this is used for the reverse mapping of a property onto another type
 	private String getReversedPropertyMapping(final String mapping)
 	{
-		final String oneToMany = "oneToMany";
-		final String manyToOne = "manyToOne";
-		final String manyToMany = "manyToMany";
+		final String oneToMany = "OneToMany";
+		final String manyToOne = "ManyToOne";
+		final String manyToMany = "ManyToMany";
 
 		if (StringUtils.equalsIgnoreCase(mapping, oneToMany))
 		{
