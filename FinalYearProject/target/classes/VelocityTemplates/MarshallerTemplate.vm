@@ -5,16 +5,19 @@ package ${package}.jaxb.serialization;
 	import ${package}.jaxb.types.${entity.name}Type;
 #end
 	
+	#* If uses a Date need to import Date and Joda.DateTime *#
+	
 public class Marshaller
 {
 
 	#foreach ($entity in $entities)
-		public ${entity.name}Type marshall($entity.name ${entity.name.toLowerCase})
+		public ${entity.name}Type marshall($entity.name ${entity.getCamelCaseName})
 		{
-			${entity.name}Type ${entity.name.toLowerCase}Type = new ${entity.name}Type();
+			
+			${entity.name}Type ${entity.getCamelCaseName}Type = new ${entity.name}Type();
 	
-			#foreach ($property in $entity.properties)
-				${entity.name.toLowerCase}Type.${property.name} = ${entity.name.toLowerCase}.${property.name};			
+			#foreach ($property in $entity.properties) #* If property.type = DateTime need to convert to Date *#
+				${entity.getCamelCaseName}Type.${property.name} = ${entity.getCamelCaseName}.${property.name};			
 			#end
 			
 			return ${entity.name}Type;

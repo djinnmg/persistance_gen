@@ -24,7 +24,6 @@ public class Main
 			// create unmarshaller file
 
 
-
 		{
 			// create java entity file
 

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 public class $entity.name
 {
 	#foreach ($property in $entity.properties)
-		@${annotation} ## TODO add extensions for mappings, nullable etc.
+		@${entity.annotation} ## TODO add extensions for mappings, nullable etc.
 		public $propertyType $property.name;
 	#end
 

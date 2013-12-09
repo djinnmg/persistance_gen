@@ -8,8 +8,8 @@ import javax.persistence.Id;
 public class $entity.name
 {
 	#foreach ($property in $entity.properties)
-		@${entity.annotation} ## TODO add extensions for mappings, nullable etc.
-		public $propertyType $property.name;
+		@${property.annotation} #* If is a manyToOne or ManyToMany property use List<${property.type}> *#
+		public $property.type $property.name;
 	#end
 
 }

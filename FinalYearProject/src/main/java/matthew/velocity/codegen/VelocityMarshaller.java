@@ -73,7 +73,6 @@ public class VelocityMarshaller
 		}
 
 
-
 		final String entityName = entity.getName().replaceAll("[^A-Za-z0-9]", "");
 
 		// check for already existing entities (may have been added to accommodate incoming field)
@@ -112,14 +111,22 @@ public class VelocityMarshaller
 		}
 	}
 
-
 	private VelocityPropertyType marshall(final PropertyType property, final EntityType parentEntity)
 	{
 		final VelocityPropertyType velocityProperty = new VelocityPropertyType();
 
 		velocityProperty.name = property.getName();
+		velocityProperty.isId = property.isId();
 		velocityProperty.annotation = getPropertyAnnotation(property);
-		velocityProperty.type = getValidPropertyType(property, parentEntity);
+
+		getValidPropertyType(velocityProperty, property, parentEntity);
+
+		// check if the property if a collection
+		if (StringUtils.equalsIgnoreCase(velocityProperty.annotation, "manyToOne") ||
+		    StringUtils.equalsIgnoreCase(velocityProperty.annotation, "manyToMany"))
+		{
+			velocityProperty.isCollection = true;
+		}
 
 		return velocityProperty;
 	}
@@ -173,49 +180,69 @@ public class VelocityMarshaller
 		}
 	}
 
-	private String getValidPropertyType(final PropertyType property, final EntityType parentEntity)
+	private void getValidPropertyType(final VelocityPropertyType velocityProperty, final PropertyType property,
+			final EntityType parentEntity)
 	{
-		switch (property.getType().toLowerCase())
+		boolean isNullable = property.isNullable();
+
+		if (property.isId())
 		{
-			case "bool":
-			case "boolean":
-				if (property.isNullable())
-				{
-					return "Boolean";
-				}
-				else
-				{
-					return "bool";
-				}
-			case "string":
-				return "String";
-			case "int":
-			case "integer":
-				if (property.isNullable())
-				{
-					return "Integer";
-				}
-				else
-				{
-					return "int";
-				}
-			case "long":
-				if (property.isNullable())
-				{
-					return "Long";
-				}
-				else
-				{
-					return "long";
-				}
-			case "datetime":
-			case "date":
-				return "DateTime";
+			isNullable = false;
 		}
 
-		// check if property name matches another entity name
-		return checkForType(property, parentEntity);
+		switch (property.getType().toLowerCase())
+		{
+			case "boolean":
+				if (isNullable)
+				{
+					velocityProperty.type = "Boolean";
 
+				}
+				else
+				{
+					velocityProperty.type = "boolean";
+				}
+				return;
+			case "string":
+				velocityProperty.type = "String";
+				return;
+			case "int":
+			case "integer":
+				if (isNullable)
+				{
+					velocityProperty.type = "Integer";
+				}
+				else
+				{
+					velocityProperty.type = "int";
+				}
+				return;
+			case "long":
+				if (isNullable)
+				{
+					velocityProperty.type = "Long";
+				}
+				else
+				{
+					velocityProperty.type = "long";
+				}
+				return;
+			case "datetime":
+			case "date":
+				velocityProperty.type = "DateTime";
+				return;
+		}
+
+		if (property.isId())
+		{
+			throw new IllegalArgumentException("Cannot use complex type as Id! Property: " + property.getName());
+		}
+
+		// is a complex type
+		velocityProperty.isComplex = true;
+
+		// check if property name matches another entity name
+		velocityProperty.type = checkForType(property, parentEntity);
 
 	}
 

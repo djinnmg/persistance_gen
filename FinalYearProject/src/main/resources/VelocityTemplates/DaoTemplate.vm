@@ -2,5 +2,30 @@ package ${package}.hibernate.dao;
 
 public interface ${entity.name}Dao
 {
-
+	#* If entity contains a complex type, need to add method to return type based on entity id *#
+	
+	#foreach ($property in $entity.properties) 
+		#if ($property.isComplex)
+			#foreach ($entityType in $entityTypeList.entites)
+				#if ($entityType.name == $property.type)
+					#foreach ($propertyType in $entityType.properties)
+						#if ($propertyType.isId)
+							#set ( $idType = $propertyType.type )
+							#break					
+						#end
+					#end
+				#end
+			#end
+			
+			#if ($property.isCollection)
+				#set ( $returnType = List<${property.type}> )
+			#else
+				#set ( $returnType = $property.type)
+			#end	
+				
+			#* if property.isComplex *#
+			#* If property.isCollection use List<${property.type}> *#
+			public $returnType get${property.type}By${entity.name}Id($idType id);
+		#end
+	#end
 }

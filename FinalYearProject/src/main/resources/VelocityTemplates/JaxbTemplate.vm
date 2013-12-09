@@ -3,11 +3,17 @@ package ${package}.jaxb.types;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+#* if date import java.util.Date *#
+
 @XmlRootElement
 public class ${entity.name}Type
 {
-	#foreach ($property in $entity.properties)
+	#foreach ($property in $entity.properties) #* TODO only add property if property.serialize = true *#
 		@XmlElement(name = "${property.name}")
-		public $propertyType $property.name;;
+		public $property.type $property.name;; #* If property.type = DateTime use Date *#
 	#end
+		
+		
+		
+		
 }
