@@ -7,17 +7,13 @@ import java.util.List;
 @Entity
 public class ${entity.name}
 {
-	#foreach ($property in $entity.properties)
-		
-		#* If is a collection use List<${property.type}> *#
-		#if ($property.collection)
-			#set ( $returnType = "List<" + ${property.type} + ">" )
-		#else
-			#set ( $returnType = $property.type)
-		#end
-		
-		@${property.annotation}
-		public $returnType $property.name;
-	#end
-
+#foreach ($property in $entity.properties)
+#if ($property.collection)
+#set ( $returnType = "List<" + ${property.type} + ">" )
+#else
+#set ( $returnType = $property.type)
+#end
+	@${property.annotation}
+	public $returnType $property.name;
+#end
 }

@@ -1,8 +1,8 @@
 package ${package}.jaxb.serialisation;
 
 #foreach ($entity in $entities.entities)
-	import ${package}.hibernate.entities.${entity.name};
-	import ${package}.jaxb.types.${entity.name}Type;
+import ${package}.hibernate.entities.${entity.name};
+import ${package}.jaxb.types.${entity.name}Type;
 #end
 import org.joda.time.DateTime;
 import java.util.Date;
@@ -10,25 +10,25 @@ import java.util.Date;
 public class Unmarshaller
 {
 
-	#foreach ($entity in $entities.entities)
-		public $entity.name unmarshall(${entity.name}Type ${entity.camelCaseName}Type)
-		{
-			$entity.name $entity.camelCaseName = new ${entity.name}();
+#foreach ($entity in $entities.entities)
+	public $entity.name unmarshall(${entity.name}Type ${entity.camelCaseName}Type)
+	{
+		$entity.name $entity.camelCaseName = new ${entity.name}();
 	
-			#foreach ($property in $entity.properties)
-				#if (${property.serialise} && !${property.complex})
-					#if ($property.type == "DateTime")
-						#set ($dateConstructor = "new DateTime(")
-						#set ($dateConstructorBracket = ")")
-					#else
-						#set ($dateConstructor = "")
-						#set ($dateConstructorBracket = "")					
-					#end
-					${entity.camelCaseName}.${property.name} = ${dateConstructor}${entity.camelCaseName}Type.${property.name}${dateConstructorBracket};			
-				#end
-			#end			
-			return ${entity.name};
-		}
-	#end
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})
+#if ($property.type == "DateTime")
+#set ($dateConstructor = "new DateTime(")
+#set ($dateConstructorBracket = ")")
+#else
+#set ($dateConstructor = "")
+#set ($dateConstructorBracket = "")					
+#end
+		${entity.camelCaseName}.${property.name} = ${dateConstructor}${entity.camelCaseName}Type.${property.name}${dateConstructorBracket};			
+#end
+#end			
+		return ${entity.camelCaseName};
+	}
+#end
 
 }

@@ -8,18 +8,17 @@ import java.util.Date; #* In future only import if needed *#
 @XmlRootElement
 public class ${entity.name}Type
 {
-	#foreach ($property in $entity.properties) 
-		#if (${property.Serialise}  && !${property.complex})
-			#if ($property.type == "DateTime")
-				#set ($propertyType = "Date")
-			#else
-				#set ($propertyType = $property.type)
-			#end			
-			@XmlElement(name = "${property.name}")
-			public $propertyType $property.name;
-			
-		#end
-	#end
+#foreach ($property in $entity.properties) 
+#if (${property.Serialise}  && !${property.complex})
+#if ($property.type == "DateTime")
+#set ($propertyType = "Date")
+#else
+#set ($propertyType = $property.type)
+#end			
+	@XmlElement(name = "${property.name}")
+	public $propertyType $property.name;	
+#end
+#end
 		
 		
 		

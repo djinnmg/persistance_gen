@@ -73,7 +73,7 @@ public class VelocityMarshaller
 		}
 
 
-		final String entityName = entity.getName().replaceAll("[^A-Za-z0-9]", "");
+		final String entityName = getFormattedEntityName(entity.getName());
 
 		// check for already existing entities (may have been added to accommodate incoming field)
 		// we assume it has a name
@@ -252,7 +252,7 @@ public class VelocityMarshaller
 		// check for a property type within the entities
 		for (EntityType entity : entities.getEntity())
 		{
-			final String entityName = entity.getName().replaceAll("[^A-Za-z0-9]", "");
+			final String entityName = getFormattedEntityName(entity.getName());
 
 			if (StringUtils.equalsIgnoreCase(entityName, property.getType()))
 			{
@@ -293,7 +293,7 @@ public class VelocityMarshaller
 	{
 		VelocityPropertyType velocityProperty = new VelocityPropertyType();
 
-		velocityProperty.setType(parentEntity.getName().replaceAll("[^A-Za-z0-9]", ""));
+		velocityProperty.setType(getFormattedEntityName(parentEntity.getName()));
 		velocityProperty.setComplex(true);
 		velocityProperty.setName(property.getIncoming());
 		velocityProperty.setSerialise(property.isSerialise());
@@ -327,5 +327,10 @@ public class VelocityMarshaller
 		}
 	}
 
+
+	private String getFormattedEntityName(String entityName)
+	{
+		return StringUtils.capitalize(entityName.replaceAll("[^A-Za-z0-9]", ""));
+	}
 
 }

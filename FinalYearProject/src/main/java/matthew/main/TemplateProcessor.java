@@ -38,7 +38,6 @@ public class TemplateProcessor
 		VelocityEntitiesType entities = velocityMarshaller.marshall(packagePath);
 
 
-
 		for (VelocityEntityType entity : entities.getEntities())
 		{
 			createEntities(entity);
@@ -141,9 +140,12 @@ public class TemplateProcessor
 		{
 			File file = new File("src/main/java/" + packagePath.replace(".", "/") + filePath);
 
-			file.getParentFile().mkdirs();
+			if (file.exists())
+			{
+				file.delete();
+			}
 
-			file.delete();
+			file.getParentFile().mkdirs();
 
 
 			System.out.println("Trying to output file to " + file.getAbsolutePath());

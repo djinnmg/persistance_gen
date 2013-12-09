@@ -1,33 +1,32 @@
 package ${package}.jaxb.serialisation;
 
 #foreach ($entity in $entities.entities)
-	import ${package}.hibernate.entities.${entity.name};
-	import ${package}.jaxb.types.${entity.name}Type;
+import ${package}.hibernate.entities.${entity.name};
+import ${package}.jaxb.types.${entity.name}Type;
 #end
 import org.joda.time.DateTime;
 import java.util.Date;
 	
 public class Marshaller
 {
-
-	#foreach ($entity in $entities.entities)
-		public ${entity.name}Type marshall(${entity.name} ${entity.camelCaseName})
-		{
-			${entity.name}Type ${entity.camelCaseName}Type = new ${entity.name}Type();
+#foreach ($entity in $entities.entities)
+	public ${entity.name}Type marshall(${entity.name} ${entity.camelCaseName})
+	{
+		${entity.name}Type ${entity.camelCaseName}Type = new ${entity.name}Type();
 	
-			#foreach ($property in $entity.properties)
-				#if (${property.serialise} && !${property.complex})
-					#if ($property.type == "DateTime")
-						#set ($toDate = ".toDate()")
-					#else
-						#set ($toDate = "")
-					#end
-					${entity.camelCaseName}Type.${property.name} = ${entity.camelCaseName}.${property.name}${toDate};			
-				#end
-			#end
-			
-			return ${entity.name}Type;
-		}
-	#end
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})
+#if ($property.type == "DateTime")
+#set ($toDate = ".toDate()")
+#else
+#set ($toDate = "")
+#end
+		${entity.camelCaseName}Type.${property.name} = ${entity.camelCaseName}.${property.name}${toDate};			
+#end
+#end
+		
+		return ${entity.camelCaseName}Type;
+	}
+#end
 
 }
