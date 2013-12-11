@@ -17,10 +17,14 @@ import java.io.IOException;
 public class TemplateProcessor
 {
 	private final String packagePath;
+	private final String outputDir;
+	private final String projectName;
 
-	public TemplateProcessor(final String packagePath)
+	public TemplateProcessor(final String packagePath, final String outputDir, final String projectName)
 	{
 		this.packagePath = packagePath;
+		this.projectName = projectName.replace(" ", "");
+		this.outputDir = outputDir;
 	}
 
 	public void Call()
@@ -37,6 +41,7 @@ public class TemplateProcessor
 		VelocityMarshaller velocityMarshaller = new VelocityMarshaller(entitiesType);
 		VelocityEntitiesType entities = velocityMarshaller.marshall(packagePath);
 
+		createPom();
 
 		for (VelocityEntityType entity : entities.getEntities())
 		{
@@ -52,6 +57,16 @@ public class TemplateProcessor
 
 		createUnmarshaller(entities);
 
+	}
+
+	private void createPom()
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/PomTemplate.vm");
+
+		entityTemplater.put("groupId", projectName);
+		entityTemplater.put("artifactId", projectName);
+
+		outputToFile("pom.xml", entityTemplater.process());
 
 	}
 
@@ -63,7 +78,8 @@ public class TemplateProcessor
 		entityTemplater.put("package", packagePath);
 		entityTemplater.put("at", "@");
 
-		outputToFile("/hibernate/entities/" + entity.getName() + ".java", entityTemplater.process());
+		outputToFile(getPackageFilePath("/hibernate/entities/" + entity.getName() + ".java"),
+		             entityTemplater.process());
 	}
 
 	private void createDaos(final VelocityEntityType entity, final VelocityEntitiesType entityTypeList)
@@ -74,7 +90,7 @@ public class TemplateProcessor
 		entityTemplater.put("package", packagePath);
 		entityTemplater.put("entityTypeList", entityTypeList);
 
-		outputToFile("/hibernate/dao/" + entity.getName() + "Dao.java", entityTemplater.process());
+		outputToFile(getPackageFilePath("/hibernate/dao/" + entity.getName() + "Dao.java"), entityTemplater.process());
 	}
 
 	private void createDaoImpls(final VelocityEntityType entity, final VelocityEntitiesType entityTypeList)
@@ -85,7 +101,8 @@ public class TemplateProcessor
 		entityTemplater.put("package", packagePath);
 		entityTemplater.put("entityTypeList", entityTypeList);
 
-		outputToFile("/hibernate/dao/impl/" + entity.getName() + "DaoImpl.java", entityTemplater.process());
+		outputToFile(getPackageFilePath("/hibernate/dao/impl/" + entity.getName() + "DaoImpl.java"),
+		             entityTemplater.process());
 	}
 
 	private void createJaxbTypes(final VelocityEntityType entity)
@@ -95,7 +112,7 @@ public class TemplateProcessor
 		entityTemplater.put("entity", entity);
 		entityTemplater.put("package", packagePath);
 
-		outputToFile("/jaxb/types/" + entity.getName() + "Type.java", entityTemplater.process());
+		outputToFile(getPackageFilePath("/jaxb/types/" + entity.getName() + "Type.java"), entityTemplater.process());
 	}
 
 	private void createMarshaller(final VelocityEntitiesType entities)
@@ -105,7 +122,7 @@ public class TemplateProcessor
 		entityTemplater.put("entities", entities);
 		entityTemplater.put("package", packagePath);
 
-		outputToFile("/jaxb/serialisation/Marshaller.java", entityTemplater.process());
+		outputToFile(getPackageFilePath("/jaxb/serialisation/Marshaller.java"), entityTemplater.process());
 	}
 
 	private void createUnmarshaller(final VelocityEntitiesType entities)
@@ -115,7 +132,7 @@ public class TemplateProcessor
 		entityTemplater.put("entities", entities);
 		entityTemplater.put("package", packagePath);
 
-		outputToFile("/jaxb/serialisation/Unmarshaller.java", entityTemplater.process());
+		outputToFile(getPackageFilePath("/jaxb/serialisation/Unmarshaller.java"), entityTemplater.process());
 	}
 
 	private Templater getTemplater(final String templatePath)
@@ -134,11 +151,16 @@ public class TemplateProcessor
 		}
 	}
 
+	private String getPackageFilePath(final String filePath)
+	{
+		return "src/main/java/" + packagePath.replace(".", "/") + filePath;
+	}
+
 	private void outputToFile(final String filePath, final String fileContents)
 	{
 		try
 		{
-			File file = new File("src/main/java/" + packagePath.replace(".", "/") + filePath);
+			File file = new File(outputDir + "/" + projectName + "/" + filePath);
 
 			if (file.exists())
 			{
