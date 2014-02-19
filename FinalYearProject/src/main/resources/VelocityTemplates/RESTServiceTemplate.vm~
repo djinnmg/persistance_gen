@@ -1,0 +1,40 @@
+package ${package}.rest.service;
+
+import ${package}.jaxb.types.*;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
+@Path("/${entity.name}")
+public interface ${entity.name}Service
+{
+
+	@GET
+	@Path("/")
+	@Produces(MediaType.TEXT_HTML)
+	public String index();
+
+
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_XML)
+	public long add(${entity.name}Type ${entity.camelCaseName}Type);
+
+	@GET
+	@Path("/get/{id}")
+	@Produces(MediaType.APPLICATION_XML)
+	public ${entity.name}Type getById(@PathParam("id") long id);
+
+
+	@PUT
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_XML)
+	public void update(${entity.name}Type ${entity.camelCaseName}Type);
+
+
+	@DELETE
+	@Path("/delete/{id}")
+	public void deleteById(@PathParam("id") long id);
+
+
+}
