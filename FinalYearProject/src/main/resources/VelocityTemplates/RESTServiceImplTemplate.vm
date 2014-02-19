@@ -1,0 +1,55 @@
+package ${package}.rest.service.impl;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import ${package}.hibernate.dao.impl.*;
+import ${package}.hibernate.entities.*;
+import ${package}.jaxb.serialisation.*;
+import ${package}.jaxb.types.*;
+import ${package}.rest.service.${entity.name}Service;
+
+@Singleton
+public class ${entity.name}ServiceImpl implements ${entity.name}Service
+{
+
+	@Inject
+	${entity.name}DaoImpl ${entity.camelCaseName}Dao;
+
+	@Inject
+	Marshaller marshaller;
+
+	@Inject
+	Unmarshaller unmarshaller;
+
+	@Override
+	public String index()
+	{
+		return "Test";
+	}
+
+	@Override
+	public long add(${entity.name}Type ${entity.camelCaseName}Type)
+	{
+		return ${entity.camelCaseName}Dao.save(unmarshaller.unmarshall(${entity.camelCaseName}Type));
+	}
+
+	@Override
+	public ${entity.name}Type getById(long id)
+	{
+		return marshaller.marshall(${entity.camelCaseName}Dao.getById(id));
+	}
+
+
+	@Override
+	public void update(${entity.name}Type ${entity.camelCaseName}Type)
+	{
+		${entity.camelCaseName}Dao.update(unmarshaller.unmarshall(${entity.camelCaseName}Type));
+	}
+
+	@Override
+	public void deleteById(long id)
+	{
+		${entity.camelCaseName}Dao.deleteById(id);
+	}
+
+}

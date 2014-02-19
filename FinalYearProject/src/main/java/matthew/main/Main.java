@@ -10,7 +10,7 @@ public class Main
 	{
 		TemplateProcessor templateProcessor = new TemplateProcessor("matthew.generation", "/home/matthew/Code", "Demo ");
 
-		templateProcessor.Call();
+		templateProcessor.call();
 	}
 }
 

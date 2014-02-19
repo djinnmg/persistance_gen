@@ -1,15 +1,19 @@
 package ${package}.hibernate.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import org.joda.time.DateTime; #* In future only add required imports *# 
+import java.util.List;
 
 @Entity
-public class $entity.name
+public class ${entity.name}
 {
-	#foreach ($property in $entity.properties)
-		@${entity.annotation} ## TODO add extensions for mappings, nullable etc.
-		public $propertyType $property.name;
-	#end
-
+#foreach ($property in $entity.properties)
+#if ($property.collection)
+#set ( $returnType = "List<" + ${property.type} + ">" )
+#else
+#set ( $returnType = $property.type)
+#end
+	@${property.annotation}
+	public $returnType $property.name;
+#end
 }

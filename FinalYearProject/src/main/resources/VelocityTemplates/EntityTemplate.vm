@@ -14,6 +14,9 @@ public class ${entity.name}
 #set ( $returnType = $property.type)
 #end
 	@${property.annotation}
+#if ($property.annotation == "Id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+#end
 	public $returnType $property.name;
 #end
 }

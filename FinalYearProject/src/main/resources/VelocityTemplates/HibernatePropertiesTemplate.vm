@@ -1,0 +1,12 @@
+hibernate.properties=embedded
+
+hibernate.connection.driver_class=com.mysql.jdbc.Driver
+hibernate.dialect=org.hibernate.dialect.MySQLDialect
+hibernate.connection.url=jdbc:mysql://localhost:3306/demo
+hibernate.connection.username=root
+hibernate.connection.password=password
+hibernate.hbm2ddl.auto=create
+hibernate.connection.readOnly=false
+
+hibernate.show_sql=true
+hibernate.current_session_context_class=thread

@@ -1,0 +1,17 @@
+package ${package}.guice.modules;
+
+import com.peterphi.std.guice.hibernate.module.HibernateModule;
+import ${package}.hibernate.entities.*;
+import org.hibernate.cfg.Configuration;
+
+public class DBModule extends HibernateModule
+{
+
+	@Override
+	protected void configure(Configuration config)
+	{
+#foreach ($entity in $entities.entities)
+		config.addAnnotatedClass(${entity.name}.class);
+#end
+	}
+}

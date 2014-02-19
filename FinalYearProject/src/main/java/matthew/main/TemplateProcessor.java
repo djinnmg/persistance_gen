@@ -27,7 +27,7 @@ public class TemplateProcessor
 		this.outputDir = outputDir;
 	}
 
-	public void Call()
+	public void call()
 	{
 		JAXBSerialiser serialiser = JAXBSerialiser.getInstance(ObjectFactory.class);
 
@@ -42,20 +42,26 @@ public class TemplateProcessor
 		VelocityEntitiesType entities = velocityMarshaller.marshall(packagePath);
 
 		createPom();
+		createWebXML();
+		createServiceProperties();
+		createHibernateProperties();
+		createLoggingProperties();
 
 		for (VelocityEntityType entity : entities.getEntities())
 		{
 			createEntities(entity);
-
 			createDaos(entity, entities);
-
 			createDaoImpls(entity, entities);
-
 			createJaxbTypes(entity);
+			createRESTServices(entity);
+			createRESTServiceImpls(entity);
 		}
-		createMarshaller(entities);
 
+		createMarshaller(entities);
 		createUnmarshaller(entities);
+		createRESTModule(entities);
+		createHibernateModule(entities);
+		createGuiceSetup();
 
 	}
 
@@ -67,7 +73,40 @@ public class TemplateProcessor
 		entityTemplater.put("artifactId", projectName);
 
 		outputToFile("pom.xml", entityTemplater.process());
+	}
 
+
+	private void createWebXML()
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/WebXMLTemplate.vm");
+
+		entityTemplater.put("displayName", projectName);
+
+		outputToFile("src/main/webapp/WEB-INF/web.xml", entityTemplater.process());
+	}
+
+
+	private void createServiceProperties()
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/ServicePropertiesTemplate.vm");
+
+		entityTemplater.put("package", packagePath);
+
+		outputToFile("src/main/resources/service.properties", entityTemplater.process());
+	}
+
+	private void createHibernateProperties()
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/HibernatePropertiesTemplate.vm");
+
+		outputToFile("src/main/resources/hibernate.properties", entityTemplater.process());
+	}
+
+	private void createLoggingProperties()
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/Log4jPropertiesTemplate.vm");
+
+		outputToFile("src/main/resources/log4j.properties", entityTemplater.process());
 	}
 
 	private void createEntities(final VelocityEntityType entity)
@@ -115,6 +154,30 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/jaxb/types/" + entity.getName() + "Type.java"), entityTemplater.process());
 	}
 
+	private void createRESTServices(final VelocityEntityType entity)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceTemplate.vm");
+
+		entityTemplater.put("entity", entity);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/rest/service/" + entity.getName() + "Service.java"),
+		             entityTemplater.process());
+	}
+
+
+	private void createRESTServiceImpls(final VelocityEntityType entity)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceImplTemplate.vm");
+
+		entityTemplater.put("entity", entity);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/rest/service/impl/" + entity.getName() + "ServiceImpl.java"),
+		             entityTemplater.process());
+	}
+
+
 	private void createMarshaller(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/MarshallerTemplate.vm");
@@ -134,6 +197,37 @@ public class TemplateProcessor
 
 		outputToFile(getPackageFilePath("/jaxb/serialisation/Unmarshaller.java"), entityTemplater.process());
 	}
+
+
+	private void createHibernateModule(final VelocityEntitiesType entities)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceHibernateModuleTemplate.vm");
+
+		entityTemplater.put("entities", entities);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/guice/modules/DBModule.java"), entityTemplater.process());
+	}
+
+	private void createRESTModule(final VelocityEntitiesType entities)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceRESTModuleTemplate.vm");
+
+		entityTemplater.put("entities", entities);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/guice/modules/RESTModule.java"), entityTemplater.process());
+	}
+
+	private void createGuiceSetup()
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceSetupTemplate.vm");
+
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/guice/setup/Setup.java"), entityTemplater.process());
+	}
+
 
 	private Templater getTemplater(final String templatePath)
 	{

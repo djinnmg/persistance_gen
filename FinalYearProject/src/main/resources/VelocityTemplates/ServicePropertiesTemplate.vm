@@ -1,0 +1,5 @@
+restutils.show-serviceprops=true
+guice.bootstrap.class=${package}.guice.setup.Setup
+
+
+hibernate.properties=hibernate.properties

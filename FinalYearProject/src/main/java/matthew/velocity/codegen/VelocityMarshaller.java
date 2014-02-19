@@ -123,7 +123,7 @@ public class VelocityMarshaller
 		getValidPropertyType(velocityProperty, property, parentEntity);
 
 		// check if the property if a collection
-		if (StringUtils.equalsIgnoreCase(velocityProperty.getAnnotation(), "ManyToOne") ||
+		if (StringUtils.equalsIgnoreCase(velocityProperty.getAnnotation(), "OneToMany") ||
 		    StringUtils.equalsIgnoreCase(velocityProperty.getAnnotation(), "ManyToMany"))
 		{
 			velocityProperty.setCollection(true);
