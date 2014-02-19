@@ -2,6 +2,7 @@ package ${package}.rest.service.impl;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.peterphi.std.guice.restclient.exception.RestException;
 import ${package}.hibernate.dao.impl.*;
 import ${package}.hibernate.entities.*;
 import ${package}.jaxb.serialisation.*;
@@ -24,6 +25,10 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service
 	@Override
 	public String index()
 	{
+		$entity.name $entity.camelCaseName = new ${entity.name}();
+	
+		${entity.camelCaseName}Dao.save(${entity.camelCaseName});
+	
 		return "Test";
 	}
 
@@ -36,7 +41,14 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service
 	@Override
 	public ${entity.name}Type getById(long id)
 	{
-		return marshaller.marshall(${entity.camelCaseName}Dao.getById(id));
+		${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
+
+		if (${entity.camelCaseName} == null)
+		{
+			throw new RestException(400, "${entity.name} with id " + id + " does not exist!");
+		}
+
+		return marshaller.marshall(${entity.camelCaseName});
 	}
 
 

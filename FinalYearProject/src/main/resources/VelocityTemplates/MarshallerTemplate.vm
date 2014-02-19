@@ -6,6 +6,7 @@ import ${package}.jaxb.types.${entity.name}Type;
 #end
 import org.joda.time.DateTime;
 import java.util.Date;
+import org.apache.commons.lang.StringUtils;
 	
 public class Marshaller
 {
@@ -21,7 +22,15 @@ public class Marshaller
 #else
 #set ($toDate = "")
 #end
-		${entity.camelCaseName}Type.${property.name} = ${entity.camelCaseName}.${property.name}${toDate};			
+#if ($property.type == "String")
+#set ($nullCheck = "StringUtils.isNotEmpty("+${entity.camelCaseName}+"."+${property.name}+")")
+#elseif ($property.type == "long" || $property.type == "Long" || $property.type == "int" || $property.type == "Integer")
+#set ($nullCheck = ${entity.camelCaseName}+"."+${property.name}+" > 0")
+#else
+#set ($nullCheck = ${entity.camelCaseName}+"."+${property.name}+" != null")
+#end
+		if (${nullCheck})
+			${entity.camelCaseName}Type.${property.name} = ${entity.camelCaseName}.${property.name}${toDate};			
 #end
 #end
 		
