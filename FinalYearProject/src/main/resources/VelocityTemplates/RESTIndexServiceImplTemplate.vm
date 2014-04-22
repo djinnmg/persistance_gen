@@ -1,0 +1,24 @@
+package ${package}.rest.service.impl;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.peterphi.std.guice.restclient.exception.RestException;
+import com.peterphi.std.guice.thymeleaf.ThymeleafCall;
+import com.peterphi.std.guice.thymeleaf.ThymeleafTemplater;
+import ${package}.rest.service.IndexService;
+
+@Singleton
+public class IndexServiceImpl implements IndexService
+{
+	@Inject
+	ThymeleafTemplater templater;
+
+	@Override
+	public String getIndexPage()
+	{
+		final ThymeleafCall template = templater.template("index");
+
+		return template.process();
+	}
+}
+

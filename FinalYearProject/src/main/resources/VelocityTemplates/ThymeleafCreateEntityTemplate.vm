@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>${entity.name}</title>
+
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<!--<style media="screen" type="text/css" th:text="${style}"></style>-->
+	<style>
+		body {
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		}
+	</style>
+</head>
+<body id="top">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="brand" href="#">Project</a>
+
+			<div class="nav-collapse collapse">
+				<ul class="nav">
+					<li class="active"><a th:href="@{/}">Home</a></li>
+					<li class="active"><a th:href="@{/${entity.name}}">${entity.name} Overview</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+
+	<form action="create" method="post">
+		<fieldset>
+			<legend>Create New ${entity.name}</legend>
+			
+			/* TODO determine entity property type
+			<label>Title</label>
+			<input name="title" type="text" placeholder="Type title here…"/>
+			<label>Description</label>
+			<textarea name="description" rows="3"/>
+			*/
+			
+			<button type="submit" class="btn">Create New</button>
+		</fieldset>
+	</form>
+
+</div>
+
+</body>
+
+</html>

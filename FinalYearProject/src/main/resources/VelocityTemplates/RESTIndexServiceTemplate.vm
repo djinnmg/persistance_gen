@@ -1,0 +1,16 @@
+package ${package}.rest.service;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
+@Path("/")
+public interface IndexService
+{
+
+	@GET
+	@Path("/")
+	@Produces(MediaType.TEXT_HTML)
+	public String getIndexPage();
+
+}
+

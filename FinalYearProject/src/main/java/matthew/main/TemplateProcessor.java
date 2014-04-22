@@ -62,7 +62,11 @@ public class TemplateProcessor
 		createRESTModule(entities);
 		createHibernateModule(entities);
 		createGuiceSetup();
+		createDateHelper();
 
+		createIndexRESTService();
+		createIndexRESTServiceImpl();
+		createThymeleafIndexPage(entities);
 	}
 
 	private void createPom()
@@ -228,11 +232,48 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/guice/setup/Setup.java"), entityTemplater.process());
 	}
 
+	private void createDateHelper()
+	{
+		Templater templater = getTemplater("/VelocityTemplates/DateHelperTemplate.vm");
+
+		templater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/util/DateHelper.java"), templater.process());
+	}
+
+	private void createIndexRESTService()
+	{
+		Templater templater = getTemplater("/VelocityTemplates/RESTIndexServiceTemplate.vm");
+
+		templater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/rest/service/IndexService.java"), templater.process());
+	}
+
+	private void createIndexRESTServiceImpl()
+	{
+		Templater templater = getTemplater("/VelocityTemplates/RESTIndexServiceImplTemplate.vm");
+
+		templater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/rest/service/impl/IndexServiceImpl.java"), templater.process());
+	}
+
+	private void createThymeleafIndexPage(final VelocityEntitiesType entities)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/ThymeleafIndexTemplate.vm");
+
+		entityTemplater.put("entities", entities);
+
+		outputToFile("src/main/webapp/WEB-INF/template/index.html", entityTemplater.process());
+	}
+
 
 	private Templater getTemplater(final String templatePath)
 	{
 		try
 		{
+			// TODO check file exists before trying to open
 			String entityTemplate =
 					IOUtils.toString(getClass().getResourceAsStream(templatePath),
 					                 "UTF-8"); // entity template

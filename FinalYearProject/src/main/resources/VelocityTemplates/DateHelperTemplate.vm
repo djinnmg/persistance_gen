@@ -1,0 +1,23 @@
+package ${package}.util;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+public class DateHelper
+{
+	private static final DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
+
+	public static DateTime getDateFromString(final String date)
+	{
+		// TODO add parse checks and catch exceptions        		
+		return DateTime.parse(date, dateFormat);
+	}
+
+
+	public static String getFormattedDateString(final DateTime dt)
+	{
+		return dt.toString(dateFormat);
+	}
+
+}

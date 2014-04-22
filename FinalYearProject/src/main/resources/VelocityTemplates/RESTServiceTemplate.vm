@@ -3,17 +3,13 @@ package ${package}.rest.service;
 import ${package}.jaxb.types.*;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
+#set ($firstArgUp = "false")
+#set ($firstArgCr = "false")
 
-@Path("/${entity.name}")
+@Path("/${entity.camelCaseName}")
 public interface ${entity.name}Service
 {
-
-	@GET
-	@Path("/")
-	@Produces(MediaType.TEXT_HTML)
-	public String index();
-
 
 	@POST
 	@Path("/add")
@@ -35,6 +31,61 @@ public interface ${entity.name}Service
 	@DELETE
 	@Path("/delete/{id}")
 	public void deleteById(@PathParam("id") long id);
+	
+	
+	@GET
+	@Path("/")
+	@Produces(MediaType.TEXT_HTML)
+	public String get${entity.name}ListPage();
 
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.TEXT_HTML)
+	public String get${entity.name}Page(long id);
+
+	
+	@GET
+	@Path("/create")
+	@Produces(MediaType.TEXT_HTML)
+	public String getCreatePage();
+	
+
+	@GET
+	@Path("/update/{id}")
+	@Produces(MediaType.TEXT_HTML)
+	public String getUpdatePage(@PathParam("id") long id);
+
+	
+	@POST
+	@Path("/create")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response createAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex} && !${property.id})
+#if($firstArgCr == "true"), #end
+#if(!$firstArgCr == "false")
+#set ($firstArgCr = "true")#end
+#if($property.type == "DateTime")@FormParam("${property.name}") String ${property.name}#else
+@FormParam("${property.name}") ${property.type} ${property.name}#end
+#end
+#end);
+	
+	
+	@POST
+	@Path("/update")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response updateAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex})
+#if($firstArgUp == "true"), #end
+#if(!$firstArgUp == "false")
+#set ($firstArgUp = "true")#end
+#if($property.type == "DateTime")@FormParam("${property.name}") String ${property.name}#else
+@FormParam("${property.name}") ${property.type} ${property.name}#end
+#end
+#end);
+	
+	@GET
+	@Path("/delete/{id}")
+	public Response deleteAndRedirect(@PathParam("id") long id);
 
 }

@@ -9,6 +9,7 @@ public class VelocityPropertyType
 	private boolean isComplex;
 	private boolean isCollection;
 	private boolean isId;
+	private boolean serialise;
 
 	public boolean isSerialise()
 	{
@@ -19,8 +20,6 @@ public class VelocityPropertyType
 	{
 		this.serialise = serialise;
 	}
-
-	private boolean serialise;
 
 	public String getAnnotation()
 	{

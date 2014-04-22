@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Project</title>
+
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<!--<style media="screen" type="text/css" th:text="${style}"></style>-->
+	<style>
+		body {
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		}
+	</style>
+</head>
+<body id="top">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="brand" href="#">Project</a>
+
+			<div class="nav-collapse collapse">
+				<ul class="nav">
+					<li class="active"><a th:href="@{/}">Home</a></li>
+					<li class="active"><a th:href="@{/projects}">Projects Overview</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+
+	<form method="post" th:attr="action=@{/projects/update}">
+		<fieldset>
+			<legend>Update Project</legend>
+			<label>Id</label>
+			<input name="id" type="number" th:value="${id}" readonly="readonly"/>
+			<label>Title</label>
+			<input name="title" type="text" th:value="${title}"/>
+			<label>Description</label>
+			<textarea name="description" rows="3" th:text="${description}"></textarea>
+			<button type="submit" class="btn">Update</button>
+		</fieldset>
+	</form>
+
+</div>
+
+</body>
+
+</html>

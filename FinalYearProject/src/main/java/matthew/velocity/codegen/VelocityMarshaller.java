@@ -117,7 +117,11 @@ public class VelocityMarshaller
 
 		velocityProperty.setName(property.getName());
 		velocityProperty.setId(property.isId());
-		velocityProperty.setSerialise(property.isSerialise());
+		// id must be serialised to allow for updating/deleting in UI
+		if (property.isId())
+			velocityProperty.setSerialise(true);
+		else
+			velocityProperty.setSerialise(property.isSerialise());
 		velocityProperty.setAnnotation(getPropertyAnnotation(property));
 
 		getValidPropertyType(velocityProperty, property, parentEntity);
@@ -296,7 +300,11 @@ public class VelocityMarshaller
 		velocityProperty.setType(getFormattedEntityName(parentEntity.getName()));
 		velocityProperty.setComplex(true);
 		velocityProperty.setName(property.getIncoming());
-		velocityProperty.setSerialise(property.isSerialise());
+		// id must be serialised to allow for updating/deleting in UI
+		if (property.isId())
+			velocityProperty.setSerialise(true);
+		else
+			velocityProperty.setSerialise(property.isSerialise());
 		velocityProperty.setAnnotation(getReversedPropertyMapping(property.getMapping()));
 
 		return velocityProperty;

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home page</title>
+	<!--Contains a list of entities-->
+
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<style>
+		body {
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		}
+	</style>
+</head>
+<body id="top">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+			</button>
+			<a class="brand" href="#">Entities</a>
+
+			<div class="nav-collapse collapse">
+				<ul class="nav">
+					<li class="active"><a href="#">Home</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="container">
+	<table class="table table-striped">
+		<tbody>
+#foreach ($entity in $entities.entities)
+		<tr>
+			<td><a class="brand" th:href="@{/${entity.name}/}">${entity.name}</a></td>
+		</tr>
+#end
+		</tbody>
+	</table>
+
+</div>
+
+</body>
+
+</html>
