@@ -2,8 +2,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Home page</title>
-	<!--Contains a list of entities-->
+	<title>Create New ${entity.name}</title>
 
 	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
 	<meta charset="utf-8"/>
@@ -23,29 +22,42 @@
 		<div class="container">
 			<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
 			</button>
-			<a class="brand" href="#">Entities</a>
+			<a class="brand" href="#">Project</a>
 
 			<div class="nav-collapse collapse">
 				<ul class="nav">
-					<li class="active"><a href="#">Home</a></li>
+					<li class="active"><a th:href="@{/}">Home</a></li>
+					<li class="active"><a th:href="@{/${entity.name}}">${entity.name} Overview</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </div>
 
-
 <div class="container">
-	<table class="table table-striped">
-		<tbody>
-#foreach ($entity in $entities.entities)
-		<tr>
-			<td><a class="brand" th:href="@{/${entity.camelCaseName}/}">${entity.name}</a></td>
-		</tr>
+
+	<form action="create" method="post">
+		<fieldset>
+			<legend>Create New ${entity.name}</legend>
+
+#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex} && !${property.id})
+			<label>${property.name}</label>
+#if($property.type == "DateTime")			
+			<input name="${property.name}" type="text" placeholder="yyyy-MM-dd"/>
+#elseif($property.textArea == "true")
+			<textarea name="${property.name}" rows="5" />
+#else
+			<input name="${property.name}" type="text" placeholder="Type title here…"/>
 #end
-		</tbody>
-	</table>
+#end
+#end
+			
+			<button type="submit" class="btn">Create New</button>
+		</fieldset>
+	</form>
 
 </div>
 

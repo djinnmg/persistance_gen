@@ -84,15 +84,7 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service
 
 		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
 
-#foreach ($property in $entity.properties)
-#if(${property.serialise} && !${property.complex})
-#if($property.type == "DateTime")
-		template.set("${property.name}", DateHelper.getFormattedDateString(${entity.camelCaseName}.${property.name}));
-#else
-		template.set("${property.name}", ${entity.camelCaseName}.${property.name});
-#end
-#end
-#end
+		template.set("${entity.camelCaseName}", ${entity.camelCaseName});
 	
 		return template.process();
 	}
@@ -175,15 +167,7 @@ ${property.type} ${property.name}#end
 
 		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
 
-#foreach ($property in $entity.properties)
-#if(${property.serialise} && !${property.complex})
-#if($property.type == "DateTime")
-		template.set("${property.name}", DateHelper.getFormattedDateString(${entity.camelCaseName}.${property.name}));
-#else
-		template.set("${property.name}", ${entity.camelCaseName}.${property.name});
-#end
-#end
-#end
+		template.set("${entity.camelCaseName}", ${entity.camelCaseName});
 		
 
 		return template.process();

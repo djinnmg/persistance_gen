@@ -4,8 +4,10 @@ import ${package}.jaxb.types.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+#set ($firstArgUp = "false")
+#set ($firstArgCr = "false")
 
-@Path("/${entity.name}")
+@Path("/${entity.camelCaseName}")
 public interface ${entity.name}Service
 {
 
@@ -34,13 +36,13 @@ public interface ${entity.name}Service
 	@GET
 	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
-	public String get${entity.name}Page();
+	public String get${entity.name}ListPage();
 
 	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_HTML)
-	public String getProjectPageById(@PathParam("id") long id);
+	public String get${entity.name}Page(long id);
 
 	
 	@GET
@@ -58,14 +60,30 @@ public interface ${entity.name}Service
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response createAndRedirect(#foreach ($property in $entity.properties)#if (${property.serialise} && !${property.complex})#if ($property.type == "date")@FormParam("${property.name}") String ${property.name}#else@FormParam("${property.name}") ${property.type} ${property.name}#end #if($foreach.hasNext),#end #end #end);
+	public Response createAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex} && !${property.id})
+#if($firstArgCr == "true"), #end
+#if(!$firstArgCr == "false")
+#set ($firstArgCr = "true")#end
+#if($property.type == "DateTime")@FormParam("${property.name}") String ${property.name}#else
+@FormParam("${property.name}") ${property.type} ${property.name}#end
+#end
+#end);
 	
 	
 	@POST
 	@Path("/update")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response updateAndRedirect(#foreach ($property in $entity.properties)#if (${property.serialise} && !${property.complex})#if ($property.type == "date")@FormParam("${property.name}") String ${property.name}#else@FormParam("${property.name}") ${property.type} ${property.name}#end #if($foreach.hasNext),#end #end #end);
-			
+	public Response updateAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex})
+#if($firstArgUp == "true"), #end
+#if(!$firstArgUp == "false")
+#set ($firstArgUp = "true")#end
+#if($property.type == "DateTime")@FormParam("${property.name}") String ${property.name}#else
+@FormParam("${property.name}") ${property.type} ${property.name}#end
+#end
+#end);
+	
 	@GET
 	@Path("/delete/{id}")
 	public Response deleteAndRedirect(@PathParam("id") long id);

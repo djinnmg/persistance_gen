@@ -123,6 +123,7 @@ public class VelocityMarshaller
 		else
 			velocityProperty.setSerialise(property.isSerialise());
 		velocityProperty.setAnnotation(getPropertyAnnotation(property));
+		velocityProperty.setTextArea(property.isTextArea());
 
 		getValidPropertyType(velocityProperty, property, parentEntity);
 
@@ -306,6 +307,7 @@ public class VelocityMarshaller
 		else
 			velocityProperty.setSerialise(property.isSerialise());
 		velocityProperty.setAnnotation(getReversedPropertyMapping(property.getMapping()));
+		velocityProperty.setTextArea(property.isTextArea());
 
 		return velocityProperty;
 	}

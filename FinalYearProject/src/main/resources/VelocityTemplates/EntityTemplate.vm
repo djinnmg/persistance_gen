@@ -3,6 +3,7 @@ package ${package}.hibernate.entities;
 import javax.persistence.*;
 import org.joda.time.DateTime; #* In future only add required imports *# 
 import java.util.List;
+import ${package}.util.DateHelper;
 
 @Entity
 public class ${entity.name}
@@ -18,5 +19,13 @@ public class ${entity.name}
 	@GeneratedValue(strategy = GenerationType.AUTO)
 #end
 	public $returnType $property.name;
+	
+#if ($property.type == "DateTime")
+	@Transient
+	public String ${property.name}String()
+	{
+		return DateHelper.getFormattedDateString(${property.name});
+	}
+#end
 #end
 }

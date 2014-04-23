@@ -1,14 +1,15 @@
+#set ($dollar = '$')
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Create New ${entity.name}</title>
+	<title>Update ${entity.name}</title>
 
 	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-
+	
 	<style>
 		body {
 		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -24,12 +25,12 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="brand" href="#">Create New ${entity.name}</a>
+			<a class="brand" href="#">Update ${entity.name}</a>
 
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 					<li class="active"><a th:href="@{/}">Home</a></li>
-					<li class="active"><a th:href="@{/${entity.name}}">${entity.name} Overview</a></li>
+					<li class="active"><a th:href="@{/${entity.camelCaseName}}">${entity.name} Overview</a></li>
 				</ul>
 			</div>
 		</div>
@@ -38,24 +39,25 @@
 
 <div class="container">
 
-	<form action="create" method="post">
+	<form method="post" th:attr="action=@{/${entity.camelCaseName}/update}">
 		<fieldset>
-			<legend>Create New ${entity.name}</legend>
-
+			<legend>Update ${entity.name}</legend>
 #foreach ($property in $entity.properties)
-#if(${property.serialise} && !${property.complex} && !${property.id})
+#if(${property.serialise} && !${property.complex})
 			<label>${property.name}</label>
-#if($property.type == "DateTime")			
-			<input name="${property.name}" type="text" placeholder="dd-MM-yyyy HH:mm:ss"/>
+#if($property.id)
+			<input name="id" type="number" th:value="${dollar}{${entity.camelCaseName}.${property.name}}" readonly="readonly"/>
+#elseif($property.type == "DateTime")	##add hint to advise use of required date format: dd-MM-yyyy HH:mm:ss		
+			<input name="${property.name}" type="text" th:value="${dollar}{${entity.camelCaseName}.${property.name}String()}"/>
 #elseif($property.textArea == "true")
-			<textarea name="${property.name}" rows="5" />
+			<textarea name="${property.name}" rows="5" th:text="${dollar}{${entity.camelCaseName}.${property.name}}"/>
 #else
-			<input name="${property.name}" type="text" placeholder="Type title here…"/>
+			<input name="${property.name}" type="text" th:value="${dollar}{${entity.camelCaseName}.${property.name}}"/>
 #end
 #end
 #end
 			
-			<button type="submit" class="btn">Create New</button>
+			<button type="submit" class="btn">Update</button>
 		</fieldset>
 	</form>
 

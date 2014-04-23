@@ -41,7 +41,7 @@
 		<tbody>
 #foreach ($entity in $entities.entities)
 		<tr>
-			<td><a class="brand" th:href="@{/${entity.camelCaseName}/}">${entity.name}</a></td>
+			<td><a class="brand" th:href="@{/${entity.name}/}">${entity.name}</a></td>
 		</tr>
 #end
 		</tbody>

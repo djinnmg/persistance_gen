@@ -16,7 +16,7 @@ public class IndexServiceImpl implements IndexService
 	@Override
 	public String getIndexPage()
 	{
-		final ThymeleafCall template = templater.template("Index");
+		final ThymeleafCall template = templater.template("index");
 
 		return template.process();
 	}

@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import javax.xml.bind.JAXBElement;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class TemplateProcessor
 {
@@ -55,6 +56,10 @@ public class TemplateProcessor
 			createJaxbTypes(entity);
 			createRESTServices(entity);
 			createRESTServiceImpls(entity);
+			createThymeleafCreateEntityPage(entity);
+			createThymeleafEntitiesPage(entity);
+			createThymeleafEntityPage(entity);
+			createThymeleafUpdateEntityPage(entity);
 		}
 
 		createMarshaller(entities);
@@ -265,18 +270,62 @@ public class TemplateProcessor
 
 		entityTemplater.put("entities", entities);
 
-		outputToFile("src/main/webapp/WEB-INF/template/index.html", entityTemplater.process());
+		outputToFile("src/main/webapp/WEB-INF/template/Index.html", entityTemplater.process());
 	}
 
+	private void createThymeleafCreateEntityPage(final VelocityEntityType entity)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/ThymeleafCreateEntityTemplate.vm");
+
+		entityTemplater.put("entity", entity);
+
+		outputToFile("src/main/webapp/WEB-INF/template/Create" + entity.getName() + "Template.html",
+		             entityTemplater.process());
+	}
+
+	private void createThymeleafEntitiesPage(final VelocityEntityType entity)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/ThymeleafEntitiesTemplate.vm");
+
+		entityTemplater.put("entity", entity);
+
+		outputToFile("src/main/webapp/WEB-INF/template/" + entity.getName() + "ListTemplate.html",
+		             entityTemplater.process());
+	}
+
+	private void createThymeleafEntityPage(final VelocityEntityType entity)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/ThymeleafEntityTemplate.vm");
+
+		entityTemplater.put("entity", entity);
+
+		outputToFile("src/main/webapp/WEB-INF/template/" + entity.getName() + "Template.html",
+		             entityTemplater.process());
+	}
+
+	private void createThymeleafUpdateEntityPage(final VelocityEntityType entity)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/ThymeleafUpdateEntityTemplate.vm");
+
+		entityTemplater.put("entity", entity);
+
+		outputToFile("src/main/webapp/WEB-INF/template/Update" + entity.getName() + "Template.html",
+		             entityTemplater.process());
+	}
 
 	private Templater getTemplater(final String templatePath)
 	{
 		try
 		{
 			// TODO check file exists before trying to open
-			String entityTemplate =
-					IOUtils.toString(getClass().getResourceAsStream(templatePath),
-					                 "UTF-8"); // entity template
+			InputStream is = getClass().getResourceAsStream(templatePath);
+
+			if (is == null)
+			{
+				throw new RuntimeException("Could not read file at resources" + templatePath);
+			}
+
+			String entityTemplate = IOUtils.toString(is, "UTF-8");
 
 			return new Templater(entityTemplate);
 		}

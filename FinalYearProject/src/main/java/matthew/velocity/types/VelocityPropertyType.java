@@ -1,4 +1,3 @@
-
 package matthew.velocity.types;
 
 public class VelocityPropertyType
@@ -10,6 +9,7 @@ public class VelocityPropertyType
 	private boolean isCollection;
 	private boolean isId;
 	private boolean serialise;
+	private boolean isTextArea;
 
 	public boolean isSerialise()
 	{
@@ -79,5 +79,15 @@ public class VelocityPropertyType
 	public void setId(boolean id)
 	{
 		isId = id;
+	}
+
+	public boolean isTextArea()
+	{
+		return isTextArea;
+	}
+
+	public void setTextArea(boolean isTextArea)
+	{
+		this.isTextArea = isTextArea;
 	}
 }

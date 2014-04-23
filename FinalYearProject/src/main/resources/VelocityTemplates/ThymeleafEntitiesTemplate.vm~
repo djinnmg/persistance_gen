@@ -2,7 +2,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Project</title>
+	<title>Project List</title>
 
 	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
 	<meta charset="utf-8"/>
@@ -25,12 +25,12 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="brand" href="#">Project</a>
+			<a class="brand" href="#">Projects</a>
 
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 					<li class="active"><a th:href="@{/}">Home</a></li>
-					<li class="active"><a th:href="@{/projects}">Projects Overview</a></li>
+					<li class="active"><a th:href="@{/projects/create}">Create New Project</a></li>
 				</ul>
 			</div>
 		</div>
@@ -38,21 +38,27 @@
 </div>
 
 <div class="container">
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Title</th>
+			<th>Description</th>
+		</tr>
+		</thead>
 
-	<form method="post" th:attr="action=@{/projects/update}">
-		<fieldset>
-			<legend>Update Project</legend>
-			<label>Id</label>
-			<input name="id" type="number" th:value="${id}" readonly="readonly"/>
-			<label>Title</label>
-			<input name="title" type="text" th:value="${title}"/>
-			<label>Description</label>
-			<textarea name="description" rows="3" th:text="${description}"></textarea>
-			<button type="submit" class="btn">Update</button>
-		</fieldset>
-	</form>
+		<tbody>
+		<!--for each project in list-->
+		<tr th:each="project : ${projects}">
+			<td><a th:href="@{'/projects/project/' + ${project.id}}"><span th:text="${project.id}"/></a></td>
+			<td th:text="${project.title}"/>
+			<td th:text="${project.description}"/>
+		</tr>
+		</tbody>
+	</table>
 
 </div>
+
 
 </body>
 
