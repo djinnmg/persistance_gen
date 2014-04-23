@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>com.peterphi.std.guice</groupId>
 			<artifactId>stdlib-guice-hibernate</artifactId>
-			<version>5.0.2-SNAPSHOT</version>
+			<version>5.0.1</version>
 		</dependency>
 
 		<dependency>
