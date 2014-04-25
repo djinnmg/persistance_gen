@@ -20,12 +20,14 @@ public class TemplateProcessor
 	private final String packagePath;
 	private final String outputDir;
 	private final String projectName;
+	private final String dataModelLocation;
 
-	public TemplateProcessor(final String packagePath, final String outputDir, final String projectName)
+	public TemplateProcessor(final String packagePath, final String outputDir, final String projectName, final String dataModelLocation)
 	{
 		this.packagePath = packagePath;
 		this.projectName = projectName.replace(" ", "");
 		this.outputDir = outputDir;
+		this.dataModelLocation = dataModelLocation;
 	}
 
 	public void call()
@@ -36,7 +38,7 @@ public class TemplateProcessor
 		// deserialise
 		EntitiesType entitiesType = (
 				(JAXBElement<EntitiesType>) serialiser
-						.deserialise(getClass().getResourceAsStream("/DataModel/DataModel.xml"))).getValue();
+						.deserialise(getClass().getResourceAsStream(dataModelLocation))).getValue();
 
 
 		VelocityMarshaller velocityMarshaller = new VelocityMarshaller(entitiesType);
