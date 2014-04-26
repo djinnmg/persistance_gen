@@ -11,6 +11,7 @@ target/
 *.iml
 *.idea
 .idea/
+*.log
 .log
 
 .*~
