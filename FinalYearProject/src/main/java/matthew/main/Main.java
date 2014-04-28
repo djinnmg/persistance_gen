@@ -1,8 +1,5 @@
 package matthew.main;
 
-/**
- * User: matthew
- */
 public class Main
 {
 

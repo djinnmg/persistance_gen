@@ -36,9 +36,15 @@ public class TemplateProcessor
 
 		// load xml file
 		// deserialise
+
+		InputStream is = getClass().getResourceAsStream(dataModelLocation);
+
+		if (is == null)
+			throw new RuntimeException("Could not find resource at location: " + dataModelLocation);
+
 		EntitiesType entitiesType = (
 				(JAXBElement<EntitiesType>) serialiser
-						.deserialise(getClass().getResourceAsStream(dataModelLocation))).getValue();
+						.deserialise(is)).getValue();
 
 
 		VelocityMarshaller velocityMarshaller = new VelocityMarshaller(entitiesType);
@@ -319,7 +325,7 @@ public class TemplateProcessor
 	{
 		try
 		{
-			// TODO check file exists before trying to open
+			// checking file exists before trying to open
 			InputStream is = getClass().getResourceAsStream(templatePath);
 
 			if (is == null)
@@ -337,7 +343,7 @@ public class TemplateProcessor
 		}
 	}
 
-	private String getPackageFilePath(final String filePath)
+	public String getPackageFilePath(final String filePath)
 	{
 		return "src/main/java/" + packagePath.replace(".", "/") + filePath;
 	}

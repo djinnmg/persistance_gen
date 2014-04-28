@@ -5,9 +5,7 @@ import org.apache.velocity.app.VelocityEngine;
 
 import java.io.StringWriter;
 
-/**
- * User: matthew
- */
+
 public class Templater
 {
 	private final String template;

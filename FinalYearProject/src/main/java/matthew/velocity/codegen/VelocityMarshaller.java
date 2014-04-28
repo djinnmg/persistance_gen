@@ -11,9 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * User: matthew
- */
 public class VelocityMarshaller
 {
 	private final EntitiesType entities;
@@ -340,6 +337,8 @@ public class VelocityMarshaller
 
 	private String getFormattedEntityName(String entityName)
 	{
+		// TODO log warning if entity name starts with no
+		// TODO capitalise letters of words after spaces?
 		return StringUtils.capitalize(entityName.replaceAll("[^A-Za-z0-9]", ""));
 	}
 
