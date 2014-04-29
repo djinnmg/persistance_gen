@@ -3,12 +3,24 @@ package matthew.ui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.peterphi.std.util.jaxb.JAXBSerialiser;
+import matthew.jaxb.types.EntitiesType;
+import matthew.jaxb.types.ObjectFactory;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class CreateNewProject
 {
+	public static transient Logger log = Logger.getLogger(CreateNewProject.class);
+
 	private JPanel createNewProjectPanel;
 	private JButton createButton;
 	private JTextField projectNameTextField;
@@ -17,6 +29,125 @@ public class CreateNewProject
 	private JTextArea projectNameHintTextArea;
 	private JTextArea packagePathHintTextArea;
 	private JTextArea outputDirectoryHintTextArea;
+	private JButton backToEntityDesignerButton;
+	private JTextArea errorTextArea;
+
+
+	private final JFrame frame;
+	private final EntitiesType entities;
+
+
+	public CreateNewProject(final JFrame frame, final EntitiesType entities)
+	{
+		this.frame = frame;
+		this.entities = entities;
+		final JAXBSerialiser serialiser = JAXBSerialiser.getInstance(ObjectFactory.class);
+
+		createButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				super.mouseClicked(e);
+
+				final String outputDirectory = outputDirectoryTextField.getText();
+				final String packagePath = packagePathTextField.getText();
+				final String projectName = projectNameTextField.getText();
+
+
+				// TODO
+				if (validateOutputDirectoryPath(outputDirectory) &&
+				    validatePackagePath(packagePath) &&
+				    validateProjectName(projectName))
+				{
+					final String dataModelXml = serialiser.serialise(new ObjectFactory().createEntities(entities));
+
+					log.debug("Data Model: \n" + dataModelXml);
+
+					outputDataModel(outputDirectory, projectName, dataModelXml);
+				}
+
+			}
+		});
+
+
+		backToEntityDesignerButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				super.mouseClicked(e);
+
+				new ProjectOverview(frame, entities).loadPanel();
+			}
+		});
+	}
+
+
+	public void loadPanel()
+	{
+		frame.setContentPane(createNewProjectPanel);
+		frame.revalidate();
+
+		errorTextArea.setEnabled(false);
+
+		generateHintFields();
+	}
+
+	private void generateHintFields()
+	{
+		outputDirectoryHintTextArea.setEnabled(false);
+		packagePathHintTextArea.setEnabled(false);
+		projectNameHintTextArea.setEnabled(false);
+
+		//TODO
+		outputDirectoryHintTextArea.setText("");
+		packagePathHintTextArea.setText("");
+		projectNameHintTextArea.setText("");
+	}
+
+	private boolean validateOutputDirectoryPath(final String outputPath)
+	{
+		log.debug("Validating output directory: " + outputPath);
+		// only alphanumeric with 1st char being a letter, no trailing slashes, / not allowed either
+		return Pattern.matches("^[/~][a-zA-Z][a-zA-Z0-9]*(/[a-zA-Z][a-zA-Z0-9]*)*$", outputPath);
+	}
+
+	private boolean validatePackagePath(final String packagePath)
+	{
+		log.debug("Validating package path...");
+		return Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*(.[a-zA-Z][a-zA-Z0-9]*)*$", packagePath);
+	}
+
+	private boolean validateProjectName(final String projectName)
+	{
+		log.debug("Validating project name...");
+		return Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", projectName);
+	}
+
+	private void outputDataModel(final String outputDir, final String projectName, final String fileContents)
+	{
+		try
+		{
+			File file = new File(outputDir + "/" + projectName + "/src/main/resources/DataModel.xml");
+
+			if (file.exists())
+			{
+				file.delete();
+			}
+
+			file.getParentFile().mkdirs();
+
+			System.out.println("Trying to output data model to " + file.getAbsolutePath());
+
+			FileUtils.writeStringToFile(file, fileContents);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e.getMessage(), e);
+		}
+
+	}
 
 
 	{
@@ -36,7 +167,7 @@ public class CreateNewProject
 	private void $$$setupUI$$$()
 	{
 		createNewProjectPanel = new JPanel();
-		createNewProjectPanel.setLayout(new GridLayoutManager(8, 3, new Insets(5, 5, 5, 5), -1, -1));
+		createNewProjectPanel.setLayout(new GridLayoutManager(9, 3, new Insets(5, 5, 5, 5), -1, -1));
 		final Spacer spacer1 = new Spacer();
 		createNewProjectPanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
 		                                                       GridConstraints.FILL_HORIZONTAL,
@@ -140,6 +271,22 @@ public class CreateNewProject
 		                                                      GridConstraints.SIZEPOLICY_FIXED,
 		                                                      GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
 		                                                      false));
+		backToEntityDesignerButton = new JButton();
+		backToEntityDesignerButton.setText("Back To Entity Designer");
+		createNewProjectPanel.add(backToEntityDesignerButton,
+		                          new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
+		                                              GridConstraints.FILL_HORIZONTAL,
+		                                              GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                              GridConstraints.SIZEPOLICY_CAN_GROW,
+		                                              GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false
+		                          )
+		);
+		errorTextArea = new JTextArea();
+		createNewProjectPanel.add(errorTextArea, new GridConstraints(8, 0, 1, 3, GridConstraints.ANCHOR_CENTER,
+		                                                             GridConstraints.FILL_BOTH,
+		                                                             GridConstraints.SIZEPOLICY_WANT_GROW,
+		                                                             GridConstraints.SIZEPOLICY_WANT_GROW, null,
+		                                                             new Dimension(150, 50), null, 0, false));
 		label1.setLabelFor(projectNameTextField);
 		label2.setLabelFor(packagePathTextField);
 		label3.setLabelFor(outputDirectoryTextField);

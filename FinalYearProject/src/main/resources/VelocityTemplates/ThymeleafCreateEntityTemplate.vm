@@ -29,7 +29,7 @@
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 					<li class="active"><a th:href="@{/}">Home</a></li>
-					<li class="active"><a th:href="@{/${entity.name}}">${entity.name} Overview</a></li>
+					<li class="active"><a th:href="@{/${entity.camelCaseName}}">${entity.name} Overview</a></li>
 				</ul>
 			</div>
 		</div>

@@ -40,7 +40,7 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service
 	}
 
 	@Override
-	public ${entity.name}Type getById(long id)
+	public ${entity.name}Type getById(${entity.idType} id)
 	{
 		${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
 
@@ -60,7 +60,7 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service
 	}
 
 	@Override
-	public void deleteById(long id)
+	public void deleteById(${entity.idType} id)
 	{
 		${entity.camelCaseName}Dao.deleteById(id);
 	}
@@ -78,7 +78,7 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service
 	}
 
 	@Override
-	public String get${entity.name}Page(long id)
+	public String get${entity.name}Page(${entity.idType} id)
 	{
 		final ThymeleafCall template = templater.template("${entity.name}Template");
 
@@ -161,7 +161,7 @@ ${property.type} ${property.name}#end
 	}
 
 	@Override
-	public String getUpdatePage(long id)
+	public String getUpdatePage(${entity.idType} id)
 	{
 		final ThymeleafCall template = templater.template("Update${entity.name}Template");
 
@@ -174,7 +174,7 @@ ${property.type} ${property.name}#end
 	}
 
 	@Override
-	public Response deleteAndRedirect(long id)
+	public Response deleteAndRedirect(${entity.idType} id)
 	{
 		${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
 

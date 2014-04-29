@@ -61,6 +61,8 @@ public class CreateNewEntity
 	{
 		frame.setContentPane(createEntityPanel);
 		frame.revalidate();
+
+		errorTextArea.setEnabled(false);
 	}
 
 
@@ -100,7 +102,7 @@ public class CreateNewEntity
 	private void $$$setupUI$$$()
 	{
 		createEntityPanel = new JPanel();
-		createEntityPanel.setLayout(new GridLayoutManager(5, 3, new Insets(5, 5, 5, 5), -1, -1));
+		createEntityPanel.setLayout(new GridLayoutManager(5, 4, new Insets(5, 5, 5, 5), -1, -1));
 		final JLabel label1 = new JLabel();
 		label1.setText("Create New Entity");
 		createEntityPanel.add(label1,
@@ -111,8 +113,8 @@ public class CreateNewEntity
 		final Spacer spacer1 = new Spacer();
 		createEntityPanel.add(spacer1, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER,
 		                                                   GridConstraints.FILL_VERTICAL, 1,
-		                                                   GridConstraints.SIZEPOLICY_WANT_GROW, null,
-		                                                   new Dimension(-1, 15), null, 0, false));
+		                                                   GridConstraints.SIZEPOLICY_CAN_GROW, null,
+		                                                   new Dimension(-1, 15), new Dimension(-1, 15), 0, false));
 		final Spacer spacer2 = new Spacer();
 		createEntityPanel.add(spacer2, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER,
 		                                                   GridConstraints.FILL_VERTICAL, 1,
@@ -128,35 +130,44 @@ public class CreateNewEntity
 		entityNameTextField = new JTextField();
 		createEntityPanel.add(entityNameTextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                               GridConstraints.FILL_HORIZONTAL,
-		                                                               GridConstraints.SIZEPOLICY_WANT_GROW,
+		                                                               GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                                               GridConstraints.SIZEPOLICY_FIXED, null,
-		                                                               new Dimension(100, -1), null, 0, false));
+		                                                               new Dimension(200, -1), new Dimension(300, -1),
+		                                                               0, false));
 		createEntityButton = new JButton();
 		createEntityButton.setText("Create Entity");
 		createEntityButton.setMnemonic('C');
 		createEntityButton.setDisplayedMnemonicIndex(0);
-		createEntityPanel.add(createEntityButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                              GridConstraints.FILL_HORIZONTAL,
-		                                                              GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                                              GridConstraints.SIZEPOLICY_CAN_GROW,
-		                                                              GridConstraints.SIZEPOLICY_FIXED, null, null,
-		                                                              null, 0, false
-		));
+		createEntityPanel.add(createEntityButton,
+		                      new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
+		                                          GridConstraints.SIZEPOLICY_FIXED,
+		                                          null, null, null, 0, false
+		                      )
+		);
+		errorTextArea = new JTextArea();
+		createEntityPanel.add(errorTextArea, new GridConstraints(4, 0, 1, 4, GridConstraints.ANCHOR_SOUTH,
+		                                                         GridConstraints.FILL_HORIZONTAL,
+		                                                         GridConstraints.SIZEPOLICY_WANT_GROW,
+		                                                         GridConstraints.SIZEPOLICY_WANT_GROW, null,
+		                                                         new Dimension(150, 150), new Dimension(-1, 150), 0,
+		                                                         false));
+		final Spacer spacer3 = new Spacer();
+		createEntityPanel.add(spacer3, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER,
+		                                                   GridConstraints.FILL_HORIZONTAL,
+		                                                   GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null,
+		                                                   null, 0,
+		                                                   false));
 		cancelButton = new JButton();
 		cancelButton.setText("Cancel");
-		createEntityPanel.add(cancelButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                        GridConstraints.FILL_HORIZONTAL,
-		                                                        GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                                        GridConstraints.SIZEPOLICY_CAN_GROW,
-		                                                        GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
-		                                                        false
-		));
-		errorTextArea = new JTextArea();
-		createEntityPanel.add(errorTextArea,
-		                      new GridConstraints(4, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		createEntityPanel.add(cancelButton,
+		                      new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
+		                                          GridConstraints.SIZEPOLICY_FIXED,
+		                                          null, null, null, 0, false
+		                      )
 		);
 		label2.setLabelFor(entityNameTextField);
 	}

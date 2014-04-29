@@ -32,7 +32,12 @@ public class VelocityMarshaller
 
 		for (EntityType entityType : entities.getEntity())
 		{
-			marshall(entityType);
+			if (StringUtils.isEmpty(entityType.getName()))
+			{
+				throw new IllegalArgumentException("All entities require names!");
+			}
+
+			marshallEntity(entityType);
 		}
 
 		velocityEntities.setEntities(velocityEntityList);
@@ -40,7 +45,10 @@ public class VelocityMarshaller
 		return velocityEntities;
 	}
 
-	private void marshall(final EntityType entity)
+	/**
+	 * @param entity
+	 */
+	private void marshallEntity(final EntityType entity)
 	{
 		String entityIdType = null;
 
@@ -50,11 +58,20 @@ public class VelocityMarshaller
 			{
 				if (property.isId())
 				{
-					// only one Id allowed currently
+					// only one Id allowed
 					if (StringUtils.isNotEmpty(entityIdType))
 					{
 						throw new IllegalArgumentException(
 								"Entity " + entity.getName() + " cannot have more than one Id!");
+					}
+					// only long and int supported for id type
+					else if (!StringUtils.equalsIgnoreCase(property.getType(), "long") &&
+					         !StringUtils.equalsIgnoreCase(property.getType(), "int"))
+					{
+						throw new IllegalArgumentException(
+								"Invalid entity id type: " + property.getType() + ", " +
+								"only int and long are supported!"
+						);
 					}
 					else
 					{
@@ -104,6 +121,11 @@ public class VelocityMarshaller
 
 		for (PropertyType property : entity.getProperty())
 		{
+			if (StringUtils.isEmpty(property.getName()))
+			{
+				throw new IllegalArgumentException("All Properties require names!");
+			}
+
 			velocityEntity.getProperties().add(marshall(property, entity));
 		}
 	}
@@ -112,13 +134,17 @@ public class VelocityMarshaller
 	{
 		final VelocityPropertyType velocityProperty = new VelocityPropertyType();
 
-		velocityProperty.setName(property.getName());
+		velocityProperty.setName(getFormattedPropertyName(property.getName()));
 		velocityProperty.setId(property.isId());
 		// id must be serialised to allow for updating/deleting in UI
 		if (property.isId())
+		{
 			velocityProperty.setSerialise(true);
+		}
 		else
+		{
 			velocityProperty.setSerialise(property.isSerialise());
+		}
 		velocityProperty.setAnnotation(getPropertyAnnotation(property));
 		velocityProperty.setTextArea(property.isTextArea());
 
@@ -199,7 +225,6 @@ public class VelocityMarshaller
 				if (isNullable)
 				{
 					velocityProperty.setType("Boolean");
-
 				}
 				else
 				{
@@ -283,9 +308,7 @@ public class VelocityMarshaller
 					return entityName;
 				}
 			}
-
 		}
-
 		throw new IllegalArgumentException(property.getType() + " is not a valid type!");
 	}
 
@@ -297,13 +320,33 @@ public class VelocityMarshaller
 
 		velocityProperty.setType(getFormattedEntityName(parentEntity.getName()));
 		velocityProperty.setComplex(true);
-		velocityProperty.setName(property.getIncoming());
+
+		if (StringUtils.isEmpty(property.getIncoming()))
+		{
+			throw new IllegalArgumentException(
+					"The complex property " + property.getName() + " in entity " + parentEntity.getName() +
+					" has no incoming value set! This is required for complex properties!"
+			);
+		}
+		velocityProperty.setName(getFormattedPropertyName(property.getIncoming()));
 		// id must be serialised to allow for updating/deleting in UI
 		if (property.isId())
+		{
 			velocityProperty.setSerialise(true);
+		}
 		else
+		{
 			velocityProperty.setSerialise(property.isSerialise());
+		}
 		velocityProperty.setAnnotation(getReversedPropertyMapping(property.getMapping()));
+
+		// set isComplex based on mapping
+		if (StringUtils.equalsIgnoreCase(property.getMapping(), "ManyToOne") ||
+		    StringUtils.equalsIgnoreCase(property.getMapping(), "ManyToMany"))
+		{
+			velocityProperty.setCollection(true);
+		}
+
 		velocityProperty.setTextArea(property.isTextArea());
 
 		return velocityProperty;
@@ -337,9 +380,22 @@ public class VelocityMarshaller
 
 	private String getFormattedEntityName(String entityName)
 	{
-		// TODO log warning if entity name starts with no
-		// TODO capitalise letters of words after spaces?
+		if (StringUtils.isNumeric("" + entityName.charAt(0)))
+		{
+			throw new IllegalArgumentException("Entity name cannot start with a number");
+		}
+
 		return StringUtils.capitalize(entityName.replaceAll("[^A-Za-z0-9]", ""));
+	}
+
+	private String getFormattedPropertyName(String propertyName)
+	{
+		if (StringUtils.isNumeric("" + propertyName.charAt(0)))
+		{
+			throw new IllegalArgumentException("Property name cannot start with a number");
+		}
+
+		return propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
 	}
 
 }

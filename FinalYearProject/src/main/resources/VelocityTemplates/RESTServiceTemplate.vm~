@@ -42,7 +42,7 @@ public interface ${entity.name}Service
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_HTML)
-	public String get${entity.name}Page(long id);
+	public String get${entity.name}Page(@PathParam("id") long id);
 
 	
 	@GET

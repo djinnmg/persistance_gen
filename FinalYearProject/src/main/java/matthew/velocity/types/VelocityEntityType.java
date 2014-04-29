@@ -52,20 +52,21 @@ public class VelocityEntityType
 			throw new IllegalArgumentException("Cannot get camel case for empty name!");
 		}
 
-		if (StringUtils.isNumeric("" + name.charAt(0)))
-		{
-			// TODO this should be checked in the mappings
-			throw new IllegalArgumentException("Entity name cannot start with a number");
-		}
-
 		return name.substring(0, 1).toLowerCase() + name.substring(1);
 	}
 
 
 	public String getCapitalisedIdType()
 	{
-		// TODO this works for longs but needs to be expanded to cover all id types
-		return StringUtils.capitalize(idType);
+		switch (idType)
+		{
+			case "long":
+				return "Long";
+			case "int":
+				return "Integer";
+			default:
+				throw new IllegalArgumentException("Cannot get capitalised version of id with type " + idType + "! Only int and long are supported.");
+		}
 	}
 
 }

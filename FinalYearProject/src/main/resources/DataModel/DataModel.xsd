@@ -7,7 +7,7 @@
 	<xs:complexType name="propertyType" mixed="true">
 		<xs:attribute type="xs:boolean" name="nullable" use="optional" default="true" />
 		<xs:attribute type="xs:boolean" name="serialise" use="optional" default="true" />
-		<xs:attribute type="xs:boolean" name="id" use="optional" default="false" />
+		<xs:attribute type="xs:boolean" name="id" use="required" default="false" />
 		<xs:attribute type="xs:boolean" name="textArea" use="optional" default="false" />
 		<xs:attribute type="xs:string" name="name" use="required"/>
 		<xs:attribute type="xs:string" name="type" use="required"/>

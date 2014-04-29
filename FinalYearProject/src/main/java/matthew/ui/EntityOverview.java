@@ -454,12 +454,12 @@ public class EntityOverview
 		                                                                null, 0, false
 		));
 		errorTextArea = new JTextArea();
-		entityViewPanel.add(errorTextArea,
-		                    new GridConstraints(6, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-		                                        GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                        GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                        null, 0, false)
-		);
+		entityViewPanel.add(errorTextArea, new GridConstraints(6, 0, 1, 5, GridConstraints.ANCHOR_SOUTH,
+		                                                       GridConstraints.FILL_HORIZONTAL,
+		                                                       GridConstraints.SIZEPOLICY_WANT_GROW,
+		                                                       GridConstraints.SIZEPOLICY_WANT_GROW, null,
+		                                                       new Dimension(150, 150), new Dimension(-1, 150), 0,
+		                                                       false));
 	}
 
 	/**

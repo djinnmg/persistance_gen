@@ -27,8 +27,6 @@ public class Main
 		loadProjectOverviewPanel(frame);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// TODO decide layout constraint method
-		// frame.pack();
 		frame.setVisible(true);
 	}
 

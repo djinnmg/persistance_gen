@@ -106,8 +106,9 @@
       </component>
       <component id="39c57" class="javax.swing.JTextArea" binding="errorTextArea">
         <constraints>
-          <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
+          <grid row="6" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="6" anchor="2" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="150"/>
+            <maximum-size width="-1" height="150"/>
           </grid>
         </constraints>
         <properties/>

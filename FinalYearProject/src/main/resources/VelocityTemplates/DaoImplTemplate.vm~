@@ -2,9 +2,31 @@ package ${package}.hibernate.dao.impl;
 
 import com.peterphi.std.guice.hibernate.dao.HibernateDao;
 import ${package}.hibernate.dao.${entity.name}Dao;
-import matthew.agile.management.hibernate.entities.${entity.name};
+import ${package}.hibernate.entities.${entity.name};
+import ${package}.hibernate.entities.*;
+import java.util.List;
 
-public class ${entity.name}DaoImpl extends HibernateDao<${entity.name}, ${entity.id.type}> implements ${entity.name}Dao ## TODO implement id.type
-{
+public class ${entity.name}DaoImpl extends HibernateDao<${entity.name}, ${entity.capitalisedIdType}> implements ${entity.name}Dao
+{#* If entity contains a complex type, need to add method to return type based on entity id *#
+#foreach ($property in $entity.properties)
+#if ($property.complex)
+#foreach ($entityType in $entityTypeList.entities)
+#if ($entityType.name == $property.type)
+#set ( $idType = $entityType.idType )
+#break
+#end
+#end
+#if ($property.collection)
+#set ( $returnType = "List<" + ${property.type} + ">" )
+#else
+#set ( $returnType = $property.type)
+#end
+	
+	public $returnType get${property.type}By${entity.name}Id(${idType} id)
+	{
+		return getById(id).${property.name};			
+	}
+#end
+#end
 
 }

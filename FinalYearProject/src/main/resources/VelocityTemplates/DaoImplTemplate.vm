@@ -10,22 +10,16 @@ public class ${entity.name}DaoImpl extends HibernateDao<${entity.name}, ${entity
 {#* If entity contains a complex type, need to add method to return type based on entity id *#
 #foreach ($property in $entity.properties)
 #if ($property.complex)
-#foreach ($entityType in $entityTypeList.entities)
-#if ($entityType.name == $property.type)
-#set ( $idType = $entityType.idType )
-#break
-#end
-#end
 #if ($property.collection)
 #set ( $returnType = "List<" + ${property.type} + ">" )
 #else
 #set ( $returnType = $property.type)
-#end
-	
-	public $returnType get${property.type}By${entity.name}Id(${idType} id)
+#end	
+	public $returnType get${property.type}By${entity.name}Id(${entity.idType} id)
 	{
 		return getById(id).${property.name};			
 	}
+	
 #end
 #end
 

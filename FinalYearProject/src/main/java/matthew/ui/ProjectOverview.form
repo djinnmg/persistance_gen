@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="matthew.ui.ProjectOverview">
-  <grid id="27dc6" binding="projectOverviewPanel" layout-manager="GridLayoutManager" row-count="5" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="projectOverviewPanel" layout-manager="GridLayoutManager" row-count="9" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="649" height="400"/>
+      <xy x="20" y="20" width="563" height="559"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <hspacer id="d25f6">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <vspacer id="82cc3">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
       <scrollpane id="d8b75">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="256" height="243"/>
+          <grid row="3" column="0" row-span="4" col-span="1" vsize-policy="7" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="500" height="400"/>
+            <preferred-size width="500" height="500"/>
+            <maximum-size width="500" height="600"/>
           </grid>
         </constraints>
         <properties/>
@@ -35,9 +27,34 @@
           </component>
         </children>
       </scrollpane>
+      <component id="7e3fb" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="305" height="18"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Project Overview"/>
+        </properties>
+      </component>
+      <component id="6349e" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="305" height="18"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Entities"/>
+        </properties>
+      </component>
+      <hspacer id="f8ea">
+        <constraints>
+          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
       <component id="be71f" class="javax.swing.JButton" binding="addNewEntityButton" default-binding="true">
         <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="&amp;Add New Entity"/>
@@ -45,7 +62,7 @@
       </component>
       <component id="78b3d" class="javax.swing.JButton" binding="validateEntityStructureButton" default-binding="true">
         <constraints>
-          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="&amp;Validate Entity Structure"/>
@@ -53,29 +70,44 @@
       </component>
       <component id="8df16" class="javax.swing.JButton" binding="createProjectButton" default-binding="true">
         <constraints>
-          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="&amp;Create Project"/>
         </properties>
       </component>
-      <vspacer id="1dcd9">
+      <vspacer id="6d8b5">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
-      <component id="7e3fb" class="javax.swing.JLabel">
+      <vspacer id="cb8e9">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="305" height="15"/>
+          </grid>
         </constraints>
-        <properties>
-          <text value="Project Overview"/>
-        </properties>
-      </component>
-      <vspacer id="24809">
+      </vspacer>
+      <hspacer id="a22d2">
         <constraints>
-          <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
-            <preferred-size width="-1" height="250"/>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="5" height="-1"/>
+            <maximum-size width="5" height="-1"/>
+          </grid>
+        </constraints>
+      </hspacer>
+      <component id="7f697" class="javax.swing.JTextArea" binding="errorTextArea">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="4" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="305" height="150"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <vspacer id="b6251">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="305" height="15"/>
           </grid>
         </constraints>
       </vspacer>
