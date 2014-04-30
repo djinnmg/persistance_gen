@@ -1,8 +1,6 @@
 package matthew.main;
 
-import com.peterphi.std.util.jaxb.JAXBSerialiser;
 import matthew.jaxb.types.EntitiesType;
-import matthew.jaxb.types.ObjectFactory;
 import matthew.velocity.codegen.Templater;
 import matthew.velocity.codegen.VelocityMarshaller;
 import matthew.velocity.types.VelocityEntitiesType;
@@ -10,7 +8,6 @@ import matthew.velocity.types.VelocityEntityType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import javax.xml.bind.JAXBElement;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,33 +17,16 @@ public class TemplateProcessor
 	private final String packagePath;
 	private final String outputDir;
 	private final String projectName;
-	private final String dataModelLocation;
 
-	public TemplateProcessor(final String packagePath, final String outputDir, final String projectName, final String dataModelLocation)
+	public TemplateProcessor(final String packagePath, final String outputDir, final String projectName)
 	{
 		this.packagePath = packagePath;
 		this.projectName = projectName.replace(" ", "");
 		this.outputDir = outputDir;
-		this.dataModelLocation = dataModelLocation;
 	}
 
-	public void call()
+	public void processEntities(final EntitiesType entitiesType)
 	{
-		JAXBSerialiser serialiser = JAXBSerialiser.getInstance(ObjectFactory.class);
-
-		// load xml file
-		// deserialise
-
-		InputStream is = getClass().getResourceAsStream(dataModelLocation);
-
-		if (is == null)
-			throw new RuntimeException("Could not find resource at location: " + dataModelLocation);
-
-		EntitiesType entitiesType = (
-				(JAXBElement<EntitiesType>) serialiser
-						.deserialise(is)).getValue();
-
-
 		VelocityMarshaller velocityMarshaller = new VelocityMarshaller(entitiesType);
 		VelocityEntitiesType entities = velocityMarshaller.marshall(packagePath);
 

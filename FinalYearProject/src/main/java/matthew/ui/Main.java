@@ -1,18 +1,9 @@
 package matthew.ui;
 
-import matthew.jaxb.types.EntitiesType;
-
 import javax.swing.*;
 
 public class Main
 {
-	private final EntitiesType entities;
-
-	public Main()
-	{
-		entities = new EntitiesType();
-	}
-
 
 	public static void main(String[] args)
 	{
@@ -23,17 +14,16 @@ public class Main
 	{
 		final JFrame frame = new JFrame("Relational Database Generation Application");
 		frame.setSize(1280, 720);
-
-		loadProjectOverviewPanel(frame);
-
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+
+		loadMainPanel(frame);
 	}
 
 
-	private void loadProjectOverviewPanel(final JFrame frame)
+	private void loadMainPanel(final JFrame frame)
 	{
-		new ProjectOverview(frame, entities).loadPanel();
+		new MainPage(frame).loadPanel();
 	}
 
 }

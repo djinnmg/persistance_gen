@@ -6,6 +6,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import com.peterphi.std.util.jaxb.JAXBSerialiser;
 import matthew.jaxb.types.EntitiesType;
 import matthew.jaxb.types.ObjectFactory;
+import matthew.main.TemplateProcessor;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -65,6 +66,16 @@ public class CreateNewProject
 					log.debug("Data Model: \n" + dataModelXml);
 
 					outputDataModel(outputDirectory, projectName, dataModelXml);
+
+					final TemplateProcessor processor =
+							new TemplateProcessor(packagePath, outputDirectory, projectName);
+
+					processor.processEntities(entities);
+
+
+					// TODO show success message
+					new MainPage(frame).loadPanel();
+
 				}
 
 			}

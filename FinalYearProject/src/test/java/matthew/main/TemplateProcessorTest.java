@@ -11,13 +11,15 @@ public class TemplateProcessorTest
 	private final String packagePath = "matthew.generation";
 	private final String outputDir = "/home/matthew/Code";
 	private final String projectName = "Demo";
+
+	// TODO need to load this before calling templateProcessor.processEntities()
 	private final String dataModelLocation = "/DataModel/DataModel.xml";
 
 	@Before
 	public void setup()
 	{
 		templateProcessor =
-				new TemplateProcessor(packagePath, outputDir, projectName, dataModelLocation);
+				new TemplateProcessor(packagePath, outputDir, projectName);
 
 	}
 

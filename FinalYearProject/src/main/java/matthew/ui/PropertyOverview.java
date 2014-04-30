@@ -2,7 +2,6 @@ package matthew.ui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import matthew.jaxb.types.EntitiesType;
 import matthew.jaxb.types.EntityType;
 import matthew.jaxb.types.PropertyType;
@@ -180,6 +179,24 @@ public class PropertyOverview
 		nameHintTextArea.setEnabled(false);
 		idHintTextArea.setEnabled(false);
 
+		incomingHintTextArea.setWrapStyleWord(true);
+		mappingHintTextArea.setWrapStyleWord(true);
+		textAreaHintTextArea.setWrapStyleWord(true);
+		serialiseHintTextArea.setWrapStyleWord(true);
+		nullableHintTextArea.setWrapStyleWord(true);
+		typeHintTextArea.setWrapStyleWord(true);
+		nameHintTextArea.setWrapStyleWord(true);
+		idHintTextArea.setWrapStyleWord(true);
+
+		incomingHintTextArea.setLineWrap(true);
+		mappingHintTextArea.setLineWrap(true);
+		textAreaHintTextArea.setLineWrap(true);
+		serialiseHintTextArea.setLineWrap(true);
+		nullableHintTextArea.setLineWrap(true);
+		typeHintTextArea.setLineWrap(true);
+		nameHintTextArea.setLineWrap(true);
+		idHintTextArea.setLineWrap(true);
+
 		incomingHintTextArea.setText(
 				"When using a complex type, this will give the name to the variable on the other end. If using " +
 				"complex" +
@@ -243,112 +260,89 @@ public class PropertyOverview
 	private void $$$setupUI$$$()
 	{
 		propertyViewPanel = new JPanel();
-		propertyViewPanel.setLayout(new GridLayoutManager(15, 3, new Insets(5, 5, 5, 5), -1, -1));
+		propertyViewPanel.setLayout(new GridLayoutManager(11, 3, new Insets(5, 5, 5, 5), -1, -1));
 		final JLabel label1 = new JLabel();
-		label1.setText("Attributes");
+		label1.setText("ID");
 		propertyViewPanel.add(label1,
-		                      new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
-		final Spacer spacer1 = new Spacer();
-		propertyViewPanel.add(spacer1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                   GridConstraints.FILL_HORIZONTAL,
-		                                                   GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null,
-		                                                   null, 0,
-		                                                   false));
-		final Spacer spacer2 = new Spacer();
-		propertyViewPanel.add(spacer2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                   GridConstraints.FILL_VERTICAL, 1,
-		                                                   GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
-		                                                   false));
-		final JLabel label2 = new JLabel();
-		label2.setText("ID");
-		propertyViewPanel.add(label2,
-		                      new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false)
-		);
-		final Spacer spacer3 = new Spacer();
-		propertyViewPanel.add(spacer3, new GridConstraints(11, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                   GridConstraints.FILL_VERTICAL, 1,
-		                                                   GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
-		                                                   false));
 		idCheckboxCheckBox = new JCheckBox();
 		idCheckboxCheckBox.setText("");
 		propertyViewPanel.add(idCheckboxCheckBox,
-		                      new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false
 		                      )
 		);
-		final JLabel label3 = new JLabel();
-		label3.setText("Name");
-		propertyViewPanel.add(label3,
-		                      new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		final JLabel label2 = new JLabel();
+		label2.setText("Name");
+		propertyViewPanel.add(label2,
+		                      new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
 		nameTextField = new JTextField();
-		propertyViewPanel.add(nameTextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST,
+		propertyViewPanel.add(nameTextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST,
+		                                                         GridConstraints.FILL_HORIZONTAL,
+		                                                         GridConstraints.SIZEPOLICY_WANT_GROW,
+		                                                         GridConstraints.SIZEPOLICY_FIXED, null,
+		                                                         new Dimension(150, -1), null, 0, false));
+		final JLabel label3 = new JLabel();
+		label3.setText("Type");
+		propertyViewPanel.add(label3,
+		                      new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
+		                                          null, null, null, 0, false)
+		);
+		typeTextField = new JTextField();
+		propertyViewPanel.add(typeTextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                         GridConstraints.FILL_HORIZONTAL,
 		                                                         GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                                         GridConstraints.SIZEPOLICY_FIXED, null,
 		                                                         new Dimension(150, -1), null, 0, false));
 		final JLabel label4 = new JLabel();
-		label4.setText("Type");
+		label4.setText("Nullable");
 		propertyViewPanel.add(label4,
 		                      new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
-		typeTextField = new JTextField();
-		propertyViewPanel.add(typeTextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST,
-		                                                         GridConstraints.FILL_HORIZONTAL,
-		                                                         GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                                         GridConstraints.SIZEPOLICY_FIXED, null,
-		                                                         new Dimension(150, -1), null, 0, false));
 		final JLabel label5 = new JLabel();
-		label5.setText("Nullable");
+		label5.setText("Serialise");
 		propertyViewPanel.add(label5,
-		                      new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
 		final JLabel label6 = new JLabel();
-		label6.setText("Serialise");
+		label6.setText("Text Area");
 		propertyViewPanel.add(label6,
-		                      new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
 		final JLabel label7 = new JLabel();
-		label7.setText("Text Area");
+		label7.setText("Incoming");
 		propertyViewPanel.add(label7,
-		                      new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
 		final JLabel label8 = new JLabel();
-		label8.setText("Incoming");
+		label8.setText("Mapping");
 		propertyViewPanel.add(label8,
-		                      new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false)
-		);
-		final JLabel label9 = new JLabel();
-		label9.setText("Mapping");
-		propertyViewPanel.add(label9,
-		                      new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
 		nullableCheckBoxCheckBox = new JCheckBox();
 		nullableCheckBoxCheckBox.setText("");
 		propertyViewPanel.add(nullableCheckBoxCheckBox,
-		                      new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
@@ -358,7 +352,7 @@ public class PropertyOverview
 		serialiseCheckBoxCheckBox = new JCheckBox();
 		serialiseCheckBoxCheckBox.setText("");
 		propertyViewPanel.add(serialiseCheckBoxCheckBox,
-		                      new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
@@ -368,7 +362,7 @@ public class PropertyOverview
 		textAreaCheckBoxCheckBox = new JCheckBox();
 		textAreaCheckBoxCheckBox.setText("");
 		propertyViewPanel.add(textAreaCheckBoxCheckBox,
-		                      new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+		                      new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
@@ -376,90 +370,94 @@ public class PropertyOverview
 		                      )
 		);
 		incomingTextField = new JTextField();
-		propertyViewPanel.add(incomingTextField, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_WEST,
+		propertyViewPanel.add(incomingTextField, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                             GridConstraints.FILL_HORIZONTAL,
 		                                                             GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                                             GridConstraints.SIZEPOLICY_FIXED, null,
-		                                                             new Dimension(150, -1), null, 0, false));
+		                                                             new Dimension(150, -1), new Dimension(300, -1), 0,
+		                                                             false));
 		mappingTextField = new JTextField();
-		propertyViewPanel.add(mappingTextField, new GridConstraints(10, 1, 1, 1, GridConstraints.ANCHOR_WEST,
+		propertyViewPanel.add(mappingTextField, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                            GridConstraints.FILL_HORIZONTAL,
 		                                                            GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                                            GridConstraints.SIZEPOLICY_FIXED, null,
-		                                                            new Dimension(150, -1), null, 0, false));
-		final Spacer spacer4 = new Spacer();
-		propertyViewPanel.add(spacer4, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                   GridConstraints.FILL_HORIZONTAL,
-		                                                   GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null,
-		                                                   null, 0,
-		                                                   false));
+		                                                            new Dimension(150, -1), new Dimension(300, -1), 0,
+		                                                            false));
 		incomingHintTextArea = new JTextArea();
 		propertyViewPanel.add(incomingHintTextArea,
-		                      new GridConstraints(9, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(7, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
 		mappingHintTextArea = new JTextArea();
 		propertyViewPanel.add(mappingHintTextArea,
-		                      new GridConstraints(10, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                          GridConstraints.FILL_BOTH,
+		                      new GridConstraints(8, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
 		textAreaHintTextArea = new JTextArea();
 		propertyViewPanel.add(textAreaHintTextArea,
-		                      new GridConstraints(8, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
 		serialiseHintTextArea = new JTextArea();
 		propertyViewPanel.add(serialiseHintTextArea,
-		                      new GridConstraints(7, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
 		nullableHintTextArea = new JTextArea();
 		propertyViewPanel.add(nullableHintTextArea,
-		                      new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
 		typeHintTextArea = new JTextArea();
 		propertyViewPanel.add(typeHintTextArea,
-		                      new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
 		nameHintTextArea = new JTextArea();
 		propertyViewPanel.add(nameHintTextArea,
-		                      new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
 		idHintTextArea = new JTextArea();
+		idHintTextArea.setText("");
 		propertyViewPanel.add(idHintTextArea,
-		                      new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
-		final JLabel label10 = new JLabel();
-		label10.setText("Property Overview");
-		propertyViewPanel.add(label10,
+		final JLabel label9 = new JLabel();
+		label9.setText("Property Attributes");
+		propertyViewPanel.add(label9,
 		                      new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
 		                                          null, null, null, 0, false)
 		);
 		cancelButton = new JButton();
 		cancelButton.setText("Cancel");
-		propertyViewPanel.add(cancelButton, new GridConstraints(12, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
+		propertyViewPanel.add(cancelButton, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_NORTH,
 		                                                        GridConstraints.FILL_HORIZONTAL,
 		                                                        GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                                        GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -468,30 +466,26 @@ public class PropertyOverview
 		));
 		saveButton = new JButton();
 		saveButton.setText("Save");
-		propertyViewPanel.add(saveButton, new GridConstraints(12, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
+		propertyViewPanel.add(saveButton, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_NORTH,
 		                                                      GridConstraints.FILL_HORIZONTAL,
 		                                                      GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                                      GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                                      GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
 		                                                      false
 		));
-		final Spacer spacer5 = new Spacer();
-		propertyViewPanel.add(spacer5, new GridConstraints(13, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                   GridConstraints.FILL_VERTICAL, 1,
-		                                                   GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
-		                                                   false));
 		errorTextArea = new JTextArea();
 		propertyViewPanel.add(errorTextArea,
-		                      new GridConstraints(14, 0, 1, 3, GridConstraints.ANCHOR_CENTER,
+		                      new GridConstraints(10, 0, 1, 3, GridConstraints.ANCHOR_CENTER,
 		                                          GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50),
-		                                          null, 0, false)
+		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
 		);
-		label3.setLabelFor(nameTextField);
-		label4.setLabelFor(typeTextField);
-		label8.setLabelFor(incomingTextField);
-		label9.setLabelFor(mappingTextField);
+		label2.setLabelFor(nameTextField);
+		label3.setLabelFor(typeTextField);
+		label7.setLabelFor(incomingTextField);
+		label8.setLabelFor(mappingTextField);
 	}
 
 	/**
@@ -499,8 +493,4 @@ public class PropertyOverview
 	 */
 	public JComponent $$$getRootComponent$$$()
 	{ return propertyViewPanel; }
-
-	// TODO fill in hint text areas
-
-
 }
