@@ -45,62 +45,27 @@ public class VelocityMarshaller
 		return velocityEntities;
 	}
 
-	/**
-	 * @param entity
-	 */
+    /**
+     * Marshall an entityType to a velocity entity and add it to the velocityEntityList
+     * @param entity The EntityType to be marshalled.
+     */
 	private void marshallEntity(final EntityType entity)
 	{
-		String entityIdType = null;
-
-		// check if the entity has an Id property
-		{
-			for (PropertyType property : entity.getProperty())
-			{
-				if (property.isId())
-				{
-					// only one Id allowed
-					if (StringUtils.isNotEmpty(entityIdType))
-					{
-						throw new IllegalArgumentException(
-								"Entity " + entity.getName() + " cannot have more than one Id!");
-					}
-					// only long and int supported for id type
-					else if (!StringUtils.equalsIgnoreCase(property.getType(), "long") &&
-					         !StringUtils.equalsIgnoreCase(property.getType(), "int"))
-					{
-						throw new IllegalArgumentException(
-								"Invalid entity id type: " + property.getType() + ", " +
-								"only int and long are supported!"
-						);
-					}
-					else
-					{
-						entityIdType = property.getType();
-					}
-				}
-			}
-
-			if (StringUtils.isEmpty(entityIdType))
-			{
-				throw new IllegalArgumentException("Entity " + entity.getName() + " must have an Id!");
-			}
-		}
-
-
+		final String entityIdType = getEntityIdType(entity);
 		final String entityName = getFormattedEntityName(entity.getName());
 
 		// check for already existing entities (may have been added to accommodate incoming field)
-		// we assume it has a name
-		{
-			for (VelocityEntityType velocityEntity : velocityEntityList)
-			{
-				if (StringUtils.equals(velocityEntity.getName(), entityName))
-				{
-					marshall(velocityEntity, entity, entityIdType);
-					return;
-				}
-			}
-		}
+        // we assume it has a name
+        {
+            for (VelocityEntityType velocityEntity : velocityEntityList)
+            {
+                if (StringUtils.equals(velocityEntity.getName(), entityName))
+                {
+                    marshall(velocityEntity, entity, entityIdType);
+                    return;
+                }
+            }
+        }
 
 		// no entry exists, create and add new entity
 		{
@@ -111,9 +76,53 @@ public class VelocityMarshaller
 
 			marshall(velocityEntity, entity, entityIdType);
 			velocityEntityList.add(velocityEntity);
-			return;
 		}
 	}
+
+    /**
+     * Checks if entity has one id property and returns the type of that id.
+     * Only one id is allowed and an id is required for an entity. Only types int and long are supported.
+     * Will throw an IllegalArgumentException in any of these cases.
+     * @param entity Is an entity to be tested for having an id.
+     * @return A string containing the entities Id type.
+     */
+    private String getEntityIdType(final EntityType entity)
+    {
+        String entityIdType = null;
+
+        // check if the entity has an Id property
+        for (PropertyType property : entity.getProperty())
+        {
+            if (property.isId())
+            {
+                // only one Id allowed
+                if (StringUtils.isNotEmpty(entityIdType))
+                {
+                    throw new IllegalArgumentException(
+                            "Entity " + entity.getName() + " cannot have more than one Id!");
+                }
+                // only long and int supported for id type
+                else if (!StringUtils.equalsIgnoreCase(property.getType(), "long") &&
+                        !StringUtils.equalsIgnoreCase(property.getType(), "int"))
+                {
+                    throw new IllegalArgumentException(
+                            "Invalid entity id type: " + property.getType() + ", " +
+                                    "only int and long are supported!");
+                }
+                else
+                {
+                    entityIdType = property.getType();
+                }
+            }
+        }
+
+        if (StringUtils.isEmpty(entityIdType))
+        {
+            throw new IllegalArgumentException("Entity " + entity.getName() + " must have an Id!");
+        }
+
+        return entityIdType;
+    }
 
 	private void marshall(final VelocityEntityType velocityEntity, final EntityType entity, final String entityIdType)
 	{
