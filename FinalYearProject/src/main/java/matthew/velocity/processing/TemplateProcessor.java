@@ -25,10 +25,15 @@ public class TemplateProcessor
 		this.outputDir = outputDir;
 	}
 
+    /**
+     * This processes an entitesType and ouputs the processed templates to file.
+     *
+     * @param entitiesType
+     */
 	public void processEntities(final EntitiesType entitiesType)
 	{
 		VelocityMarshaller velocityMarshaller = new VelocityMarshaller(entitiesType);
-		VelocityEntitiesType entities = velocityMarshaller.marshall(packagePath);
+		VelocityEntitiesType entities = velocityMarshaller.marshall();
 
 		createPom();
 		createWebXML();
@@ -36,11 +41,12 @@ public class TemplateProcessor
 		createHibernateProperties();
 		createLoggingProperties();
 
+        // Create and output a file for each of these for each entity
 		for (VelocityEntityType entity : entities.getEntities())
 		{
 			createEntities(entity);
-			createDaos(entity, entities);
-			createDaoImpls(entity, entities);
+			createDaos(entity);
+			createDaoImpls(entity);
 			createJaxbTypes(entity);
 			createRESTServices(entity);
 			createRESTServiceImpls(entity);
@@ -62,6 +68,9 @@ public class TemplateProcessor
 		createThymeleafIndexPage(entities);
 	}
 
+    /**
+     * create the project pom. This supplies all required information for maven to build the output project.
+     */
 	private void createPom()
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/PomTemplate.vm");
@@ -72,7 +81,9 @@ public class TemplateProcessor
 		outputToFile("pom.xml", entityTemplater.process());
 	}
 
-
+    /**
+     * Create the web.xml file. This provides the parameters for REST listener service and bootstrap location
+     */
 	private void createWebXML()
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/WebXMLTemplate.vm");
@@ -82,7 +93,9 @@ public class TemplateProcessor
 		outputToFile("src/main/webapp/WEB-INF/web.xml", entityTemplater.process());
 	}
 
-
+    /**
+     * Create the service.properties. This contains any Guice configuration properties
+     */
 	private void createServiceProperties()
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/ServicePropertiesTemplate.vm");
@@ -92,6 +105,9 @@ public class TemplateProcessor
 		outputToFile("src/main/resources/service.properties", entityTemplater.process());
 	}
 
+    /**
+     * Create the hibernate.properties file. This contains the hibernate connection configuration.
+     */
 	private void createHibernateProperties()
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/HibernatePropertiesTemplate.vm");
@@ -101,6 +117,9 @@ public class TemplateProcessor
 		outputToFile("src/main/resources/hibernate.properties", entityTemplater.process());
 	}
 
+    /**
+     * Create the log4j.properties file. This contains the config for using a log4j Logger
+     */
 	private void createLoggingProperties()
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/Log4jPropertiesTemplate.vm");
@@ -108,6 +127,10 @@ public class TemplateProcessor
 		outputToFile("src/main/resources/log4j.properties", entityTemplater.process());
 	}
 
+    /**
+     * Creates the Hibernate entity Java file for the given entity
+     * @param entity The entity to use in the generation
+     */
 	private void createEntities(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/EntityTemplate.vm");
@@ -120,29 +143,39 @@ public class TemplateProcessor
 		             entityTemplater.process());
 	}
 
-	private void createDaos(final VelocityEntityType entity, final VelocityEntitiesType entityTypeList)
+    /**
+     * Create the Hibernate Dao interface for the given entity.
+     * @param entity
+     */
+	private void createDaos(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/DaoTemplate.vm");
 
 		entityTemplater.put("entity", entity);
 		entityTemplater.put("package", packagePath);
-		entityTemplater.put("entityTypeList", entityTypeList);
 
 		outputToFile(getPackageFilePath("/hibernate/dao/" + entity.getName() + "Dao.java"), entityTemplater.process());
 	}
 
-	private void createDaoImpls(final VelocityEntityType entity, final VelocityEntitiesType entityTypeList)
+    /**
+     * Create the Hibernate Dao implementation for the given entity
+     * @param entity
+     */
+	private void createDaoImpls(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/DaoImplTemplate.vm");
 
 		entityTemplater.put("entity", entity);
 		entityTemplater.put("package", packagePath);
-		entityTemplater.put("entityTypeList", entityTypeList);
 
 		outputToFile(getPackageFilePath("/hibernate/dao/impl/" + entity.getName() + "DaoImpl.java"),
 		             entityTemplater.process());
 	}
 
+    /**
+     * Create the Jaxb type for the given entity
+     * @param entity
+     */
 	private void createJaxbTypes(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/JaxbTemplate.vm");
@@ -153,6 +186,10 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/jaxb/types/" + entity.getName() + "Type.java"), entityTemplater.process());
 	}
 
+    /**
+     * Create the REST service interface for the given entity
+     * @param entity
+     */
 	private void createRESTServices(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceTemplate.vm");
@@ -164,7 +201,10 @@ public class TemplateProcessor
 		             entityTemplater.process());
 	}
 
-
+    /**
+     * Create the REST service implementations for the given entity
+     * @param entity
+     */
 	private void createRESTServiceImpls(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceImplTemplate.vm");
@@ -176,7 +216,10 @@ public class TemplateProcessor
 		             entityTemplater.process());
 	}
 
-
+    /**
+     * Create the Marshaller for the project. There will be a marshall method created for all serialisable non-complex properties of each entity in entities
+     * @param entities
+     */
 	private void createMarshaller(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/MarshallerTemplate.vm");
@@ -187,6 +230,10 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/jaxb/serialisation/Marshaller.java"), entityTemplater.process());
 	}
 
+    /**
+     * Create the Unmarshaller for the project. There will be an unmarshall method created for all serialisable non-complex properties of each entity in entities
+     * @param entities
+     */
 	private void createUnmarshaller(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/UnmarshallerTemplate.vm");
@@ -197,7 +244,10 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/jaxb/serialisation/Unmarshaller.java"), entityTemplater.process());
 	}
 
-
+    /**
+     * Create the Hibernate module java file. A binding to the hibernate entity will be created for each entity in entities
+     * @param entities
+     */
 	private void createHibernateModule(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceHibernateModuleTemplate.vm");
@@ -208,6 +258,11 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/guice/modules/DBModule.java"), entityTemplater.process());
 	}
 
+    /**
+     * Create the REST module which will bind the REST service to the implementation for each entity in entities and
+     * register the service with the index service.
+     * @param entities
+     */
 	private void createRESTModule(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceRESTModuleTemplate.vm");
@@ -218,6 +273,9 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/guice/modules/RESTModule.java"), entityTemplater.process());
 	}
 
+    /**
+     * Create the Guice setup class which adds the modules for the hibernate entities, the REST services and thymeleaf
+     */
 	private void createGuiceSetup()
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceSetupTemplate.vm");

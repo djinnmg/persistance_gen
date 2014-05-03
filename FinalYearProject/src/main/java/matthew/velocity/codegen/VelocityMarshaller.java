@@ -23,12 +23,14 @@ public class VelocityMarshaller
 		velocityEntityList = new LinkedList<>();
 	}
 
-	public VelocityEntitiesType marshall(final String packagePath)
+    /**
+     * Marshall an EntitiesType to a VelocityEntitiesType
+     *
+     * @return the marshalled VelocityEntitiesType
+     */
+	public VelocityEntitiesType marshall()
 	{
 		VelocityEntitiesType velocityEntities = new VelocityEntitiesType();
-
-		velocityEntities.setPackagePath(packagePath);
-
 
 		for (EntityType entityType : entities.getEntity())
 		{
@@ -78,6 +80,12 @@ public class VelocityMarshaller
 	}
 
 
+    /**
+     * Search the list of velocity entities and return one which matches the passed in entity name
+     *
+     * @param entityName the name of the entity which you want to match
+     * @return will return a matching velocity entity or null if a match cannot be found
+     */
     private VelocityEntityType getVelocityEntityByName(final String entityName)
     {
         // check for already existing entities (may have been added to accommodate incoming field)
@@ -139,6 +147,12 @@ public class VelocityMarshaller
     }
 
 
+    /**
+     * Will marshall all the properties of an EntityType to a list of VelocityPropertyType.
+     *
+     * @param entity The EntityType to have it's properties marshalled.
+     * @return The list of marshalled VelocityPropertyType
+     */
 	private List<VelocityPropertyType> marshallProperties(final EntityType entity)
 	{
         List<VelocityPropertyType> velocityPropertyList = new LinkedList<>();
@@ -156,6 +170,14 @@ public class VelocityMarshaller
         return velocityPropertyList;
 	}
 
+
+    /**
+     * Marshall a propertyType to a VelocityPropertyType.
+     *
+     * @param property The PropertyType to be marshalled
+     * @param parentEntityName The name of the parent entity which the property belongs to. This is used when doing reverse mapping for complex types.
+     * @return The marshalled VelocityPropertyType
+     */
 	private VelocityPropertyType marshallProperty(final PropertyType property, final String parentEntityName)
 	{
 		final VelocityPropertyType velocityProperty = new VelocityPropertyType();
@@ -214,6 +236,16 @@ public class VelocityMarshaller
 	}
 
 
+    /**
+     * This will add a property to the entity which is being used as the type in a complex type mapping.
+     * The list of already marshalled VelocityEntityTypes will first be checked to the correct entity.
+     * A new VelocityEntity will be created if a matching one hasn't been found and added to the list of existing
+     * VelocityEntityTypes.
+     *
+     * @param property
+     * @param parentEntityName
+     * @param entityName
+     */
 	private void addPropertyToReversedMappedEntity(final PropertyType property, final String parentEntityName, final String entityName)
 	{
         // check if velocity entity with that name exists
@@ -228,7 +260,6 @@ public class VelocityMarshaller
             }
         }
 
-
         // if not create a new entity with name propertyTypeName
         VelocityEntityType velocityEntity = new VelocityEntityType();
 
@@ -241,47 +272,65 @@ public class VelocityMarshaller
         velocityEntityList.add(velocityEntity);
 	}
 
+    /**
+     * Create a new VelocityPropertyType for use with a reverse mapping of a complex type. Uses the properties incoming
+     * value for the created property name and the parent EntityTypes name for the type of the property.
+     * The reverse of the mapping will also be found for use as the annotation in the persistence types.
+     *
+     * @param property The PropertyType which contains the information to be reversed for creating the new VelocityPropertyType.
+     * @param parentEntityName The name of the parent EntityType which the property belongs to. This is used for the type of the created VelocityPropertyType.
+     * @return The newly created VelocityPropertyType to be used as the reverse mapping
+     */
+    private VelocityPropertyType getPropertyForReversedMappedEntity(final PropertyType property,
+                                                                    final String parentEntityName)
+    {
+        // get a property with name property.incoming of type parentEntity for reverse mapping a relationship
 
-	// get a property with name property.incoming of type parentEntity for reverse mapping a relationship
-	private VelocityPropertyType getPropertyForReversedMappedEntity(final PropertyType property,
-			final String parentEntityName)
-	{
-		VelocityPropertyType velocityProperty = new VelocityPropertyType();
+        VelocityPropertyType velocityProperty = new VelocityPropertyType();
 
-		velocityProperty.setType(getFormattedEntityName(parentEntityName));
-		velocityProperty.setComplex(true);
+        velocityProperty.setType(getFormattedEntityName(parentEntityName));
+        velocityProperty.setComplex(true);
 
-		if (StringUtils.isEmpty(property.getIncoming()))
-		{
-			throw new IllegalArgumentException(
-					"The complex property " + property.getName() + " in entity " + parentEntityName +
-					" has no incoming value set! This is required for complex properties!"
-			);
-		}
-		velocityProperty.setName(getFormattedPropertyName(property.getIncoming()));
-		// id must be serialised to allow for updating/deleting in UI
-		if (property.isId())
-		{
-			velocityProperty.setSerialise(true);
-		}
-		else
-		{
-			velocityProperty.setSerialise(property.isSerialise());
-		}
-		velocityProperty.setAnnotation(getReversedPropertyMapping(property.getMapping()));
+        if (StringUtils.isEmpty(property.getIncoming()))
+        {
+            throw new IllegalArgumentException(
+                    "The complex property " + property.getName() + " in entity " + parentEntityName +
+                            " has no incoming value set! This is required for complex properties!"
+            );
+        }
+        velocityProperty.setName(getFormattedPropertyName(property.getIncoming()));
+        // id must be serialised to allow for updating/deleting in UI
+        if (property.isId())
+        {
+            velocityProperty.setSerialise(true);
+        }
+        else
+        {
+            velocityProperty.setSerialise(property.isSerialise());
+        }
+        velocityProperty.setAnnotation(getReversedPropertyMapping(property.getMapping()));
 
-		// set isComplex based on mapping
-		if (StringUtils.equalsIgnoreCase(property.getMapping(), "ManyToOne") ||
-		    StringUtils.equalsIgnoreCase(property.getMapping(), "ManyToMany"))
-		{
-			velocityProperty.setCollection(true);
-		}
+        // set isComplex based on mapping
+        if (StringUtils.equalsIgnoreCase(property.getMapping(), "ManyToOne") ||
+                StringUtils.equalsIgnoreCase(property.getMapping(), "ManyToMany"))
+        {
+            velocityProperty.setCollection(true);
+        }
 
-		velocityProperty.setTextArea(property.isTextArea());
+        velocityProperty.setTextArea(property.isTextArea());
 
-		return velocityProperty;
-	}
+        return velocityProperty;
+    }
 
+
+    /**
+     * Try to get a valid property type for use in a VelocityPropertyType from a PropertyType.
+     * This will test against valid simple types and will return a valid type(taking nullability into account)
+     * if a match is found. Will return null if no match(assumed to be a complex type).
+     *
+     * @param property the property to try and find a valid type from
+     * @return a valid type if a simple type match is found or null if no match
+     */
     private String getValidPropertyType(final PropertyType property)
     {
         boolean isNullable = property.isNullable();
@@ -331,6 +380,14 @@ public class VelocityMarshaller
        return null;
     }
 
+    /**
+     * Try to find an entity with a name matching the type of the required property.
+     * Will return the formatted version of the entity name if a match is found or will throw an
+     * IllegalArgumentException if no match found as the required type is not valid.
+     *
+     * @param property The property containing the type to be matched against.
+     * @return The formatted entity name once a match is found.
+     */
     private String getComplexPropertyType(final PropertyType property)
     {
         // check for a property type within the entities
@@ -345,6 +402,13 @@ public class VelocityMarshaller
         throw new IllegalArgumentException(property.getType() + " is not a valid type!");
     }
 
+    /**
+     * Create the annotation for use in a VelocityPropertyType from a PropertyType.
+     * This is based on if the property is an ID, has a mapping and is nullable.
+     *
+     * @param property The property to use when determining the correct annotation
+     * @return The created annotation.
+     */
     private String getPropertyAnnotation(final PropertyType property)
     {
         String annotation;
@@ -370,6 +434,12 @@ public class VelocityMarshaller
         return annotation;
     }
 
+    /**
+     * Get a valid mapping for use in a hibernate annotation from a given property mapping
+     *
+     * @param mapping The mapping to validate and format
+     * @return The validated mapping
+     */
     private String getValidPropertyMapping(final String mapping)
     {
         final String oneToMany = "OneToMany";
@@ -394,7 +464,11 @@ public class VelocityMarshaller
         }
     }
 
-	// this is used for the reverse mapping of a property onto another type
+    /** This is used for the reverse mapping of a property onto another type.
+     *
+     * @param mapping The mapping to reverse
+     * @return The reversed mapping
+     */
 	private String getReversedPropertyMapping(final String mapping)
 	{
 		final String oneToMany = "OneToMany";
@@ -420,6 +494,12 @@ public class VelocityMarshaller
 	}
 
 
+    /**
+     * Validates and formats an entity name
+     *
+     * @param entityName the entity name to be validated and formatted
+     * @return the validated and formatted entity name
+     */
 	private String getFormattedEntityName(String entityName)
 	{
 		if (StringUtils.isNumeric("" + entityName.charAt(0)))
@@ -430,6 +510,12 @@ public class VelocityMarshaller
 		return StringUtils.capitalize(entityName.replaceAll("[^A-Za-z0-9]", ""));
 	}
 
+    /**
+     * Validates and formats a property name
+     *
+     * @param propertyName The property name to be validated and formatted
+     * @return The validated and formatted property name
+     */
 	private String getFormattedPropertyName(String propertyName)
 	{
 		if (StringUtils.isNumeric("" + propertyName.charAt(0)))

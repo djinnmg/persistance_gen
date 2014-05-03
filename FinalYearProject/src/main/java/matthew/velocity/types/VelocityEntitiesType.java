@@ -16,16 +16,4 @@ public class VelocityEntitiesType
 	{
 		this.entities = entities;
 	}
-
-	public String getPackagePath()
-	{
-		return packagePath;
-	}
-
-	public void setPackagePath(String packagePath)
-	{
-		this.packagePath = packagePath;
-	}
-
-	private String packagePath;
 }

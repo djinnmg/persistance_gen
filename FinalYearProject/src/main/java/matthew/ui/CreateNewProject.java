@@ -66,13 +66,6 @@ public class CreateNewProject {
 
                     setError("Success! The project has been generated at location: " + outputDirectory + "/" + projectName);
 
-                    // wait for 5s after showing success message before reloading main page
-                    try {
-                        wait(5000l);
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException("Failed while waiting after generation before reloading main page!", ex);
-                    }
-
                     new MainPage(frame).loadPanel();
                 }
             }
@@ -84,7 +77,8 @@ public class CreateNewProject {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                new ProjectOverview(frame, entities).loadPanel();
+                // want to create entities from the start to need to pass in empty entities tpye
+                new ProjectOverview(frame, new EntitiesType()).loadPanel();
             }
         });
     }
@@ -104,7 +98,14 @@ public class CreateNewProject {
         packagePathHintTextArea.setEnabled(false);
         projectNameHintTextArea.setEnabled(false);
 
-        //TODO
+        outputDirectoryHintTextArea.setWrapStyleWord(true);
+        packagePathHintTextArea.setWrapStyleWord(true);
+        projectNameHintTextArea.setWrapStyleWord(true);
+
+        outputDirectoryHintTextArea.setLineWrap(true);
+        packagePathHintTextArea.setLineWrap(true);
+        projectNameHintTextArea.setLineWrap(true);
+
         outputDirectoryHintTextArea.setText("This is the base directory into which the generated project will be output e.g. /home/Code. FilePaths must be alphanumeric with the first character being a letter. Trailing slashes are not valid. The filepath must also be above root.");
         packagePathHintTextArea.setText("This is the base package path to use in the generated code e.g. using com.test will produce a package path of com.test.rest.service for the rest service interfaces. The package path must be valid for use as a java package. It must be alphanumeric with the first character being a letter. Each level of the path is separated by a period but there must not be any trailing periods.");
         projectNameHintTextArea.setText("This is the name of the project which will be generated e.g. Demo. It must be alphanumeric with the first character being a letter.");
@@ -218,11 +219,11 @@ public class CreateNewProject {
         final Spacer spacer5 = new Spacer();
         createNewProjectPanel.add(spacer5, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, new Dimension(150, -1), null, 0, false));
         projectNameHintTextArea = new JTextArea();
-        createNewProjectPanel.add(projectNameHintTextArea, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        createNewProjectPanel.add(projectNameHintTextArea, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         packagePathHintTextArea = new JTextArea();
-        createNewProjectPanel.add(packagePathHintTextArea, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        createNewProjectPanel.add(packagePathHintTextArea, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         outputDirectoryHintTextArea = new JTextArea();
-        createNewProjectPanel.add(outputDirectoryHintTextArea, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        createNewProjectPanel.add(outputDirectoryHintTextArea, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JLabel label4 = new JLabel();
         label4.setText("Create New Project");
         createNewProjectPanel.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
