@@ -21,7 +21,7 @@ public class TemplateProcessor
 	public TemplateProcessor(final String packagePath, final String outputDir, final String projectName)
 	{
 		this.packagePath = packagePath;
-		this.projectName = projectName.replace(" ", "");
+		this.projectName = projectName;
 		this.outputDir = outputDir;
 	}
 

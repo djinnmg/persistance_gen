@@ -17,210 +17,153 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
 
-public class MainPage
-{
-	public static transient Logger log = Logger.getLogger(MainPage.class);
+public class MainPage {
+    public static transient Logger log = Logger.getLogger(MainPage.class);
 
-	private JPanel mainPagePanel;
-	private JTextField XMLDataModelLocationTextField;
-	private JButton generateProjectFromXMLButton;
-	private JButton createDataModelUsingButton;
-	private JTextArea errorTextArea;
+    private JPanel mainPagePanel;
+    private JTextField XMLDataModelLocationTextField;
+    private JButton generateProjectFromXMLButton;
+    private JButton createDataModelUsingButton;
+    private JTextArea errorTextArea;
 
-	private final JFrame frame;
+    private final JFrame frame;
 
-	public MainPage(final JFrame frame)
-	{
-		this.frame = frame;
+    public MainPage(final JFrame frame) {
+        this.frame = frame;
 
 
-		createDataModelUsingButton.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				super.mouseClicked(e);
+        createDataModelUsingButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
 
-				final EntitiesType entities = new EntitiesType();
+                final EntitiesType entities = new EntitiesType();
 
-				new ProjectOverview(frame, entities).loadPanel();
-			}
-		});
+                new ProjectOverview(frame, entities).loadPanel();
+            }
+        });
 
 
-		generateProjectFromXMLButton.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				super.mouseClicked(e);
-				resetError();
+        generateProjectFromXMLButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                resetError();
 
-				final EntitiesType entities = getEntitiesFromXml(XMLDataModelLocationTextField.getText());
+                final EntitiesType entities = getEntitiesFromXml(XMLDataModelLocationTextField.getText());
 
-				if (entities != null)
-				{
-					new CreateNewProject(frame, entities).loadPanel();
-				}
-			}
-		});
-	}
+                if (entities != null) {
+                    new CreateNewProject(frame, entities).loadPanel();
+                }
+            }
+        });
+    }
 
-	public void loadPanel()
-	{
-		frame.setContentPane(mainPagePanel);
-		frame.revalidate();
+    public void loadPanel() {
+        frame.setContentPane(mainPagePanel);
+        frame.revalidate();
 
-		errorTextArea.setEnabled(false);
-	}
+        errorTextArea.setEnabled(false);
+    }
 
 
-	private EntitiesType getEntitiesFromXml(final String dataModelLocation)
-	{
-		JAXBSerialiser serialiser = JAXBSerialiser.getInstance(ObjectFactory.class);
+    private EntitiesType getEntitiesFromXml(final String dataModelLocation) {
+        JAXBSerialiser serialiser = JAXBSerialiser.getInstance(ObjectFactory.class);
 
-		// load xml file
-		// deserialise
+        // load xml file
+        // deserialise
 
         // TODO change to use absolute path, not from resources dir
-		InputStream is = getClass().getResourceAsStream(dataModelLocation);
+        InputStream is = getClass().getResourceAsStream(dataModelLocation);
 
-		if (is == null)
-		{
-			setError("Could not find resource at location: " + dataModelLocation);
-			return null;
-		}
+        if (is == null) {
+            setError("Could not find resource at location: " + dataModelLocation);
+            return null;
+        }
 
-		EntitiesType entitiesType = (
-				(JAXBElement<EntitiesType>) serialiser
-						.deserialise(is)).getValue();
+        EntitiesType entitiesType = (
+                (JAXBElement<EntitiesType>) serialiser
+                        .deserialise(is)).getValue();
 
-		// validate
-		if (validateEntities(entitiesType))
-		{
-			return entitiesType;
-		}
-		else
-		{
-			return null;
-		}
-	}
+        // validate
+        if (validateEntities(entitiesType)) {
+            return entitiesType;
+        } else {
+            return null;
+        }
+    }
 
-	private boolean validateEntities(final EntitiesType entitiesType)
-	{
-		String errorMessage = JaxbTypeValidator.validateEntityStructure(entitiesType);
+    private boolean validateEntities(final EntitiesType entitiesType) {
+        String errorMessage = JaxbTypeValidator.validateEntityStructure(entitiesType);
 
-		if (StringUtils.isNotEmpty(errorMessage))
-		{
-			setError(errorMessage);
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
+        if (StringUtils.isNotEmpty(errorMessage)) {
+            setError(errorMessage);
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-	private void resetError()
-	{
-		errorTextArea.setText("");
-	}
+    private void resetError() {
+        errorTextArea.setText("");
+    }
 
-	private void setError(final String errorMessage)
-	{
-		errorTextArea.setText(errorMessage);
-		log.warn(errorMessage);
-	}
+    private void setError(final String errorMessage) {
+        errorTextArea.setText(errorMessage);
+        log.warn(errorMessage);
+    }
 
 
-	{
+    {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
 // >>> IMPORTANT!! <<<
 // DO NOT EDIT OR ADD ANY CODE HERE!
-		$$$setupUI$$$();
-	}
+        $$$setupUI$$$();
+    }
 
-	/**
-	 * Method generated by IntelliJ IDEA GUI Designer
-	 * >>> IMPORTANT!! <<<
-	 * DO NOT edit this method OR call it in your code!
-	 *
-	 * @noinspection ALL
-	 */
-	private void $$$setupUI$$$()
-	{
-		mainPagePanel = new JPanel();
-		mainPagePanel.setLayout(new GridLayoutManager(6, 4, new Insets(0, 0, 0, 0), -1, -1));
-		final JLabel label1 = new JLabel();
-		label1.setText("Relational Database Generation");
-		mainPagePanel.add(label1,
-		                  new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-		                                      GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null,
-		                                      null, null, 0, false)
-		);
-		final Spacer spacer1 = new Spacer();
-		mainPagePanel.add(spacer1,
-		                  new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-		                                      1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false)
-		);
-		final Spacer spacer2 = new Spacer();
-		mainPagePanel.add(spacer2,
-		                  new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-		                                      1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false)
-		);
-		final Spacer spacer3 = new Spacer();
-		mainPagePanel.add(spacer3, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                               GridConstraints.FILL_HORIZONTAL,
-		                                               GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0,
-		                                               false));
-		generateProjectFromXMLButton = new JButton();
-		generateProjectFromXMLButton.setText("Generate Project From XML");
-		generateProjectFromXMLButton.setMnemonic('G');
-		generateProjectFromXMLButton.setDisplayedMnemonicIndex(0);
-		mainPagePanel.add(generateProjectFromXMLButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                                    GridConstraints.FILL_HORIZONTAL,
-		                                                                    GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                                                    GridConstraints.SIZEPOLICY_CAN_GROW,
-		                                                                    GridConstraints.SIZEPOLICY_FIXED, null,
-		                                                                    null, null, 0, false
-		));
-		XMLDataModelLocationTextField = new JTextField();
-		mainPagePanel.add(XMLDataModelLocationTextField,
-		                  new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
-		                                      GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED,
-		                                      null, new Dimension(150, -1), null, 0, false)
-		);
-		final JLabel label2 = new JLabel();
-		label2.setText("XML Data Model Location");
-		mainPagePanel.add(label2,
-		                  new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-		                                      GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null,
-		                                      null, null, 0, false)
-		);
-		createDataModelUsingButton = new JButton();
-		createDataModelUsingButton.setText("Create Data Model Using GUI");
-		createDataModelUsingButton.setMnemonic('C');
-		createDataModelUsingButton.setDisplayedMnemonicIndex(0);
-		mainPagePanel.add(createDataModelUsingButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-		                                                                  GridConstraints.FILL_HORIZONTAL,
-		                                                                  GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                                                  GridConstraints.SIZEPOLICY_CAN_GROW,
-		                                                                  GridConstraints.SIZEPOLICY_FIXED, null, null,
-		                                                                  null, 0, false
-		));
-		errorTextArea = new JTextArea();
-		mainPagePanel.add(errorTextArea,
-		                  new GridConstraints(5, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-		                                      GridConstraints.SIZEPOLICY_WANT_GROW,
-		                                      GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null,
-		                                      0, false)
-		);
-		label2.setLabelFor(XMLDataModelLocationTextField);
-	}
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        mainPagePanel = new JPanel();
+        mainPagePanel.setLayout(new GridLayoutManager(6, 4, new Insets(0, 0, 0, 0), -1, -1));
+        final JLabel label1 = new JLabel();
+        label1.setText("Relational Database Generation");
+        mainPagePanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        mainPagePanel.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        mainPagePanel.add(spacer2, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        mainPagePanel.add(spacer3, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        generateProjectFromXMLButton = new JButton();
+        generateProjectFromXMLButton.setText("Generate Project From XML");
+        generateProjectFromXMLButton.setMnemonic('G');
+        generateProjectFromXMLButton.setDisplayedMnemonicIndex(0);
+        mainPagePanel.add(generateProjectFromXMLButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        XMLDataModelLocationTextField = new JTextField();
+        mainPagePanel.add(XMLDataModelLocationTextField, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label2 = new JLabel();
+        label2.setText("XML Data Model Location");
+        mainPagePanel.add(label2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        createDataModelUsingButton = new JButton();
+        createDataModelUsingButton.setText("Create Data Model Using GUI");
+        createDataModelUsingButton.setMnemonic('C');
+        createDataModelUsingButton.setDisplayedMnemonicIndex(0);
+        mainPagePanel.add(createDataModelUsingButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        errorTextArea = new JTextArea();
+        mainPagePanel.add(errorTextArea, new GridConstraints(5, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        label2.setLabelFor(XMLDataModelLocationTextField);
+    }
 
-	/**
-	 * @noinspection ALL
-	 */
-	public JComponent $$$getRootComponent$$$()
-	{ return mainPagePanel; }
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return mainPagePanel;
+    }
 }
