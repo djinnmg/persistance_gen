@@ -82,6 +82,7 @@ public class MainPage
 		// load xml file
 		// deserialise
 
+        // TODO change to use absolute path, not from resources dir
 		InputStream is = getClass().getResourceAsStream(dataModelLocation);
 
 		if (is == null)
