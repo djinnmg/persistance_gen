@@ -1,5 +1,6 @@
 package matthew.main;
 
+import matthew.velocity.processing.TemplateProcessor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

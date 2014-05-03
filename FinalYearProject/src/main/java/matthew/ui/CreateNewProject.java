@@ -6,7 +6,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import com.peterphi.std.util.jaxb.JAXBSerialiser;
 import matthew.jaxb.types.EntitiesType;
 import matthew.jaxb.types.ObjectFactory;
-import matthew.main.TemplateProcessor;
+import matthew.velocity.processing.TemplateProcessor;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -112,16 +112,16 @@ public class CreateNewProject
 		projectNameHintTextArea.setEnabled(false);
 
 		//TODO
-		outputDirectoryHintTextArea.setText("");
-		packagePathHintTextArea.setText("");
-		projectNameHintTextArea.setText("");
+		outputDirectoryHintTextArea.setText("This is the base directory into which the generated project will be output e.g. /home/Code. FilePaths must be alphanumeric with the first character being a letter. Trailing slashes are not valid. The filepath must also be above root.");
+		packagePathHintTextArea.setText("This is the base package path to use in the generated code e.g. using com.test will produce a package path of com.test.rest.service for the rest service interfaces. The package path must be valid for use as a java package. It must be alphanumeric with the first character being a letter. Each level of the path is separated by a period but there must not be any trailing periods.");
+		projectNameHintTextArea.setText("This is the name of the project which will be generated e.g. Demo. It must be alphanumeric with the first character being a letter.");
 	}
 
 	private boolean validateOutputDirectoryPath(final String outputPath)
 	{
 		log.debug("Validating output directory: " + outputPath);
 		// only alphanumeric with 1st char being a letter, no trailing slashes, / not allowed either
-		return Pattern.matches("^[/~][a-zA-Z][a-zA-Z0-9]*(/[a-zA-Z][a-zA-Z0-9]*)*$", outputPath);
+		return Pattern.matches("^/[a-zA-Z][a-zA-Z0-9]*(/[a-zA-Z][a-zA-Z0-9]*)*$", outputPath);
 	}
 
 	private boolean validatePackagePath(final String packagePath)

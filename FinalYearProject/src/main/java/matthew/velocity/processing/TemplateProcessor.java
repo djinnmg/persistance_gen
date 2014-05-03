@@ -1,4 +1,4 @@
-package matthew.main;
+package matthew.velocity.processing;
 
 import matthew.jaxb.types.EntitiesType;
 import matthew.velocity.codegen.Templater;
@@ -95,6 +95,8 @@ public class TemplateProcessor
 	private void createHibernateProperties()
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/HibernatePropertiesTemplate.vm");
+
+        entityTemplater.put("projectName", projectName);
 
 		outputToFile("src/main/resources/hibernate.properties", entityTemplater.process());
 	}
