@@ -45,6 +45,11 @@ public class VelocityEntityType
 	// the type of the id
 	private String idType;
 
+	/**
+	 * Gets the entities name in a camel case form. This is useful in the thymeleaf template processing
+	 *
+	 * @return The formatted entity name
+	 */
 	public String getCamelCaseName()
 	{
 		if (StringUtils.isEmpty(name))
@@ -56,6 +61,11 @@ public class VelocityEntityType
 	}
 
 
+	/**
+	 * Gets the Object form of the ID
+	 *
+	 * @return The Object form of the IDs simple type
+	 */
 	public String getCapitalisedIdType()
 	{
 		switch (idType)
@@ -65,7 +75,8 @@ public class VelocityEntityType
 			case "int":
 				return "Integer";
 			default:
-				throw new IllegalArgumentException("Cannot get capitalised version of id with type " + idType + "! Only int and long are supported.");
+				throw new IllegalArgumentException("Cannot get capitalised version of id with type " + idType +
+				                                   "! Only int and long are supported.");
 		}
 	}
 

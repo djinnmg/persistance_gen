@@ -14,178 +14,268 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ProjectOverview {
-    public static transient Logger log = Logger.getLogger(ProjectOverview.class);
+public class ProjectOverview
+{
+	public static transient Logger log = Logger.getLogger(ProjectOverview.class);
 
-    private JPanel projectOverviewPanel;
-    private JList<String> entitiesList;
-    private JButton addNewEntityButton;
-    private JButton validateEntityStructureButton;
-    private JButton createProjectButton;
-    private JTextArea errorTextArea;
-
-
-    private final JFrame frame;
-    private final EntitiesType entities;
-
-    public ProjectOverview(final JFrame frame, final EntitiesType entities) {
-        this.frame = frame;
-        this.entities = entities;
+	private JPanel projectOverviewPanel;
+	private JList<String> entitiesList;
+	private JButton addNewEntityButton;
+	private JButton validateEntityStructureButton;
+	private JButton createProjectButton;
+	private JTextArea errorTextArea;
 
 
-        addNewEntityButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                new CreateNewEntity(frame, entities).LoadPanel();
-            }
-        });
+	private final JFrame frame;
+	private final EntitiesType entities;
 
+	public ProjectOverview(final JFrame frame, final EntitiesType entities)
+	{
+		this.frame = frame;
+		this.entities = entities;
 
-        entitiesList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+		// Open the page for creating new entities
+		addNewEntityButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				super.mouseClicked(e);
+				new CreateNewEntity(frame, entities).LoadPanel();
+			}
+		});
 
-                JList list = (JList) e.getSource();
-                if (e.getClickCount() == 2) {
-                    int index = list.locationToIndex(e.getPoint());
+		// If any entities are double clicked on, open the associated entity overview page
+		entitiesList.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				super.mouseClicked(e);
 
-                    final EntityType selectedEntity = entities.getEntity().get(index);
+				JList list = (JList) e.getSource();
+				if (e.getClickCount() == 2)
+				{
+					int index = list.locationToIndex(e.getPoint());
 
-                    new EntityOverview(frame, entities, selectedEntity).loadPanel();
-                }
-            }
-        });
+					final EntityType selectedEntity = entities.getEntity().get(index);
 
+					new EntityOverview(frame, entities, selectedEntity).loadPanel();
+				}
+			}
+		});
 
-        createProjectButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                resetError();
+		// Validate entity structure and open create new project page
+		createProjectButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				super.mouseClicked(e);
+				resetError();
 
-                String errorString = JaxbTypeValidator.validateEntityStructure(entities);
+				// validate
+				String errorString = JaxbTypeValidator.validateEntityStructure(entities);
 
-                if (StringUtils.isNotEmpty(errorString)) {
-                    setError(errorString);
-                } else {
-                    new CreateNewProject(frame, entities).loadPanel();
-                }
-            }
-        });
+				if (StringUtils.isNotEmpty(errorString))
+				{
+					setError(errorString);
+				}
+				else
+				{
+					new CreateNewProject(frame, entities).loadPanel();
+				}
+			}
+		});
 
+		// Validate entity structure
+		validateEntityStructureButton.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				super.mouseClicked(e);
+				resetError();
 
-        validateEntityStructureButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                resetError();
+				// validate
+				String errorString = JaxbTypeValidator.validateEntityStructure(entities);
 
-                String errorString = JaxbTypeValidator.validateEntityStructure(entities);
+				if (StringUtils.isNotEmpty(errorString))
+				{
+					setError(errorString);
+				}
+				else
+				{
+					errorTextArea.setText("Valid");
+				}
+			}
+		});
+	}
 
-                if (StringUtils.isNotEmpty(errorString)) {
-                    setError(errorString);
-                } else {
-                    errorTextArea.setText("Valid");
-                }
-            }
-        });
-    }
+	/**
+	 * Loads the projectOverview panel
+	 */
+	public void loadPanel()
+	{
+		frame.setContentPane(projectOverviewPanel);
+		frame.revalidate();
 
-    public void loadPanel() {
-        frame.setContentPane(projectOverviewPanel);
-        frame.revalidate();
+		errorTextArea.setEnabled(false);
 
-        errorTextArea.setEnabled(false);
+		loadEntityList();
+	}
 
-        loadEntityList();
-    }
+	/**
+	 * Populates the entitiesList with all the entity names
+	 */
+	private void loadEntityList()
+	{
+		DefaultListModel<String> listModel = new DefaultListModel<>();
 
+		for (EntityType entity : entities.getEntity())
+		{
+			listModel.addElement(entity.getName());
+		}
 
-    private void loadEntityList() {
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+		entitiesList.setModel(listModel);
+	}
 
-        for (EntityType entity : entities.getEntity()) {
-            listModel.addElement(entity.getName());
-        }
+	/**
+	 * Resets the error text area
+	 */
+	private void resetError()
+	{
+		errorTextArea.setText("");
+	}
 
-        entitiesList.setModel(listModel);
-    }
+	/**
+	 * Sets the value of the error text area and logs the error
+	 *
+	 * @param error the message to be output
+	 */
+	private void setError(final String error)
+	{
+		errorTextArea.setText(error);
+		log.warn(error);
+	}
 
-    private void resetError() {
-        errorTextArea.setText("");
-    }
-
-    private void setError(final String error) {
-        errorTextArea.setText(error);
-        log.warn(error);
-    }
-
-    {
+	{
 // GUI initializer generated by IntelliJ IDEA GUI Designer
 // >>> IMPORTANT!! <<<
 // DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+		$$$setupUI$$$();
+	}
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        projectOverviewPanel = new JPanel();
-        projectOverviewPanel.setLayout(new GridLayoutManager(9, 4, new Insets(5, 5, 5, 5), -1, -1));
-        final JScrollPane scrollPane1 = new JScrollPane();
-        projectOverviewPanel.add(scrollPane1, new GridConstraints(3, 0, 4, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(500, 400), new Dimension(500, 500), new Dimension(500, 600), 0, false));
-        entitiesList = new JList();
-        scrollPane1.setViewportView(entitiesList);
-        final JLabel label1 = new JLabel();
-        label1.setText("Project Overview");
-        projectOverviewPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(305, 18), null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Entities");
-        projectOverviewPanel.add(label2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(305, 18), null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        projectOverviewPanel.add(spacer1, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        addNewEntityButton = new JButton();
-        addNewEntityButton.setText("Add New Entity");
-        addNewEntityButton.setMnemonic('A');
-        addNewEntityButton.setDisplayedMnemonicIndex(0);
-        projectOverviewPanel.add(addNewEntityButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        validateEntityStructureButton = new JButton();
-        validateEntityStructureButton.setText("Validate Entity Structure");
-        validateEntityStructureButton.setMnemonic('V');
-        validateEntityStructureButton.setDisplayedMnemonicIndex(0);
-        projectOverviewPanel.add(validateEntityStructureButton, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        createProjectButton = new JButton();
-        createProjectButton.setText("Create Project");
-        createProjectButton.setMnemonic('C');
-        createProjectButton.setDisplayedMnemonicIndex(0);
-        projectOverviewPanel.add(createProjectButton, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        projectOverviewPanel.add(spacer2, new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        projectOverviewPanel.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(305, 15), null, 0, false));
-        final Spacer spacer4 = new Spacer();
-        projectOverviewPanel.add(spacer4, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, 1, null, new Dimension(5, -1), new Dimension(5, -1), 0, false));
-        errorTextArea = new JTextArea();
-        projectOverviewPanel.add(errorTextArea, new GridConstraints(8, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(305, 150), null, 0, false));
-        final Spacer spacer5 = new Spacer();
-        projectOverviewPanel.add(spacer5, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(305, 15), null, 0, false));
-    }
+	/**
+	 * Method generated by IntelliJ IDEA GUI Designer
+	 * >>> IMPORTANT!! <<<
+	 * DO NOT edit this method OR call it in your code!
+	 *
+	 * @noinspection ALL
+	 */
+	private void $$$setupUI$$$()
+	{
+		projectOverviewPanel = new JPanel();
+		projectOverviewPanel.setLayout(new GridLayoutManager(9, 4, new Insets(5, 5, 5, 5), -1, -1));
+		final JScrollPane scrollPane1 = new JScrollPane();
+		projectOverviewPanel.add(scrollPane1, new GridConstraints(3, 0, 4, 1, GridConstraints.ANCHOR_NORTHWEST,
+		                                                          GridConstraints.FILL_NONE,
+		                                                          GridConstraints.SIZEPOLICY_FIXED,
+		                                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                                          GridConstraints.SIZEPOLICY_WANT_GROW,
+		                                                          new Dimension(500, 400), new Dimension(500, 500),
+		                                                          new Dimension(500, 600), 0, false));
+		entitiesList = new JList();
+		scrollPane1.setViewportView(entitiesList);
+		final JLabel label1 = new JLabel();
+		label1.setText("Project Overview");
+		projectOverviewPanel.add(label1,
+		                         new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST,
+		                                             GridConstraints.FILL_NONE,
+		                                             GridConstraints.SIZEPOLICY_FIXED,
+		                                             GridConstraints.SIZEPOLICY_FIXED,
+		                                             null, new Dimension(305, 18), null, 0, false));
+		final JLabel label2 = new JLabel();
+		label2.setText("Entities");
+		projectOverviewPanel.add(label2,
+		                         new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST,
+		                                             GridConstraints.FILL_NONE,
+		                                             GridConstraints.SIZEPOLICY_FIXED,
+		                                             GridConstraints.SIZEPOLICY_FIXED,
+		                                             null, new Dimension(305, 18), null, 0, false));
+		final Spacer spacer1 = new Spacer();
+		projectOverviewPanel.add(spacer1, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER,
+		                                                      GridConstraints.FILL_HORIZONTAL,
+		                                                      GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null,
+		                                                      null,
+		                                                      0, false));
+		addNewEntityButton = new JButton();
+		addNewEntityButton.setText("Add New Entity");
+		addNewEntityButton.setMnemonic('A');
+		addNewEntityButton.setDisplayedMnemonicIndex(0);
+		projectOverviewPanel.add(addNewEntityButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST,
+		                                                                 GridConstraints.FILL_NONE,
+		                                                                 GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                                                 GridConstraints.SIZEPOLICY_CAN_GROW,
+		                                                                 GridConstraints.SIZEPOLICY_FIXED, null, null,
+		                                                                 null, 0, false));
+		validateEntityStructureButton = new JButton();
+		validateEntityStructureButton.setText("Validate Entity Structure");
+		validateEntityStructureButton.setMnemonic('V');
+		validateEntityStructureButton.setDisplayedMnemonicIndex(0);
+		projectOverviewPanel.add(validateEntityStructureButton,
+		                         new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST,
+		                                             GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                                                        GridConstraints.SIZEPOLICY_CAN_GROW,
+		                                             GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		createProjectButton = new JButton();
+		createProjectButton.setText("Create Project");
+		createProjectButton.setMnemonic('C');
+		createProjectButton.setDisplayedMnemonicIndex(0);
+		projectOverviewPanel.add(createProjectButton, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST,
+		                                                                  GridConstraints.FILL_NONE,
+		                                                                  GridConstraints.SIZEPOLICY_CAN_SHRINK |
+		                                                                  GridConstraints.SIZEPOLICY_CAN_GROW,
+		                                                                  GridConstraints.SIZEPOLICY_FIXED, null, null,
+		                                                                  null, 0, false));
+		final Spacer spacer2 = new Spacer();
+		projectOverviewPanel.add(spacer2, new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
+		                                                      GridConstraints.FILL_VERTICAL, 1,
+		                                                      GridConstraints.SIZEPOLICY_WANT_GROW, null, null,
+		                                                      null, 0,
+		                                                      false));
+		final Spacer spacer3 = new Spacer();
+		projectOverviewPanel.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
+		                                                      GridConstraints.FILL_VERTICAL, 1,
+		                                                      GridConstraints.SIZEPOLICY_WANT_GROW, null,
+		                                                      new Dimension(305, 15), null, 0, false));
+		final Spacer spacer4 = new Spacer();
+		projectOverviewPanel.add(spacer4, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
+		                                                      GridConstraints.FILL_HORIZONTAL,
+		                                                      GridConstraints.SIZEPOLICY_FIXED, 1, null,
+		                                                      new Dimension(5, -1), new Dimension(5, -1), 0, false));
+		errorTextArea = new JTextArea();
+		projectOverviewPanel.add(errorTextArea, new GridConstraints(8, 0, 1, 4, GridConstraints.ANCHOR_CENTER,
+		                                                            GridConstraints.FILL_BOTH,
+		                                                            GridConstraints.SIZEPOLICY_WANT_GROW,
+		                                                            GridConstraints.SIZEPOLICY_WANT_GROW, null,
+		                                                            new Dimension(305, 150), null, 0, false));
+		final Spacer spacer5 = new Spacer();
+		projectOverviewPanel.add(spacer5, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
+		                                                      GridConstraints.FILL_VERTICAL, 1,
+		                                                      GridConstraints.SIZEPOLICY_WANT_GROW, null,
+		                                                      new Dimension(305, 15), null, 0, false));
+	}
 
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return projectOverviewPanel;
-    }
+	/**
+	 * @noinspection ALL
+	 */
+	public JComponent $$$getRootComponent$$$()
+	{
+		return projectOverviewPanel;
+	}
 
-    //	private boolean validateEntityStructure(final EntitiesType entitiesType)
+	//	private boolean validateEntityStructure(final EntitiesType entitiesType)
 //	{
 //		if (entitiesType.getEntity().isEmpty())
 //		{

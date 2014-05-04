@@ -5,7 +5,9 @@ import org.apache.velocity.app.VelocityEngine;
 
 import java.io.StringWriter;
 
-
+/**
+ * Helper class to ease Velocity template processing
+ */
 public class Templater
 {
 	private final String template;
@@ -19,14 +21,23 @@ public class Templater
 		this.context = new VelocityContext();
 	}
 
-
+	/**
+	 * Puts a provided value into the VelocityContext
+	 *
+	 * @param key   The name to key the provided value with
+	 * @param value The value to insert into the VelocityContext
+	 */
 	public void put(String key, Object value)
 	{
 		context.put(key, value);
 	}
 
-
-	public String process()
+	/**
+	 * Processes the template using the VelocityEngine and outputs processed template as a String
+	 *
+	 * @return the processed template
+	 */
+	public String processTemplate()
 	{
 		final StringWriter sw = new StringWriter();
 
