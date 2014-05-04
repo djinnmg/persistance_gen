@@ -87,9 +87,7 @@ public class CreateNewProject
 			}
 		});
 
-		/**
-		 * return to entities designer page to modify entities if required
-		 */
+		//return to entities designer page to modify entities if required
 		backToEntityDesignerButton.addMouseListener(new MouseAdapter()
 		{
 			@Override
