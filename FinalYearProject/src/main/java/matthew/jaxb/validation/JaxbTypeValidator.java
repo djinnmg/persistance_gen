@@ -89,13 +89,6 @@ public class JaxbTypeValidator
 							       " " +
 							       "complex type!";
 						}
-						// if a property is complex, incoming is required
-						else if (StringUtils.isEmpty(property.getIncoming()))
-						{
-							return "Complex property " + property.getName() + " in entity " + entity.getName() +
-							       " does not have a value for 'incoming'. This is a required field for complex " +
-							       "properties.";
-						}
 						// if a property is complex, mapping is required
 						else if (StringUtils.isEmpty(property.getMapping()))
 						{

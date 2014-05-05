@@ -7,7 +7,7 @@
 	</entity>
 	<entity name="Project">
 		<property id="true" name="id" type="long" serialise="false"/>
-		<property name="Title" type="string"/>
+		<property name="title" type="string"/>
 		<property name="users" type="User" incoming="projects" mapping="ManyToMany" serialise="false" />
 			<!--If a mapping is not specified for a complex type an error will be thrown, it will be ignored for simple types-->
 			<!--Serialisation of complex types won't be supported.

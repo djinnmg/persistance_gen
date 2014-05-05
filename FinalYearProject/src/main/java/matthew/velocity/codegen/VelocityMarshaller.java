@@ -197,8 +197,9 @@ public class VelocityMarshaller
 			velocityProperty.setSerialise(property.isSerialise());
 		}
 
-		velocityProperty.setAnnotation(getPropertyAnnotation(property));
 		velocityProperty.setTextArea(property.isTextArea());
+
+        boolean isComplexProperty = false;
 
 		String propertyType = getValidPropertyType(property);
 
@@ -209,6 +210,8 @@ public class VelocityMarshaller
 		else
 		// property is complex so processTemplate it
 		{
+            isComplexProperty = true;
+
 			if (property.isId())
 			{
 				throw new IllegalArgumentException("Cannot use complex type as Id! Property: " + property.getName());
@@ -223,9 +226,12 @@ public class VelocityMarshaller
 			// set the velocity property
 			velocityProperty.setType(complexPropertyType);
 
-			// add the reversed property to the entity which is the of the type of this property
-			addPropertyToReversedMappedEntity(property, parentEntityName, complexPropertyType);
+            if (StringUtils.isNotEmpty(property.getIncoming()))
+            			// add the reversed property to the entity which is the of the type of this property
+                addPropertyToReversedMappedEntity(property, parentEntityName, complexPropertyType);
 		}
+
+        velocityProperty.setAnnotation(getPropertyAnnotation(property, isComplexProperty));
 
 		// check if the property if a collection
 		if (StringUtils.equalsIgnoreCase(velocityProperty.getAnnotation(), "OneToMany") ||
@@ -416,7 +422,7 @@ public class VelocityMarshaller
 	 * @param property The property to use when determining the correct annotation
 	 * @return The created annotation.
 	 */
-	private String getPropertyAnnotation(final PropertyType property)
+	private String getPropertyAnnotation(final PropertyType property, final boolean complex)
 	{
 		String annotation;
 
@@ -424,7 +430,8 @@ public class VelocityMarshaller
 		{
 			annotation = "Id";
 		}
-		else if (StringUtils.isEmpty(property.getMapping()))
+        // property.getMapping should be ignored for simple types
+		else if (!complex)
 		{
 			annotation = "Column";
 
