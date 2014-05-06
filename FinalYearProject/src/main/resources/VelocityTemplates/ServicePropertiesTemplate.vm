@@ -3,3 +3,6 @@ guice.bootstrap.class=${package}.guice.setup.Setup
 
 
 hibernate.properties=hibernate.properties
+
+# Set this to true to use the test implementations of the REST services
+use.test.rest.services=false

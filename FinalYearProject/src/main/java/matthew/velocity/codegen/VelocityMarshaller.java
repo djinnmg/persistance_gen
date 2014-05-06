@@ -52,7 +52,7 @@ public class VelocityMarshaller
 	 *
 	 * @param entity The EntityType to be marshalled.
 	 */
-	private VelocityEntityType marshallEntity(final EntityType entity)
+	public VelocityEntityType marshallEntity(final EntityType entity)
 	{
 		if (StringUtils.isEmpty(entity.getName()))
 		{
@@ -108,7 +108,7 @@ public class VelocityMarshaller
 	 * @param entity Is an entity to be tested for having an id.
 	 * @return A string containing the entities Id type.
 	 */
-	private String getEntityIdType(final EntityType entity)
+	public String getEntityIdType(final EntityType entity)
 	{
 		String entityIdType = null;
 
@@ -180,7 +180,7 @@ public class VelocityMarshaller
 	 *                         reverse mapping for complex types.
 	 * @return The marshalled VelocityPropertyType
 	 */
-	private VelocityPropertyType marshallProperty(final PropertyType property, final String parentEntityName)
+	public VelocityPropertyType marshallProperty(final PropertyType property, final String parentEntityName)
 	{
 		final VelocityPropertyType velocityProperty = new VelocityPropertyType();
 
@@ -292,7 +292,7 @@ public class VelocityMarshaller
 	 *                         type of the created VelocityPropertyType.
 	 * @return The newly created VelocityPropertyType to be used as the reverse mapping
 	 */
-	private VelocityPropertyType getPropertyForReversedMappedEntity(final PropertyType property,
+	public VelocityPropertyType getPropertyForReversedMappedEntity(final PropertyType property,
 			final String parentEntityName)
 	{
 		// get a property with name property.incoming of type parentEntity for reverse mapping a relationship
@@ -310,15 +310,12 @@ public class VelocityMarshaller
 			);
 		}
 		velocityProperty.setName(getFormattedPropertyName(property.getIncoming()));
-		// id must be serialised to allow for updating/deleting in UI
-		if (property.isId())
-		{
-			velocityProperty.setSerialise(true);
-		}
-		else
-		{
-			velocityProperty.setSerialise(property.isSerialise());
-		}
+
+		// we don't serialise complex types which a reverse mapping must be
+		velocityProperty.setSerialise(false);
+		// this complex type can't be the id
+		velocityProperty.setId(false);
+
 		velocityProperty.setAnnotation(getReversedPropertyMapping(property.getMapping()));
 
 		// set isComplex based on mapping
@@ -328,7 +325,8 @@ public class VelocityMarshaller
 			velocityProperty.setCollection(true);
 		}
 
-		velocityProperty.setTextArea(property.isTextArea());
+		// this must be a complex type so being a text area makes no sense
+		velocityProperty.setTextArea(false);
 
 		return velocityProperty;
 	}
@@ -422,7 +420,7 @@ public class VelocityMarshaller
 	 * @param property The property to use when determining the correct annotation
 	 * @return The created annotation.
 	 */
-	private String getPropertyAnnotation(final PropertyType property, final boolean complex)
+	public String getPropertyAnnotation(final PropertyType property, final boolean complex)
 	{
 		String annotation;
 
@@ -454,7 +452,7 @@ public class VelocityMarshaller
 	 * @param mapping The mapping to validate and format
 	 * @return The validated mapping
 	 */
-	private String getValidPropertyMapping(final String mapping)
+	public String getValidPropertyMapping(final String mapping)
 	{
 		final String oneToMany = "OneToMany";
 		final String manyToOne = "ManyToOne";
@@ -484,7 +482,7 @@ public class VelocityMarshaller
 	 * @param mapping The mapping to reverse
 	 * @return The reversed mapping
 	 */
-	private String getReversedPropertyMapping(final String mapping)
+	public String getReversedPropertyMapping(final String mapping)
 	{
 		final String oneToMany = "OneToMany";
 		final String manyToOne = "ManyToOne";
@@ -515,7 +513,7 @@ public class VelocityMarshaller
 	 * @param entityName the entity name to be validated and formatted
 	 * @return the validated and formatted entity name
 	 */
-	private String getFormattedEntityName(String entityName)
+	public String getFormattedEntityName(String entityName)
 	{
 		if (StringUtils.isNumeric("" + entityName.charAt(0)))
 		{
@@ -531,7 +529,7 @@ public class VelocityMarshaller
 	 * @param propertyName The property name to be validated and formatted
 	 * @return The validated and formatted property name
 	 */
-	private String getFormattedPropertyName(String propertyName)
+	public String getFormattedPropertyName(String propertyName)
 	{
 		if (StringUtils.isNumeric("" + propertyName.charAt(0)))
 		{

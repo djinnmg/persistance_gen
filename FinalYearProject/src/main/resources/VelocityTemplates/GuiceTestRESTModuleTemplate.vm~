@@ -1,0 +1,21 @@
+package ${package}.guice.modules;
+
+import com.google.inject.AbstractModule;
+import com.peterphi.std.guice.serviceregistry.rest.RestResourceRegistry;
+import ${package}.rest.service.*;
+import ${package}.rest.service.impl.*;
+
+public class RESTModule extends AbstractModule
+{
+	@Override
+	protected void configure()
+	{
+		bind(IndexService.class).to(IndexServiceImpl.class);
+		RestResourceRegistry.register(IndexService.class);
+	
+#foreach ($entity in $entities.entities)
+		bind(${entity.name}Service.class).to(${entity.name}ServiceImpl.class);
+		RestResourceRegistry.register(${entity.name}Service.class);
+#end
+	}
+}

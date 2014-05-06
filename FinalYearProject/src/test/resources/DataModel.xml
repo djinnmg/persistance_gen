@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities>
+	<entity name="user">
+		<property id="true" name="id" type="int"/>
+		<property name="name" type="string" nullable="false" />
+	</entity>
+	<entity name="Project">
+		<property id="true" name="id" type="long" serialise="false"/>
+		<property name="title" type="string"/>
+		<property name="users" type="User" incoming="projects" mapping="ManyToMany" serialise="false" />
+		<property name="description" type="string" textArea="true"/>
+		<property name="created" type="date"/>
+	</entity>
+</entities>

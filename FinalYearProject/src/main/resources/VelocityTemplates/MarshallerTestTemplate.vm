@@ -1,0 +1,74 @@
+package ${package}.jaxb.serialisation;
+#set ($DQ = '"')
+
+#foreach ($entity in $entities.entities)
+import ${package}.hibernate.entities.${entity.name};
+import ${package}.jaxb.types.${entity.name}Type;
+#end
+import org.joda.time.DateTime;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+	
+public class MarshallerTest
+{
+	private Marshaller marshaller;
+
+	@Before
+	public void setup()
+	{
+		marshaller = new Marshaller();
+	}
+	
+#foreach ($entity in $entities.entities)
+	@Test
+	public void test${entity.name}Marshall()
+	{
+		final DateTime dt = DateTime.now();
+		
+		${entity.name} ${entity.camelCaseName} = new ${entity.name}();	
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+#if ($property.type == "DateTime")
+#set ($testValue = "dt")
+#elseif ($property.type == "Boolean" || $property.type == "boolean")
+#set ($testValue = "true")
+#elseif ($property.type == "String")
+#set ($testValue = "$DQ${property.name}$DQ")
+#else
+#set ($testValue = "1")
+#end
+		${entity.camelCaseName}.${property.name} = ${testValue};			
+#end
+#end
+	
+	
+	
+		${entity.name}Type expected${entity.name}Type = new ${entity.name}Type();	
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+#if ($property.type == "DateTime")
+#set ($testValue = "dt.toDate()")
+#elseif ($property.type == "Boolean" || $property.type == "boolean")
+#set ($testValue = "true")
+#elseif ($property.type == "String")
+#set ($testValue = "$DQ${property.name}$DQ")
+#else
+#set ($testValue = "1")
+#end
+		expected${entity.name}Type.${property.name} = ${testValue};			
+#end
+#end
+		
+		${entity.name}Type marshalled${entity.name}Type = marshaller.marshall(${entity.camelCaseName});
+		
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+		Assert.assertEquals(expected${entity.name}Type.${property.name}, marshalled${entity.name}Type.${property.name});	
+#end
+#end		
+				
+	}
+#end
+
+}

@@ -1,0 +1,73 @@
+package ${package}.jaxb.serialisation;
+#set ($DQ = '"')
+
+#foreach ($entity in $entities.entities)
+import ${package}.hibernate.entities.${entity.name};
+import ${package}.jaxb.types.${entity.name}Type;
+#end
+import org.joda.time.DateTime;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+	
+public class UnmarshallerTest
+{
+	private Unmarshaller unmarshaller;
+
+	@Before
+	public void setup()
+	{
+		unmarshaller = new Unmarshaller();
+	}
+	
+#foreach ($entity in $entities.entities)
+	@Test
+	public void test${entity.name}Unmarshall()
+	{	
+		final DateTime dt = DateTime.now();
+	
+		${entity.name}Type ${entity.camelCaseName}Type = new ${entity.name}Type();	
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+#if ($property.type == "DateTime")
+#set ($testValue = "dt.toDate()")
+#elseif ($property.type == "Boolean" || $property.type == "boolean")
+#set ($testValue = "true")
+#elseif ($property.type == "String")
+#set ($testValue = "$DQ${property.name}$DQ")
+#else
+#set ($testValue = "1")
+#end
+		${entity.camelCaseName}Type.${property.name} = ${testValue};			
+#end
+#end
+	
+	${entity.name} expected${entity.Name} = new ${entity.name}();	
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+#if ($property.type == "DateTime")
+#set ($testValue = "dt")
+#elseif ($property.type == "Boolean" || $property.type == "boolean")
+#set ($testValue = "true")
+#elseif ($property.type == "String")
+#set ($testValue = "$DQ${property.name}$DQ")
+#else
+#set ($testValue = "1")
+#end
+		expected${entity.Name}.${property.name} = ${testValue};			
+#end
+#end	
+	
+	
+		${entity.name} unmarshalled${entity.name} = unmarshaller.unmarshall(${entity.camelCaseName}Type);
+		
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+		Assert.assertEquals(expected${entity.Name}.${property.name}, unmarshalled${entity.name}.${property.name});	
+#end
+#end		
+				
+	}
+#end
+
+}

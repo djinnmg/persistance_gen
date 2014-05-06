@@ -4,6 +4,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.peterphi.std.guice.web.rest.setup.AbstractRESTGuiceSetup;
 import com.peterphi.std.io.PropertyFile;
+import com.peterphi.std.guice.thymeleaf.ThymeleafModule;
 import ${package}.guice.modules.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class Setup extends AbstractRESTGuiceSetup
 	{
   	    modules.add(new RESTModule());
   	    modules.add(new DBModule());
+  	    modules.add(new ThymeleafModule());
 	}
 
 	@Override

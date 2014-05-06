@@ -7,19 +7,46 @@ import matthew.velocity.types.VelocityEntitiesType;
 import matthew.velocity.types.VelocityEntityType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
 public class TemplateProcessor
 {
+	public static transient Logger log = Logger.getLogger(TemplateProcessor.class);
+
 	private final String packagePath;
 	private final String outputDir;
 	private final String projectName;
 
 	public TemplateProcessor(final String packagePath, final String outputDir, final String projectName)
 	{
+		if (!validatePackagePath(packagePath))
+		{
+			throw new RuntimeException("Package path " + packagePath +
+			                           " is not valid! Package path must be alphanumeric with a non numeric first " +
+			                           "character using periods for separation between package levels.");
+		}
+
+		if (!validateOutputDirectoryPath(outputDir))
+		{
+			throw new RuntimeException("Output directory " + outputDir +
+			                           " is not valid! Output directory must match the following rules. Is " +
+			                           "alphanumeric, first character is not numeric, " +
+			                           "starts from root level but cannot be root, uses forward slashes to separate " +
+			                           "directory levels and has no trailing slashes.");
+		}
+
+		if (!validateProjectName(projectName))
+		{
+			throw new RuntimeException("Project name " + projectName +
+			                           " is not valid! Project name must be fully alphanumeric with the first " +
+			                           "character being non-numeric.");
+		}
+
 		this.packagePath = packagePath;
 		this.projectName = projectName;
 		this.outputDir = outputDir;
@@ -44,16 +71,18 @@ public class TemplateProcessor
 		// Create and output a file for each of these for each entity
 		for (VelocityEntityType entity : entities.getEntities())
 		{
-			createEntities(entity);
-			createDaos(entity);
-			createDaoImpls(entity);
-			createJaxbTypes(entity);
-			createRESTServices(entity);
-			createRESTServiceImpls(entity);
+			createEntity(entity);
+			createDao(entity);
+			createDaoImpl(entity);
+			createJaxbType(entity);
+			createRESTService(entity);
+			createRESTServiceImpl(entity);
 			createThymeleafCreateEntityPage(entity);
 			createThymeleafEntitiesPage(entity);
 			createThymeleafEntityPage(entity);
 			createThymeleafUpdateEntityPage(entity);
+
+			createRESTServiceTestImpl(entity);
 		}
 
 		createMarshaller(entities);
@@ -66,6 +95,11 @@ public class TemplateProcessor
 		createIndexRESTService();
 		createIndexRESTServiceImpl();
 		createThymeleafIndexPage(entities);
+
+		createTestRESTModule(entities);
+		createMarshallerTest(entities);
+		createUnmarshallerTest(entities);
+		createDateHelperTest();
 	}
 
 	/**
@@ -112,6 +146,7 @@ public class TemplateProcessor
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/HibernatePropertiesTemplate.vm");
 
+		// TODO ensure project name if valid for use as DB name
 		entityTemplater.put("projectName", projectName);
 
 		outputToFile(getResourcesFilePath("hibernate.properties"), entityTemplater.processTemplate());
@@ -124,6 +159,8 @@ public class TemplateProcessor
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/Log4jPropertiesTemplate.vm");
 
+		entityTemplater.put("package", packagePath);
+
 		outputToFile(getResourcesFilePath("log4j.properties"), entityTemplater.processTemplate());
 	}
 
@@ -132,7 +169,7 @@ public class TemplateProcessor
 	 *
 	 * @param entity The entity to use in the generation
 	 */
-	private void createEntities(final VelocityEntityType entity)
+	private void createEntity(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/EntityTemplate.vm");
 
@@ -149,14 +186,15 @@ public class TemplateProcessor
 	 *
 	 * @param entity The entity to create the DAO for
 	 */
-	private void createDaos(final VelocityEntityType entity)
+	private void createDao(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/DaoTemplate.vm");
 
 		entityTemplater.put("entity", entity);
 		entityTemplater.put("package", packagePath);
 
-		outputToFile(getPackageFilePath("/hibernate/dao/" + entity.getName() + "Dao.java"), entityTemplater.processTemplate());
+		outputToFile(getPackageFilePath("/hibernate/dao/" + entity.getName() + "Dao.java"),
+		             entityTemplater.processTemplate());
 	}
 
 	/**
@@ -164,7 +202,7 @@ public class TemplateProcessor
 	 *
 	 * @param entity The entity to create the DAO implementation for
 	 */
-	private void createDaoImpls(final VelocityEntityType entity)
+	private void createDaoImpl(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/DaoImplTemplate.vm");
 
@@ -180,14 +218,15 @@ public class TemplateProcessor
 	 *
 	 * @param entity The entity to create the JAX-B type for
 	 */
-	private void createJaxbTypes(final VelocityEntityType entity)
+	private void createJaxbType(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/JaxbTemplate.vm");
 
 		entityTemplater.put("entity", entity);
 		entityTemplater.put("package", packagePath);
 
-		outputToFile(getPackageFilePath("/jaxb/types/" + entity.getName() + "Type.java"), entityTemplater.processTemplate());
+		outputToFile(getPackageFilePath("/jaxb/types/" + entity.getName() + "Type.java"),
+		             entityTemplater.processTemplate());
 	}
 
 	/**
@@ -195,7 +234,7 @@ public class TemplateProcessor
 	 *
 	 * @param entity The entity to create the REST service for
 	 */
-	private void createRESTServices(final VelocityEntityType entity)
+	private void createRESTService(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceTemplate.vm");
 
@@ -211,7 +250,7 @@ public class TemplateProcessor
 	 *
 	 * @param entity The entity to create the REST service implementation for
 	 */
-	private void createRESTServiceImpls(final VelocityEntityType entity)
+	private void createRESTServiceImpl(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceImplTemplate.vm");
 
@@ -409,6 +448,56 @@ public class TemplateProcessor
 		             entityTemplater.processTemplate());
 	}
 
+	private void createRESTServiceTestImpl(final VelocityEntityType entity)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceTestImplTemplate.vm");
+
+		entityTemplater.put("entity", entity);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/rest/service/impl/test/" + entity.getName() + "ServiceTestImpl.java"),
+		             entityTemplater.processTemplate());
+	}
+
+	private void createTestRESTModule(final VelocityEntitiesType entities)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceTestRESTModuleTemplate.vm");
+
+		entityTemplater.put("entities", entities);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getPackageFilePath("/guice/modules/TestRESTModule.java"), entityTemplater.processTemplate());
+	}
+
+	private void createMarshallerTest(final VelocityEntitiesType entities)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/MarshallerTestTemplate.vm");
+
+		entityTemplater.put("entities", entities);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getTestPackageFilePath("/jaxb/serialisation/MarshallerTest.java"), entityTemplater.processTemplate());
+	}
+
+	private void createUnmarshallerTest(final VelocityEntitiesType entities)
+	{
+		Templater entityTemplater = getTemplater("/VelocityTemplates/UnmarshallerTestTemplate.vm");
+
+		entityTemplater.put("entities", entities);
+		entityTemplater.put("package", packagePath);
+
+		outputToFile(getTestPackageFilePath("/jaxb/serialisation/UnmarshallerTest.java"), entityTemplater.processTemplate());
+	}
+
+	private void createDateHelperTest()
+	{
+		Templater templater = getTemplater("/VelocityTemplates/DateHelperTestTemplate.vm");
+
+		templater.put("package", packagePath);
+
+		outputToFile(getTestPackageFilePath("/util/DateHelperTest.java"), templater.processTemplate());
+	}
+
 	/**
 	 * This will get a new instance of templater, using the passed in file path as the location of the template to load
 	 *
@@ -435,12 +524,14 @@ public class TemplateProcessor
 		{
 			throw new RuntimeException("Error while trying to read resource at " + templatePath + ". " + e
 					.getMessage(),
-			                           e);
+			                           e
+			);
 		}
 	}
 
 	/**
 	 * Gets the full package file path for a java file
+	 *
 	 * @param filePath The file path to append to the default location for java files
 	 * @return The full package file path
 	 */
@@ -451,6 +542,7 @@ public class TemplateProcessor
 
 	/**
 	 * Gets the full file path for a resource file.
+	 *
 	 * @param filePath The file path to append to the default resource location
 	 * @return The full resources file path
 	 */
@@ -461,6 +553,7 @@ public class TemplateProcessor
 
 	/**
 	 * Gets the full file path for a Thymeleaf template file.
+	 *
 	 * @param filePath The file path to append to the default template location
 	 * @return The full template file path
 	 */
@@ -470,16 +563,28 @@ public class TemplateProcessor
 	}
 
 	/**
+	 * Gets the full file path for a Java test file.
+	 *
+	 * @param filePath The file path to append to the default location for Java test files
+	 * @return The full test package file path
+	 */
+	public String getTestPackageFilePath(final String filePath)
+	{
+		return "src/test/java/" + packagePath.replace(".", "/") + filePath;
+	}
+
+
+	/**
 	 * This will output fileContents to file at filePath within the generate project location
 	 *
-	 * @param filePath The file path to append to the project location
+	 * @param filePath     The file path to append to the project location
 	 * @param fileContents The contents of the file to be created
 	 */
 	private void outputToFile(final String filePath, final String fileContents)
 	{
 		try
 		{
-			File file = new File(outputDir + "/" + projectName + "/" + filePath);
+			File file = new File(getOutputFilePath(filePath));
 
 			if (file.exists())
 			{
@@ -489,7 +594,7 @@ public class TemplateProcessor
 			file.getParentFile().mkdirs();
 
 
-			System.out.println("Trying to output file to " + file.getAbsolutePath());
+			log.debug("Trying to output file to " + file.getAbsolutePath());
 
 			FileUtils.writeStringToFile(file, fileContents);
 		}
@@ -499,5 +604,77 @@ public class TemplateProcessor
 		}
 	}
 
+	public String getOutputFilePath(final String filePath)
+	{
+		final String absoluteFilePath = outputDir + "/" + projectName + "/" + filePath;
+
+		if (!validateOutputFilePath(absoluteFilePath))
+		{
+			log.warn("Invalid output file path: " + absoluteFilePath);
+			throw new RuntimeException("Absolute file path " + absoluteFilePath +
+			                           " is not valid! The file path must be alphanumeric with a non-numeric first " +
+			                           "character for each level, must start from root, " +
+			                           "use a forward slash as the separator between directory levels and end with " +
+			                           ".{extension}.");
+		}
+		else
+		{
+			return absoluteFilePath;
+		}
+	}
+
+	/**
+	 * Validates the absolute path of a file to be output
+	 *
+	 * @param outputFilePath The path to be validated
+	 * @return true if valid, false otherwise
+	 */
+	public boolean validateOutputFilePath(final String outputFilePath)
+	{
+		log.debug("Validating output file path " + outputFilePath);
+
+		// must be alphanumeric with 1st char of each level being non numeric, must start from /,
+		// uses / for directoty level separation and ends with .{extension}
+		return Pattern.matches("^/[a-zA-Z][a-zA-Z0-9-_]*(/[a-zA-Z][a-zA-Z0-9-_]*)*\\.[a-zA-Z]+$", outputFilePath);
+	}
+
+
+	/**
+	 * Validates an output directory
+	 *
+	 * @param outputPath the output path to validate
+	 * @return true if valid, false otherwise
+	 */
+	public boolean validateOutputDirectoryPath(final String outputPath)
+	{
+		log.debug("Validating output directory: " + outputPath);
+
+		// only alphanumeric with 1st char being a letter, no trailing slashes, / not allowed either
+		return Pattern.matches("^/[a-zA-Z][a-zA-Z0-9]*(/[a-zA-Z][a-zA-Z0-9]*)*$", outputPath);
+	}
+
+	/**
+	 * Validates a package path
+	 *
+	 * @param packagePath The package path to be validated
+	 * @return true if valid, false otherwise
+	 */
+	public boolean validatePackagePath(final String packagePath)
+	{
+		log.debug("Validating package path...");
+		return Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*(.[a-zA-Z][a-zA-Z0-9]*)*$", packagePath);
+	}
+
+	/**
+	 * Validates a project name
+	 *
+	 * @param projectName The project name to be validated
+	 * @return true if valid, false otherwise
+	 */
+	public boolean validateProjectName(final String projectName)
+	{
+		log.debug("Validating project name...");
+		return Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", projectName);
+	}
 
 }

@@ -1,30 +1,44 @@
 package ${package}.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public class DateHelper
 {
+	public static transient Logger log = Logger.getLogger(DateHelper.class);
+
 	private static final DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
 
 	public static DateTime getDateFromString(final String date)
 	{
 		if (StringUtils.isEmpty(date))
+		{
+			log.error("Could not parse provided date as it was an empty String! Returning the current DateTime.");		
 			return DateTime.now();
+		}
 
+		DateTime dt = DateTime.parse(date, dateFormat);
 
-		// TODO add parse checks and catch exceptions
-		return DateTime.parse(date, dateFormat);
+		if (dt == null || dt.getMillis() == 0)
+		{
+			log.error("Date String" + date + " could not be parsed to a DateTime!");
+			throw new RuntimeException("Date String" + date + " could not be parsed to a DateTime!");
+		}
+
+		return dt;
 	}
 
 
 	public static String getFormattedDateString(final DateTime dt)
 	{
-		// TODO log warning
 		if (dt == null)
+		{
+			log.error("Could not format DateTime " + dt + "! Returning the current time as a formatted String.");
 			return DateTime.now().toString(dateFormat);
+		}
 
 		return dt.toString(dateFormat);
 	}

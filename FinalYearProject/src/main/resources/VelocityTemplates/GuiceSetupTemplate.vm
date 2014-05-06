@@ -15,8 +15,12 @@ public class Setup extends AbstractRESTGuiceSetup
 	@Override
 	public void addModules(List<Module> modules, PropertyFile propertyFile)
 	{
-  	    modules.add(new RESTModule());
-  	    modules.add(new DBModule());
+  	    if (propertyFile.getBoolean("use.test.rest.services", false))
+		modules.add(new TestRESTModule());
+	    else
+		modules.add(new RESTModule());
+
+	    modules.add(new DBModule());
   	    modules.add(new ThymeleafModule());
 	}
 

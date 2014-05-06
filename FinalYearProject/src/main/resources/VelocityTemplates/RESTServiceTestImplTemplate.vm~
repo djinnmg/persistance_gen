@@ -1,0 +1,206 @@
+package ${package}.rest.service.impl;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.peterphi.std.guice.thymeleaf.ThymeleafCall;
+import com.peterphi.std.guice.thymeleaf.ThymeleafTemplater;
+import com.peterphi.std.guice.restclient.exception.RestException;
+import ${package}.hibernate.dao.impl.*;
+import ${package}.hibernate.entities.*;
+import ${package}.jaxb.serialisation.*;
+import ${package}.jaxb.types.*;
+import ${package}.rest.service.${entity.name}Service;
+import ${package}.util.DateHelper;
+import java.util.List;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
+#set ($firstArgUp = "false")
+#set ($firstArgCr = "false")
+@Singleton
+public class ${entity.name}ServiceImpl implements ${entity.name}Service
+{
+
+	@Inject
+	${entity.name}DaoImpl ${entity.camelCaseName}Dao;
+
+	@Inject
+	Marshaller marshaller;
+
+	@Inject
+	Unmarshaller unmarshaller;
+
+	@Inject
+	ThymeleafTemplater templater;
+
+	@Override
+	public long add(${entity.name}Type ${entity.camelCaseName}Type)
+	{
+		return ${entity.camelCaseName}Dao.save(unmarshaller.unmarshall(${entity.camelCaseName}Type));
+	}
+
+	@Override
+	public ${entity.name}Type getById(${entity.idType} id)
+	{
+		${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
+
+		if (${entity.camelCaseName} == null)
+		{
+			throw new RestException(400, "${entity.name} with id " + id + " does not exist!");
+		}
+
+		return marshaller.marshall(${entity.camelCaseName});
+	}
+
+
+	@Override
+	public void update(${entity.name}Type ${entity.camelCaseName}Type)
+	{
+		${entity.camelCaseName}Dao.update(unmarshaller.unmarshall(${entity.camelCaseName}Type));
+	}
+
+	@Override
+	public void deleteById(${entity.idType} id)
+	{
+		${entity.camelCaseName}Dao.deleteById(id);
+	}
+	
+	@Override
+	public String get${entity.name}ListPage()
+	{
+		final ThymeleafCall template = templater.template("${entity.name}ListTemplate");
+
+		List<${entity.name}> ${entity.camelCaseName}List = ${entity.camelCaseName}Dao.getAll(0, 50);
+
+		template.set("${entity.camelCaseName}List", ${entity.camelCaseName}List);
+
+		return template.process();
+	}
+
+	@Override
+	public String get${entity.name}Page(${entity.idType} id)
+	{
+		final ThymeleafCall template = templater.template("${entity.name}Template");
+
+		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
+
+		template.set("${entity.camelCaseName}", ${entity.camelCaseName});
+	
+		return template.process();
+	}
+
+	@Override
+	public Response createAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex} && !${property.id})
+#if($firstArgCr == "true"), #end
+#if(!$firstArgCr == "false")
+#set ($firstArgCr = "true")#end
+#if($property.type == "DateTime")String ${property.name}#else
+${property.type} ${property.name}#end
+#end
+#end)
+	{
+		final ${entity.name} ${entity.camelCaseName} = new ${entity.name}();
+
+#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex} && !${property.id})
+#if($property.type == "DateTime")
+		${entity.camelCaseName}.${property.name} = DateHelper.getDateFromString(${property.name});
+#else
+		${entity.camelCaseName}.${property.name} = ${property.name};
+#end
+#end
+#end
+
+	
+		final long id = ${entity.camelCaseName}Dao.save(${entity.camelCaseName});
+
+		try
+		{
+			return Response.seeOther(new URI("${entity.camelCaseName}/" + id)).build();
+		}
+		catch (URISyntaxException e)
+		{
+			throw new RuntimeException("Could not forward to URI after creating new ${entity.camelCaseName}.", e);
+		}
+	}
+
+	@Override
+	public Response updateAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex})
+#if($firstArgUp == "true"), #end
+#if(!$firstArgUp == "false")
+#set ($firstArgUp = "true")#end
+#if($property.type == "DateTime")String ${property.name}#else
+${property.type} ${property.name}#end
+#end
+#end)
+	{
+		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
+
+#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex})
+#if($property.type == "DateTime")
+		${entity.camelCaseName}.${property.name} = DateHelper.getDateFromString(${property.name});
+#else
+		${entity.camelCaseName}.${property.name} = ${property.name};
+#end
+#end
+#end
+	
+		${entity.camelCaseName}Dao.update(${entity.camelCaseName});
+
+		try
+		{
+			return Response.seeOther(new URI("${entity.camelCaseName}/" + id)).build();
+		}
+		catch (URISyntaxException e)
+		{
+			throw new RuntimeException("Could not forward to URI after updating ${entity.camelCaseName} with id " + id, e);
+		}
+	}
+
+	@Override
+	public String getUpdatePage(${entity.idType} id)
+	{
+		final ThymeleafCall template = templater.template("Update${entity.name}Template");
+
+		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
+
+		template.set("${entity.camelCaseName}", ${entity.camelCaseName});
+		
+
+		return template.process();
+	}
+
+	@Override
+	public Response deleteAndRedirect(${entity.idType} id)
+	{
+		${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
+
+		if (${entity.camelCaseName} == null)
+		{
+			throw new RuntimeException("${entity.name} with id " + id + " does not exist!");
+		}
+
+		${entity.camelCaseName}Dao.deleteById(id);
+
+		try
+		{
+			return Response.seeOther(new URI("${entity.camelCaseName}")).build();
+		}
+		catch (URISyntaxException e)
+		{
+			throw new RuntimeException("Could not forward to URI after deleting ${entity.name} with id " + id, e);
+		}
+	}
+
+	@Override
+	public String getCreatePage()
+	{
+		final ThymeleafCall template = templater.template("Create${entity.name}Template");
+
+		return template.process();
+	}
+
+}

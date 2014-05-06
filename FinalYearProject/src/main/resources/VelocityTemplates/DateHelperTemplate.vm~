@@ -1,5 +1,6 @@
 package ${package}.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -10,13 +11,21 @@ public class DateHelper
 
 	public static DateTime getDateFromString(final String date)
 	{
-		// TODO add parse checks and catch exceptions        		
+		if (StringUtils.isEmpty(date))
+			return DateTime.now();
+
+
+		// TODO add parse checks and catch exceptions
 		return DateTime.parse(date, dateFormat);
 	}
 
 
 	public static String getFormattedDateString(final DateTime dt)
 	{
+		// TODO log warning
+		if (dt == null)
+			return DateTime.now().toString(dateFormat);
+
 		return dt.toString(dateFormat);
 	}
 

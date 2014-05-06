@@ -1,0 +1,120 @@
+package ${package}.rest.service.impl.test;
+#set ($DQ = '"')
+
+import com.google.inject.Singleton;
+import ${package}.jaxb.types.*;
+import ${package}.rest.service.${entity.name}Service;
+import javax.ws.rs.core.Response;
+import org.joda.time.DateTime;
+#set ($firstArgUp = "false")
+#set ($firstArgCr = "false")
+@Singleton
+public class ${entity.name}ServiceTestImpl implements ${entity.name}Service
+{
+	private final String testNotification =
+			"This method is not implemented as this is the test implementation of this service. Check the value of " +
+			"'use.test.rest.services' in the service.properties file if you are expecting the full implementation of " +
+			"this service.";
+
+	@Override
+	public long add(${entity.name}Type ${entity.camelCaseName}Type)
+	{
+		// nothing to do
+		return 1;
+	}
+
+	@Override
+	public ${entity.name}Type getById(${entity.idType} id)
+	{
+		${entity.name}Type ${entity.camelCaseName}Type = new ${entity.name}Type();
+
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+#if ($property.type == "DateTime")
+#set ($testValue = "DateTime.now().toDate()")
+#elseif ($property.type == "Boolean" || $property.type == "boolean")
+#set ($testValue = "true")
+#elseif ($property.type == "String")
+#set ($testValue = "$DQ${property.name}$DQ")
+#else
+#set ($testValue = "1")
+#end
+		${entity.camelCaseName}Type.${property.name} = ${testValue};			
+#end
+#end
+		
+		return ${entity.camelCaseName}Type;
+	}
+
+
+	@Override
+	public void update(${entity.name}Type ${entity.camelCaseName}Type)
+	{
+		// nothing to do
+	}
+
+	@Override
+	public void deleteById(${entity.idType} id)
+	{
+		// nothing to do
+	}
+	
+	@Override
+	public String get${entity.name}ListPage()
+	{
+		return testNotification;
+	}
+
+	@Override
+	public String get${entity.name}Page(${entity.idType} id)
+	{
+		return testNotification;
+	}
+
+	@Override
+	public Response createAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex} && !${property.id})
+#if($firstArgCr == "true"), #end
+#if(!$firstArgCr == "false")
+#set ($firstArgCr = "true")#end
+#if($property.type == "DateTime")String ${property.name}#else
+${property.type} ${property.name}#end
+#end
+#end)
+	{
+		return null;
+	}
+
+	@Override
+	public Response updateAndRedirect(#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex})
+#if($firstArgUp == "true"), #end
+#if(!$firstArgUp == "false")
+#set ($firstArgUp = "true")#end
+#if($property.type == "DateTime")String ${property.name}#else
+${property.type} ${property.name}#end
+#end
+#end)
+	{
+		return null;
+	}
+
+	@Override
+	public String getUpdatePage(${entity.idType} id)
+	{
+		return testNotification;
+	}
+
+	@Override
+	public Response deleteAndRedirect(${entity.idType} id)
+	{
+		return null;
+	}
+
+	@Override
+	public String getCreatePage()
+	{
+		return testNotification;
+	}
+
+}

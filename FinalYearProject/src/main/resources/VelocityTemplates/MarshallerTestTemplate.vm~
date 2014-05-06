@@ -1,0 +1,41 @@
+package ${package}.jaxb.serialisation;
+
+#foreach ($entity in $entities.entities)
+import ${package}.hibernate.entities.${entity.name};
+import ${package}.jaxb.types.${entity.name}Type;
+#end
+import org.joda.time.DateTime;
+import java.util.Date;
+import org.apache.commons.lang.StringUtils;
+	
+public class Marshaller
+{
+#foreach ($entity in $entities.entities)
+	public ${entity.name}Type marshall(${entity.name} ${entity.camelCaseName})
+	{
+		${entity.name}Type ${entity.camelCaseName}Type = new ${entity.name}Type();
+	
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})
+#if ($property.type == "DateTime")
+#set ($toDate = ".toDate()")
+#else
+#set ($toDate = "")
+#end
+#if ($property.type == "String")
+#set ($nullCheck = "StringUtils.isNotEmpty("+${entity.camelCaseName}+"."+${property.name}+")")
+#elseif ($property.type == "long" || $property.type == "Long" || $property.type == "int" || $property.type == "Integer")
+#set ($nullCheck = ${entity.camelCaseName}+"."+${property.name}+" > 0")
+#else
+#set ($nullCheck = ${entity.camelCaseName}+"."+${property.name}+" != null")
+#end
+		if (${nullCheck})
+			${entity.camelCaseName}Type.${property.name} = ${entity.camelCaseName}.${property.name}${toDate};			
+#end
+#end
+		
+		return ${entity.camelCaseName}Type;
+	}
+#end
+
+}

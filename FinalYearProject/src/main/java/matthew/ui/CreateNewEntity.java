@@ -5,12 +5,12 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import matthew.jaxb.types.EntitiesType;
 import matthew.jaxb.types.EntityType;
-import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
 
 public class CreateNewEntity
 {
@@ -81,9 +81,9 @@ public class CreateNewEntity
 	{
 		final String entityName = entityNameTextField.getText().replace(" ", "");
 
-		if (!StringUtils.isAlphanumeric(entityName))
+		if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", entityName))
 		{
-			errorTextArea.setText("Entity name must be fully alphanumeric!");
+			errorTextArea.setText("Entity name must be fully alphanumeric which a non-numeric first character!");
 			return false;
 		}
 		else

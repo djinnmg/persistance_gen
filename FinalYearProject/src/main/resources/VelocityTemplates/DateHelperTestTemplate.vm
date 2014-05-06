@@ -1,0 +1,42 @@
+package ${package}.util;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.junit.Assert;
+import org.junit.Test;
+
+public class DateHelperTest
+{
+	private static final DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss");
+
+	@Test
+	public void testGetDateFromString()
+	{
+		// expecting string of form "dd-MM-yyyy HH:mm:ss"
+		DateTime expectedDateTime = DateTime.now();
+
+		String dateString = expectedDateTime.toString(dateFormat);
+
+		Assert.assertEquals(expectedDateTime.toString(dateFormat), DateHelper.getDateFromString(dateString).toString(dateFormat));
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testFailGetDateFromString()
+	{
+		DateHelper.getDateFromString("invalidDate");
+	}
+
+
+	@Test
+	public void testGetFormattedDateString()
+	{
+		DateTime dateTime = DateTime.now();
+
+		// expecting string of form "dd-MM-yyyy HH:mm:ss"
+		String expectedDateString = dateTime.toString(dateFormat);
+
+		Assert.assertEquals(expectedDateString, DateHelper.getFormattedDateString(dateTime));
+	}
+
+}
