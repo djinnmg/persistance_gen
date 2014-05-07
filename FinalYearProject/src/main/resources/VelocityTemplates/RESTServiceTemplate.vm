@@ -36,7 +36,8 @@ public interface ${entity.name}Service
 	@GET
 	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
-	public String get${entity.name}ListPage();
+	public String get${entity.name}ListPage(@DefaultValue("0") @QueryParam("offset") int offset, @DefaultValue(
+			"20") @QueryParam("limit") int limit);
 
 	
 	@GET

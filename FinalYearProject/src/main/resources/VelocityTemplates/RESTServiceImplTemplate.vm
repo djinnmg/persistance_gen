@@ -66,13 +66,43 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service
 	}
 	
 	@Override
-	public String get${entity.name}ListPage()
+	public String get${entity.name}ListPage(int offset, int limit)
 	{
 		final ThymeleafCall template = templater.template("${entity.name}ListTemplate");
 
-		List<${entity.name}> ${entity.camelCaseName}List = ${entity.camelCaseName}Dao.getAll(0, 50);
+		List<${entity.name}> ${entity.camelCaseName}List = ${entity.camelCaseName}Dao.getAll(offset, limit);
 
 		template.set("${entity.camelCaseName}List", ${entity.camelCaseName}List);
+		
+		boolean pagination = false;
+
+		if (offset > 0)
+		{
+			// we know there are entries before this so add previous pagination to template
+			template.set("previousPage", true);
+			pagination = true;
+		}
+		if (${entity.camelCaseName}Dao.getAll(offset + limit, 1).size() > 0)
+		{
+			// we know there are entries beyond the limit so add next pagination to template
+			template.set("nextPage", true);
+			pagination = true;
+		}
+
+		template.set("pagination", pagination);
+
+		final int defaultLimit = 20;
+
+		int prevOffset = offset - limit;
+		if (prevOffset < 0)
+			prevOffset = 0;
+		template.set("prevOffset", prevOffset);
+		template.set("prevLimit", defaultLimit);
+
+		int nextOffset = offset + limit;
+		template.set("nextOffset", nextOffset);
+		template.set("nextLimit", defaultLimit);
+				
 
 		return template.process();
 	}

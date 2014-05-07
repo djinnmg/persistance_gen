@@ -83,7 +83,7 @@ public class CreateNewEntity
 
 		if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", entityName))
 		{
-			errorTextArea.setText("Entity name must be fully alphanumeric which a non-numeric first character!");
+			errorTextArea.setText("Entity name must be fully alphanumeric which an alpha first character!");
 			return false;
 		}
 		else

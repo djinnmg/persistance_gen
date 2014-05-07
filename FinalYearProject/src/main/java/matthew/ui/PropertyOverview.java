@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
 
 public class PropertyOverview
 {
@@ -135,10 +136,10 @@ public class PropertyOverview
 			error = true;
 			setError("Warning property name is required!");
 		}
-		if (!StringUtils.isAlphanumeric(propertyName))
+		if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", propertyName))
 		{
 			error = true;
-			setError("Warning property name is not fully alphanumeric!");
+			setError("Warning property name must be fully alphanumeric with the first character being an alpha!");
 		}
 		property.setName(propertyName);
 
@@ -148,10 +149,10 @@ public class PropertyOverview
 			error = true;
 			setError("Warning property type is required!");
 		}
-		if (!StringUtils.isAlphanumeric(propertyType))
+		if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", propertyType))
 		{
 			error = true;
-			setError("Warning property type is not fully alphanumeric!");
+			setError("Warning property type must be fully alphanumeric with the first character being an alpha!");
 		}
 		property.setType(propertyType);
 
@@ -161,18 +162,18 @@ public class PropertyOverview
 		property.setTextArea(textAreaCheckBoxCheckBox.isSelected());
 
 		final String propertyIncoming = incomingTextField.getText().replace(" ", "");
-		if (!StringUtils.isAlphanumeric(propertyIncoming))
+		if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", propertyIncoming))
 		{
 			error = true;
-			setError("Warning property incoming is not fully alphanumeric!");
+			setError("Warning property incoming must be fully alphanumeric with the first character being an alpha!");
 		}
 		property.setIncoming(propertyIncoming);
 
 		final String propertyMapping = mappingTextField.getText().replace(" ", "");
-		if (!StringUtils.isAlphanumeric(propertyMapping))
+		if (!StringUtils.isAlpha(propertyMapping))
 		{
 			error = true;
-			setError("Warning property mapping is not fully alphanumeric!");
+			setError("Warning property mapping must be fully alpha!");
 		}
 		property.setMapping(propertyMapping);
 
@@ -218,9 +219,8 @@ public class PropertyOverview
 		idHintTextArea.setLineWrap(true);
 
 		incomingHintTextArea.setText(
-				"When using a complex type, this will give the name to the variable on the other end. If using " +
-				"complex" +
-				" types, this is required."
+				"When using a complex type, this will give the name to the variable on the other end. If using  a " +
+				"simple type this will be ignored."
 		);
 		mappingHintTextArea.setText(
 				"This determines the mapping used for complex types. The valid inputs are OneToMany, " +
@@ -286,7 +286,8 @@ public class PropertyOverview
 		propertyViewPanel.add(label1,
 		                      new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		idCheckboxCheckBox = new JCheckBox();
 		idCheckboxCheckBox.setText("");
 		propertyViewPanel.add(idCheckboxCheckBox,
@@ -294,13 +295,16 @@ public class PropertyOverview
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false
+		                      )
+		);
 		final JLabel label2 = new JLabel();
 		label2.setText("Name");
 		propertyViewPanel.add(label2,
 		                      new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		nameTextField = new JTextField();
 		propertyViewPanel.add(nameTextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                         GridConstraints.FILL_HORIZONTAL,
@@ -312,7 +316,8 @@ public class PropertyOverview
 		propertyViewPanel.add(label3,
 		                      new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		typeTextField = new JTextField();
 		propertyViewPanel.add(typeTextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                         GridConstraints.FILL_HORIZONTAL,
@@ -324,31 +329,36 @@ public class PropertyOverview
 		propertyViewPanel.add(label4,
 		                      new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		final JLabel label5 = new JLabel();
 		label5.setText("Serialise");
 		propertyViewPanel.add(label5,
 		                      new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		final JLabel label6 = new JLabel();
 		label6.setText("Text Area");
 		propertyViewPanel.add(label6,
 		                      new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		final JLabel label7 = new JLabel();
 		label7.setText("Incoming");
 		propertyViewPanel.add(label7,
 		                      new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		final JLabel label8 = new JLabel();
 		label8.setText("Mapping");
 		propertyViewPanel.add(label8,
 		                      new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		nullableCheckBoxCheckBox = new JCheckBox();
 		nullableCheckBoxCheckBox.setText("");
 		propertyViewPanel.add(nullableCheckBoxCheckBox,
@@ -356,7 +366,9 @@ public class PropertyOverview
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false
+		                      )
+		);
 		serialiseCheckBoxCheckBox = new JCheckBox();
 		serialiseCheckBoxCheckBox.setText("");
 		propertyViewPanel.add(serialiseCheckBoxCheckBox,
@@ -364,7 +376,9 @@ public class PropertyOverview
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false
+		                      )
+		);
 		textAreaCheckBoxCheckBox = new JCheckBox();
 		textAreaCheckBoxCheckBox.setText("");
 		propertyViewPanel.add(textAreaCheckBoxCheckBox,
@@ -372,7 +386,9 @@ public class PropertyOverview
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                          GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                          GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false
+		                      )
+		);
 		incomingTextField = new JTextField();
 		propertyViewPanel.add(incomingTextField, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                             GridConstraints.FILL_HORIZONTAL,
@@ -392,56 +408,73 @@ public class PropertyOverview
 		                      new GridConstraints(7, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		mappingHintTextArea = new JTextArea();
 		propertyViewPanel.add(mappingHintTextArea,
 		                      new GridConstraints(8, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		textAreaHintTextArea = new JTextArea();
 		propertyViewPanel.add(textAreaHintTextArea,
 		                      new GridConstraints(6, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		serialiseHintTextArea = new JTextArea();
 		propertyViewPanel.add(serialiseHintTextArea,
 		                      new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		nullableHintTextArea = new JTextArea();
 		propertyViewPanel.add(nullableHintTextArea,
 		                      new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		typeHintTextArea = new JTextArea();
 		propertyViewPanel.add(typeHintTextArea,
 		                      new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		nameHintTextArea = new JTextArea();
 		propertyViewPanel.add(nameHintTextArea,
 		                      new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		idHintTextArea = new JTextArea();
 		idHintTextArea.setText("");
 		propertyViewPanel.add(idHintTextArea,
 		                      new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		final JLabel label9 = new JLabel();
 		label9.setText("Property Attributes");
 		propertyViewPanel.add(label9,
 		                      new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 		                                          GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
-		                                          null, null, null, 0, false));
+		                                          null, null, null, 0, false)
+		);
 		cancelButton = new JButton();
 		cancelButton.setText("Cancel");
 		propertyViewPanel.add(cancelButton, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_NORTH,
@@ -449,7 +482,8 @@ public class PropertyOverview
 		                                                        GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                                        GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                                        GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
-		                                                        false));
+		                                                        false
+		));
 		saveButton = new JButton();
 		saveButton.setText("Save");
 		propertyViewPanel.add(saveButton, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_NORTH,
@@ -457,13 +491,17 @@ public class PropertyOverview
 		                                                      GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                                      GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                                      GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
-		                                                      false));
+		                                                      false
+		));
 		errorTextArea = new JTextArea();
 		propertyViewPanel.add(errorTextArea,
-		                      new GridConstraints(10, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+		                      new GridConstraints(10, 0, 1, 3, GridConstraints.ANCHOR_CENTER,
+		                                          GridConstraints.FILL_BOTH,
 		                                          GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                          GridConstraints.SIZEPOLICY_CAN_SHRINK |
-		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		                                          GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false
+		                      )
+		);
 		label2.setLabelFor(nameTextField);
 		label3.setLabelFor(typeTextField);
 		label7.setLabelFor(incomingTextField);
@@ -474,7 +512,5 @@ public class PropertyOverview
 	 * @noinspection ALL
 	 */
 	public JComponent $$$getRootComponent$$$()
-	{
-		return propertyViewPanel;
-	}
+	{ return propertyViewPanel; }
 }

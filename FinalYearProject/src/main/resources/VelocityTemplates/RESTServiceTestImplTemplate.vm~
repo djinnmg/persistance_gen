@@ -1,92 +1,74 @@
-package ${package}.rest.service.impl;
+package ${package}.rest.service.impl.test;
+#set ($DQ = '"')
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.peterphi.std.guice.thymeleaf.ThymeleafCall;
-import com.peterphi.std.guice.thymeleaf.ThymeleafTemplater;
-import com.peterphi.std.guice.restclient.exception.RestException;
-import ${package}.hibernate.dao.impl.*;
-import ${package}.hibernate.entities.*;
-import ${package}.jaxb.serialisation.*;
 import ${package}.jaxb.types.*;
 import ${package}.rest.service.${entity.name}Service;
-import ${package}.util.DateHelper;
-import java.util.List;
 import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
+import org.joda.time.DateTime;
 #set ($firstArgUp = "false")
 #set ($firstArgCr = "false")
 @Singleton
-public class ${entity.name}ServiceImpl implements ${entity.name}Service
+public class ${entity.name}ServiceTestImpl implements ${entity.name}Service
 {
-
-	@Inject
-	${entity.name}DaoImpl ${entity.camelCaseName}Dao;
-
-	@Inject
-	Marshaller marshaller;
-
-	@Inject
-	Unmarshaller unmarshaller;
-
-	@Inject
-	ThymeleafTemplater templater;
+	private final String testNotification =
+			"This method is not implemented as this is the test implementation of this service. Check the value of " +
+			"'use.test.rest.services' in the service.properties file if you are expecting the full implementation of " +
+			"this service.";
 
 	@Override
 	public long add(${entity.name}Type ${entity.camelCaseName}Type)
 	{
-		return ${entity.camelCaseName}Dao.save(unmarshaller.unmarshall(${entity.camelCaseName}Type));
+		// nothing to do
+		return 1;
 	}
 
 	@Override
 	public ${entity.name}Type getById(${entity.idType} id)
 	{
-		${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
+		${entity.name}Type ${entity.camelCaseName}Type = new ${entity.name}Type();
 
-		if (${entity.camelCaseName} == null)
-		{
-			throw new RestException(400, "${entity.name} with id " + id + " does not exist!");
-		}
-
-		return marshaller.marshall(${entity.camelCaseName});
+#foreach ($property in $entity.properties)
+#if (${property.serialise} && !${property.complex})	
+#if ($property.type == "DateTime")
+#set ($testValue = "DateTime.now().toDate()")
+#elseif ($property.type == "Boolean" || $property.type == "boolean")
+#set ($testValue = "true")
+#elseif ($property.type == "String")
+#set ($testValue = "$DQ${property.name}$DQ")
+#else
+#set ($testValue = "1")
+#end
+		${entity.camelCaseName}Type.${property.name} = ${testValue};			
+#end
+#end
+		
+		return ${entity.camelCaseName}Type;
 	}
 
 
 	@Override
 	public void update(${entity.name}Type ${entity.camelCaseName}Type)
 	{
-		${entity.camelCaseName}Dao.update(unmarshaller.unmarshall(${entity.camelCaseName}Type));
+		// nothing to do
 	}
 
 	@Override
 	public void deleteById(${entity.idType} id)
 	{
-		${entity.camelCaseName}Dao.deleteById(id);
+		// nothing to do
 	}
 	
 	@Override
 	public String get${entity.name}ListPage()
 	{
-		final ThymeleafCall template = templater.template("${entity.name}ListTemplate");
-
-		List<${entity.name}> ${entity.camelCaseName}List = ${entity.camelCaseName}Dao.getAll(0, 50);
-
-		template.set("${entity.camelCaseName}List", ${entity.camelCaseName}List);
-
-		return template.process();
+		return testNotification;
 	}
 
 	@Override
 	public String get${entity.name}Page(${entity.idType} id)
 	{
-		final ThymeleafCall template = templater.template("${entity.name}Template");
-
-		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
-
-		template.set("${entity.camelCaseName}", ${entity.camelCaseName});
-	
-		return template.process();
+		return testNotification;
 	}
 
 	@Override
@@ -100,29 +82,7 @@ ${property.type} ${property.name}#end
 #end
 #end)
 	{
-		final ${entity.name} ${entity.camelCaseName} = new ${entity.name}();
-
-#foreach ($property in $entity.properties)
-#if(${property.serialise} && !${property.complex} && !${property.id})
-#if($property.type == "DateTime")
-		${entity.camelCaseName}.${property.name} = DateHelper.getDateFromString(${property.name});
-#else
-		${entity.camelCaseName}.${property.name} = ${property.name};
-#end
-#end
-#end
-
-	
-		final long id = ${entity.camelCaseName}Dao.save(${entity.camelCaseName});
-
-		try
-		{
-			return Response.seeOther(new URI("${entity.camelCaseName}/" + id)).build();
-		}
-		catch (URISyntaxException e)
-		{
-			throw new RuntimeException("Could not forward to URI after creating new ${entity.camelCaseName}.", e);
-		}
+		return null;
 	}
 
 	@Override
@@ -136,71 +96,25 @@ ${property.type} ${property.name}#end
 #end
 #end)
 	{
-		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
-
-#foreach ($property in $entity.properties)
-#if(${property.serialise} && !${property.complex})
-#if($property.type == "DateTime")
-		${entity.camelCaseName}.${property.name} = DateHelper.getDateFromString(${property.name});
-#else
-		${entity.camelCaseName}.${property.name} = ${property.name};
-#end
-#end
-#end
-	
-		${entity.camelCaseName}Dao.update(${entity.camelCaseName});
-
-		try
-		{
-			return Response.seeOther(new URI("${entity.camelCaseName}/" + id)).build();
-		}
-		catch (URISyntaxException e)
-		{
-			throw new RuntimeException("Could not forward to URI after updating ${entity.camelCaseName} with id " + id, e);
-		}
+		return null;
 	}
 
 	@Override
 	public String getUpdatePage(${entity.idType} id)
 	{
-		final ThymeleafCall template = templater.template("Update${entity.name}Template");
-
-		final ${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
-
-		template.set("${entity.camelCaseName}", ${entity.camelCaseName});
-		
-
-		return template.process();
+		return testNotification;
 	}
 
 	@Override
 	public Response deleteAndRedirect(${entity.idType} id)
 	{
-		${entity.name} ${entity.camelCaseName} = ${entity.camelCaseName}Dao.getById(id);
-
-		if (${entity.camelCaseName} == null)
-		{
-			throw new RuntimeException("${entity.name} with id " + id + " does not exist!");
-		}
-
-		${entity.camelCaseName}Dao.deleteById(id);
-
-		try
-		{
-			return Response.seeOther(new URI("${entity.camelCaseName}")).build();
-		}
-		catch (URISyntaxException e)
-		{
-			throw new RuntimeException("Could not forward to URI after deleting ${entity.name} with id " + id, e);
-		}
+		return null;
 	}
 
 	@Override
 	public String getCreatePage()
 	{
-		final ThymeleafCall template = templater.template("Create${entity.name}Template");
-
-		return template.process();
+		return testNotification;
 	}
 
 }

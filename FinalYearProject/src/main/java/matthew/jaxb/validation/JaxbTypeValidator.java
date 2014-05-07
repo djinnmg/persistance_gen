@@ -6,6 +6,8 @@ import matthew.jaxb.types.PropertyType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 public class JaxbTypeValidator
 {
 	public static transient Logger log = Logger.getLogger(JaxbTypeValidator.class);
@@ -38,6 +40,10 @@ public class JaxbTypeValidator
 				return "Entity " + entity.getName() + " has no properties!";
 			}
 
+			if (!validEntityName(entitiesType.getEntity(), entity))
+			{
+				return "Entity name" + entity.getName() + " is not valid! Another entity has the same name.";
+			}
 
 			int numIds = 0;
 
@@ -98,6 +104,13 @@ public class JaxbTypeValidator
 						}
 				}
 
+				if (!validPropertyName(entitiesType.getEntity(), entity, property))
+				{
+					return "Property name " + property.getName() + " in entity " + entity.getName() +
+					       " is not valid! Another property has the same name or another entity has as incoming " +
+					       "mapping which will create a property with the same name in this entity. Check the logs for" +
+					       " more details.";
+				}
 			}
 
 			if (numIds < 1)
@@ -142,5 +155,91 @@ public class JaxbTypeValidator
 		log.info("No match found! Type " + type + " is not valid!");
 		return false;
 	}
+
+
+	/**
+	 * This validates an entity does not have the same name as any others in the list
+	 *
+	 * @param entities         The list of existing entities
+	 * @param entityToValidate The entity to validate
+	 * @return true if valid, false otherwise
+	 */
+	private static boolean validEntityName(final List<EntityType> entities, final EntityType entityToValidate)
+	{
+		log.debug("Validating entity the name of entity " + entityToValidate.getName());
+		for (EntityType entity : entities)
+		{
+			if (!entity.equals(entityToValidate))
+			{
+				if (StringUtils.equalsIgnoreCase(entity.getName(), entityToValidate.getName()))
+				{
+					log.warn("More than one entity has the name " + entity.getName() + "!");
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+
+	/**
+	 * This method will ensure a property has a valid name. The name would be invalid if another property in the
+	 * entity has the same name or an entity which use the parent entity of this property has an incoming value which
+	 * is the same as the property name. This would cause an error when the reverse mapping is carried out and a
+	 * property is created using the value of incoming in the same entity as this property.
+	 *
+	 * @param entities           The list of all the entities
+	 * @param parentEntity       The entity which contains the property we wish to validate
+	 * @param propertyToValidate The property we wish to validate
+	 * @return true if valid, false otherwise
+	 */
+	private static boolean validPropertyName(final List<EntityType> entities, final EntityType parentEntity,
+			final PropertyType propertyToValidate)
+	{
+		log.debug("Validating the name of property " + propertyToValidate.getName());
+		// check other properties within entity for name match
+		for (PropertyType property : parentEntity.getProperty())
+		{
+			if (!property.equals(propertyToValidate))
+			{
+				if (StringUtils.equalsIgnoreCase(property.getName(), propertyToValidate.getName()))
+				{
+					log.warn("More than one property in entity " + parentEntity.getName() + " has the name " +
+					         propertyToValidate.getName() + "!");
+					return false;
+				}
+			}
+		}
+
+		// check all other entities apart from entity containing the property to validate
+		for (EntityType entity : entities)
+		{
+			if (!entity.equals(parentEntity))
+			{
+				// for each property in the entity check if their type is the parent entity
+				for (PropertyType property : entity.getProperty())
+				{
+					if (StringUtils.equalsIgnoreCase(property.getType(), parentEntity.getName()))
+					{
+						// if they have an incoming value, check it does not match the name of the property we a
+						// validating
+						if (StringUtils.isNotEmpty(property.getIncoming()) &&
+						    StringUtils.equalsIgnoreCase(property.getIncoming(), propertyToValidate.getName()))
+						{
+							log.warn("The property " + property.getName() + " in the entity " + entity.getName() +
+							         " has an incoming value of " + property.getIncoming() +
+							         " which will create a property with the same name as " +
+							         propertyToValidate.getName() + "!");
+							return false;
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 
 }

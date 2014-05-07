@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
 
 
 public class EntityOverview
@@ -274,9 +275,10 @@ public class EntityOverview
 					setError("Warning property name is required at row " + i + "!");
 					return false;
 				}
-				else if (!StringUtils.isAlphanumeric(updateName))
+				else if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", updateName))
 				{
-					setError("Warning property name is not fully alphanumeric at row " + i + "!");
+					setError("Warning property name at row " + i +
+					         " is not valid! It must be fully alphanumeric with an alpha first character.");
 					return false;
 				}
 				else
@@ -295,9 +297,10 @@ public class EntityOverview
 					setError("Warning property type is required at row " + i + "!");
 					return false;
 				}
-				else if (!StringUtils.isAlphanumeric(updateType))
+				else if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", updateType))
 				{
-					setError("Warning property type is not fully alphanumeric at row " + i + "!");
+					setError("Warning property type at row " + i +
+					         " is not valid! It must be fully alphanumeric with an alpha first character.");
 					return false;
 				}
 				else
@@ -344,9 +347,10 @@ public class EntityOverview
 			final String updateIncoming = (String) propertyTable.getValueAt(i, 6);
 			if (!StringUtils.equals(property.getIncoming(), updateIncoming))
 			{
-				if (!StringUtils.isAlphanumeric(updateIncoming))
+				if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", updateIncoming))
 				{
-					setError("Warning property incoming is not fully alphanumeric at row " + i + "!");
+					setError("Warning property incoming at row " + i +
+					         " is not valid! It must be fully alphanumeric with an alpha first character.");
 					return false;
 				}
 				else
@@ -360,9 +364,9 @@ public class EntityOverview
 			final String updateMapping = (String) propertyTable.getValueAt(i, 7);
 			if (!StringUtils.equals(property.getMapping(), updateMapping))
 			{
-				if (!StringUtils.isAlphanumeric(updateMapping))
+				if (!StringUtils.isAlpha(updateMapping))
 				{
-					setError("Warning property mapping is not fully alphanumeric at row " + i + "!");
+					setError("Warning property mapping is not fully alpha at row " + i + "!");
 					return false;
 				}
 				else

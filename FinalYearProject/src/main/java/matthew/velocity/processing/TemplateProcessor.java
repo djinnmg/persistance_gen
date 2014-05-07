@@ -146,7 +146,6 @@ public class TemplateProcessor
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/HibernatePropertiesTemplate.vm");
 
-		// TODO ensure project name if valid for use as DB name
 		entityTemplater.put("projectName", projectName);
 
 		outputToFile(getResourcesFilePath("hibernate.properties"), entityTemplater.processTemplate());
@@ -448,6 +447,11 @@ public class TemplateProcessor
 		             entityTemplater.processTemplate());
 	}
 
+	/**
+	 * Create the test implementation of the REST service for the passed in entity
+	 *
+	 * @param entity The entity to create the REST service test implementation for
+	 */
 	private void createRESTServiceTestImpl(final VelocityEntityType entity)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/RESTServiceTestImplTemplate.vm");
@@ -459,6 +463,11 @@ public class TemplateProcessor
 		             entityTemplater.processTemplate());
 	}
 
+	/**
+	 * Create the Guice module for binding the test implementations of the REST services.
+	 *
+	 * @param entities The entities which will need to have REST bindings created for them
+	 */
 	private void createTestRESTModule(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/GuiceTestRESTModuleTemplate.vm");
@@ -469,6 +478,11 @@ public class TemplateProcessor
 		outputToFile(getPackageFilePath("/guice/modules/TestRESTModule.java"), entityTemplater.processTemplate());
 	}
 
+	/**
+	 * Create the junit tests for the marshaller class
+	 *
+	 * @param entities The entities which will need test methods created for them.
+	 */
 	private void createMarshallerTest(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/MarshallerTestTemplate.vm");
@@ -476,9 +490,15 @@ public class TemplateProcessor
 		entityTemplater.put("entities", entities);
 		entityTemplater.put("package", packagePath);
 
-		outputToFile(getTestPackageFilePath("/jaxb/serialisation/MarshallerTest.java"), entityTemplater.processTemplate());
+		outputToFile(getTestPackageFilePath("/jaxb/serialisation/MarshallerTest.java"),
+		             entityTemplater.processTemplate());
 	}
 
+	/**
+	 * Create the junit tests for the unmarshaller class
+	 *
+	 * @param entities The entities which will need test methods created for them.
+	 */
 	private void createUnmarshallerTest(final VelocityEntitiesType entities)
 	{
 		Templater entityTemplater = getTemplater("/VelocityTemplates/UnmarshallerTestTemplate.vm");
@@ -486,9 +506,13 @@ public class TemplateProcessor
 		entityTemplater.put("entities", entities);
 		entityTemplater.put("package", packagePath);
 
-		outputToFile(getTestPackageFilePath("/jaxb/serialisation/UnmarshallerTest.java"), entityTemplater.processTemplate());
+		outputToFile(getTestPackageFilePath("/jaxb/serialisation/UnmarshallerTest.java"),
+		             entityTemplater.processTemplate());
 	}
 
+	/**
+	 * Create the junit tests for the DateHelper class
+	 */
 	private void createDateHelperTest()
 	{
 		Templater templater = getTemplater("/VelocityTemplates/DateHelperTestTemplate.vm");
@@ -604,6 +628,12 @@ public class TemplateProcessor
 		}
 	}
 
+	/**
+	 * Create the absolute file path for a file we wish to output to
+	 *
+	 * @param filePath The relative file path of where the file should be output
+	 * @return The absolute file path
+	 */
 	public String getOutputFilePath(final String filePath)
 	{
 		final String absoluteFilePath = outputDir + "/" + projectName + "/" + filePath;
@@ -635,7 +665,7 @@ public class TemplateProcessor
 
 		// must be alphanumeric with 1st char of each level being non numeric, must start from /,
 		// uses / for directoty level separation and ends with .{extension}
-		return Pattern.matches("^/[a-zA-Z][a-zA-Z0-9-_]*(/[a-zA-Z][a-zA-Z0-9-_]*)*\\.[a-zA-Z]+$", outputFilePath);
+		return Pattern.matches("^/[a-zA-Z][a-zA-Z0-9-_]*(/[a-zA-Z][a-zA-Z0-9-_]*)*\\.[a-zA-Z0-9]+$", outputFilePath);
 	}
 
 
@@ -649,8 +679,9 @@ public class TemplateProcessor
 	{
 		log.debug("Validating output directory: " + outputPath);
 
-		// only alphanumeric with 1st char being a letter, no trailing slashes, / not allowed either
-		return Pattern.matches("^/[a-zA-Z][a-zA-Z0-9]*(/[a-zA-Z][a-zA-Z0-9]*)*$", outputPath);
+		// only alphanumeric with 1st char being a letter, no trailing slashes, / not allowed either, hyphens and
+		// underscores are allowed
+		return Pattern.matches("^/[a-zA-Z_-][a-zA-Z0-9_-]*(/[a-zA-Z_-][a-zA-Z0-9_-]*)*$", outputPath);
 	}
 
 	/**
@@ -662,7 +693,7 @@ public class TemplateProcessor
 	public boolean validatePackagePath(final String packagePath)
 	{
 		log.debug("Validating package path...");
-		return Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*(.[a-zA-Z][a-zA-Z0-9]*)*$", packagePath);
+		return Pattern.matches("^[a-z][a-z0-9_]*(.[a-z][a-z0-9_]*)*$", packagePath);
 	}
 
 	/**

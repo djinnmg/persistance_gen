@@ -60,7 +60,7 @@ public class ${entity.name}ServiceTestImpl implements ${entity.name}Service
 	}
 	
 	@Override
-	public String get${entity.name}ListPage()
+	public String get${entity.name}ListPage(int offset, int limit)
 	{
 		return testNotification;
 	}

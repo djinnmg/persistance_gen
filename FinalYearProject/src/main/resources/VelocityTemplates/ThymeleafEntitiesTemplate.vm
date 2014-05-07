@@ -38,6 +38,14 @@
 </div>
 
 <div class="container">
+	<ul class="pager" th:if="${pagination}">
+		<li class="previous" th:if="${dollar}{previousPage}">
+			<a th:href="@{/project(offset=${dollar}{prevOffset},limit=${dollar}{prevLimit})}">&larr; Previous</a>
+		</li>
+		<li class="next" th:if="${dollar}{nextPage}">
+			<a th:href="@{/project(offset=${dollar}{nextOffset},limit=${dollar}{nextLimit})}">Next &rarr;</a>
+		</li>
+	</ul>
 	<table class="table table-striped">
 		<thead>
 		<tr>

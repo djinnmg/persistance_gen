@@ -1,15 +1,15 @@
+#set ($dollar = '$')
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Project List</title>
+	<title>${entity.name} List</title>
 
 	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-	<!--<style media="screen" type="text/css" th:text="${style}"></style>-->
 	<style>
 		body {
 		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -25,12 +25,12 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="brand" href="#">Projects</a>
+			<a class="brand" href="#">${entity.name} List</a>
 
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 					<li class="active"><a th:href="@{/}">Home</a></li>
-					<li class="active"><a th:href="@{/projects/create}">Create New Project</a></li>
+					<li class="active"><a th:href="@{/${entity.camelCaseName}/create}">Create New ${entity.name}</a></li>
 				</ul>
 			</div>
 		</div>
@@ -41,18 +41,28 @@
 	<table class="table table-striped">
 		<thead>
 		<tr>
-			<th>ID</th>
-			<th>Title</th>
-			<th>Description</th>
+#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex})
+			<th>${property.name}</th>
+#end
+#end
 		</tr>
 		</thead>
 
 		<tbody>
-		<!--for each project in list-->
-		<tr th:each="project : ${projects}">
-			<td><a th:href="@{'/projects/project/' + ${project.id}}"><span th:text="${project.id}"/></a></td>
-			<td th:text="${project.title}"/>
-			<td th:text="${project.description}"/>
+		
+		<tr th:each="${entity.camelCaseName} : ${dollar}{${entity.camelCaseName}List}">
+#foreach ($property in $entity.properties)
+#if(${property.serialise} && !${property.complex})
+#if($property.id)			
+			<td><a th:href="@{'/${entity.camelCaseName}/' + ${dollar}{${entity.camelCaseName}.id}}"><span th:text="${dollar}{${entity.camelCaseName}.id}"/></a></td>
+#elseif($property.type == "DateTime")
+			<td th:text="${dollar}{${entity.camelCaseName}.${property.name}String()}"/>
+#else
+			<td th:text="${dollar}{${entity.camelCaseName}.${property.name}}"/>
+#end
+#end
+#end
 		</tr>
 		</tbody>
 	</table>

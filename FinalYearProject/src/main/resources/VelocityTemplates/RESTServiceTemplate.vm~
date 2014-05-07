@@ -19,7 +19,7 @@ public interface ${entity.name}Service
 	@GET
 	@Path("/get/{id}")
 	@Produces(MediaType.APPLICATION_XML)
-	public ${entity.name}Type getById(@PathParam("id") long id);
+	public ${entity.name}Type getById(@PathParam("id") ${entity.idType} id);
 
 
 	@PUT
@@ -30,7 +30,7 @@ public interface ${entity.name}Service
 
 	@DELETE
 	@Path("/delete/{id}")
-	public void deleteById(@PathParam("id") long id);
+	public void deleteById(@PathParam("id") ${entity.idType} id);
 	
 	
 	@GET
@@ -42,7 +42,7 @@ public interface ${entity.name}Service
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_HTML)
-	public String get${entity.name}Page(@PathParam("id") long id);
+	public String get${entity.name}Page(@PathParam("id") ${entity.idType} id);
 
 	
 	@GET
@@ -54,7 +54,7 @@ public interface ${entity.name}Service
 	@GET
 	@Path("/update/{id}")
 	@Produces(MediaType.TEXT_HTML)
-	public String getUpdatePage(@PathParam("id") long id);
+	public String getUpdatePage(@PathParam("id") ${entity.idType} id);
 
 	
 	@POST
@@ -86,6 +86,6 @@ public interface ${entity.name}Service
 	
 	@GET
 	@Path("/delete/{id}")
-	public Response deleteAndRedirect(@PathParam("id") long id);
+	public Response deleteAndRedirect(@PathParam("id") ${entity.idType} id);
 
 }

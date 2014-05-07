@@ -51,7 +51,7 @@ public class CreateNewProject
 				resetError();
 
 				final String outputDirectory = outputDirectoryTextField.getText();
-				final String packagePath = packagePathTextField.getText();
+				final String packagePath = packagePathTextField.getText().toLowerCase();
 				final String projectName = projectNameTextField.getText();
 
 				// validate project details and try to create
@@ -164,8 +164,8 @@ public class CreateNewProject
 	{
 		log.debug("Validating output directory: " + outputPath);
 
-		// only alphanumeric with 1st char being a letter, no trailing slashes, / not allowed either
-		final boolean valid = Pattern.matches("^/[a-zA-Z][a-zA-Z0-9]*(/[a-zA-Z][a-zA-Z0-9]*)*$", outputPath);
+		// only alphanumeric with 1st char being an alpha, no trailing slashes, / not allowed either
+		final boolean valid = Pattern.matches("^/[a-zA-Z][a-zA-Z0-9_-]*(/[a-zA-Z][a-zA-Z0-9_-]*)*$", outputPath);
 
 		if (!valid)
 		{
@@ -184,7 +184,9 @@ public class CreateNewProject
 	private boolean validatePackagePath(final String packagePath)
 	{
 		log.debug("Validating package path...");
-		final boolean valid = Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*(.[a-zA-Z][a-zA-Z0-9]*)*$", packagePath);
+		// package path must be alphanumeric, starting with an alpha, can include underscore,
+		// is lower case and uses a period to separate package levels
+		final boolean valid = Pattern.matches("^[a-z][a-z0-9_]*(.[a-z][a-z0-9_]*)*$", packagePath);
 
 		if (!valid)
 		{
@@ -326,7 +328,8 @@ public class CreateNewProject
 		                                                            GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                                            GridConstraints.SIZEPOLICY_CAN_GROW,
 		                                                            GridConstraints.SIZEPOLICY_FIXED, null, null, null,
-		                                                            0, false));
+		                                                            0, false
+		));
 		projectNameTextField = new JTextField();
 		createNewProjectPanel.add(projectNameTextField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST,
 		                                                                    GridConstraints.FILL_HORIZONTAL,
@@ -362,19 +365,22 @@ public class CreateNewProject
 		                          new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
 		                                              GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                              GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
-		                                              false));
+		                                              false)
+		);
 		packagePathHintTextArea = new JTextArea();
 		createNewProjectPanel.add(packagePathHintTextArea,
 		                          new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
 		                                              GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                              GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
-		                                              false));
+		                                              false)
+		);
 		outputDirectoryHintTextArea = new JTextArea();
 		createNewProjectPanel.add(outputDirectoryHintTextArea,
 		                          new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
 		                                              GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW,
 		                                              GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
-		                                              false));
+		                                              false)
+		);
 		final JLabel label4 = new JLabel();
 		label4.setText("Create New Project");
 		createNewProjectPanel.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST,
@@ -389,7 +395,9 @@ public class CreateNewProject
 		                                              GridConstraints.FILL_HORIZONTAL,
 		                                              GridConstraints.SIZEPOLICY_CAN_SHRINK |
 		                                              GridConstraints.SIZEPOLICY_CAN_GROW,
-		                                              GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		                                              GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false
+		                          )
+		);
 		errorTextArea = new JTextArea();
 		createNewProjectPanel.add(errorTextArea, new GridConstraints(8, 0, 1, 3, GridConstraints.ANCHOR_CENTER,
 		                                                             GridConstraints.FILL_BOTH,
@@ -405,7 +413,5 @@ public class CreateNewProject
 	 * @noinspection ALL
 	 */
 	public JComponent $$$getRootComponent$$$()
-	{
-		return createNewProjectPanel;
-	}
+	{ return createNewProjectPanel; }
 }
