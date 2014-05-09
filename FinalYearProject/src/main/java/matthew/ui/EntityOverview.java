@@ -108,7 +108,7 @@ public class EntityOverview {
                 resetError();
 
                 // check for any modified properties, update them and check if the page needs refreshed
-                if (UpdateChangedProperties()) {
+                if (updateChangedProperties()) {
                     // validate entity has exactly one id
                     if (getEntityHasMoreThanOneId()) {
                         setError("An Entity should only have one ID property");
@@ -223,7 +223,7 @@ public class EntityOverview {
      *
      * @return true if the page needs to be refreshed
      */
-    private boolean UpdateChangedProperties() {
+    private boolean updateChangedProperties() {
         boolean updateRequired = false;
 
         for (int i = 0; i < propertyTable.getRowCount(); i++) {
