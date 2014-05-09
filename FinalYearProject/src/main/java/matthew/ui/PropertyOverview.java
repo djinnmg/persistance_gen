@@ -146,14 +146,14 @@ public class PropertyOverview {
         property.setTextArea(textAreaCheckBoxCheckBox.isSelected());
 
         final String propertyIncoming = incomingTextField.getText().replace(" ", "");
-        if (!Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", propertyIncoming)) {
+        if (StringUtils.isNotEmpty(propertyIncoming) && !Pattern.matches("^[a-zA-Z][a-zA-Z0-9]*$", propertyIncoming)) {
             error = true;
             setError("Warning property incoming must be fully alphanumeric with the first character being an alpha!");
         }
         property.setIncoming(propertyIncoming);
 
         final String propertyMapping = mappingTextField.getText().replace(" ", "");
-        if (!StringUtils.isAlpha(propertyMapping)) {
+        if (StringUtils.isNotEmpty(propertyMapping) && !StringUtils.isAlpha(propertyMapping)) {
             error = true;
             setError("Warning property mapping must be fully alpha!");
         }
