@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities>
+	<entity name="user">
+		<property id="true" name="id" type="int"/>
+		<!--if id attribute is set, property is assumed to be not nullable-->
+		<property name="name" type="string" nullable="false" />
+	</entity>
+	<entity name="Project">
+		<property id="true" name="id" type="long" serialise="false"/>
+		<property name="title" type="string"/>
+		<property name="users" type="User" incoming="projects" mapping="OneToMany" serialise="false" />
+			<!--If a mapping is not specified for a complex type an error will be thrown, it will be ignored for simple types-->
+			<!--Serialisation of complex types won't be supported.
+				A query which returns a list of ids followed by requests to serialise the associated objects should be used instead-->
+		<property name="description" type="string" textArea="true"/>
+		<!--For strings, if more than a couple of words long the textArea boolean will make the web ui more tidy-->
+		<property name="created" type="date"/>
+		<!--Will use Joda DateTime for dates.
+				Cannot use Joda DateTime with jaxb types so this will need to be accounted for with marshalling-->
+	</entity>
+</entities>
