@@ -6,7 +6,7 @@
         <property name="email" type="string" nullable="true" serialise="true" />
         <property name="telephone" type="string" nullable="true" serialise="true" />
     </entity>
-    <entity name="order">
+    <entity name="productOrder">
         <property name="id" type="long" id="true"/>
         <property name="cost" type="string" nullable="false" />
         <property name="customers" type="customer" incoming="OrdersForCustomer" mapping="ManyToOne"/>

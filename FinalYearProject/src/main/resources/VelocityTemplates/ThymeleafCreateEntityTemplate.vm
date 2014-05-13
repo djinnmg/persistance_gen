@@ -50,7 +50,7 @@
 #elseif($property.textArea == "true")
 			<textarea name="${property.name}" rows="5" />
 #else
-			<input name="${property.name}" type="text" placeholder="Type title here…"/>
+			<input name="${property.name}" type="text" placeholder="Type ${property.name} here…"/>
 #end
 #end
 #end
